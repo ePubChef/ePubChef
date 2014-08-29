@@ -1,0 +1,43 @@
+
+file_name: demo 
+title: A Demo eBook
+author: John Cobo
+coverdesign: Erin Cobo
+publish_date: 2014-01-01
+uuid: urn:uuid:57b681b5-137b-4791-b5c5-99fdcfaa41ee
+publisher: John Cobo
+auto_dropcaps: True
+meta_descn: A book about cooking books
+subjects: 
+      - name: COMPUTERS
+      - name: WRITING
+      - name: PUBLISHING
+#ePub_format: kindle | smashwords
+kindle: True  # switches to kindle stylesheet, removes cover
+smashwords: False
+images: # front/back matter images
+      - image: epubchef_logo
+        id: img1
+
+front_matter: # cover, title_page, and table_of_contents names must not be changed
+     - name: cover
+     - name: title_page
+     - name: table_of_contents
+     - name: dedication
+
+chapters:
+     -  code: '001'
+        name: A walk in the Park
+        intro: This will be a great chapter.
+        photo: jazz_frog.jpg
+     -  code: '002'
+        name: When Butter Hits Bread
+        intro: Yet another fabulous chapter.
+        photo: relaxed_frog.jpg
+
+back_matter: 
+     - name: description
+     - name: about_author
+
+# notes:
+# change the startup page in templates/contentopf.mustache <guide> section type=text entry if desired
