@@ -1,0 +1,10 @@
+paras = [
+{{#paras}}
+ { {{#class}} 'para_class': '{{class}}', {{/class}}
+ 'textblock': [
+    {{#textblock}}
+      { {{#text_class}}'{{text_class}}': True,{{/text_class}} 'words': '{{{words}}}' },
+    {{/textblock}}
+   ]},
+{{/paras}}
+]

@@ -1,0 +1,243 @@
+/*===Reset===*/
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video
+{
+margin: 0;
+padding: 0;
+border: 0;
+font-size: 100%;
+vertical-align: baseline;
+}
+/*table
+{
+border-collapse: collapse;
+border-spacing: 0;
+}
+*/
+/*ol, ul, li, dl, dt, dd
+{
+margin: 0;
+padding: 0;
+border: 0;
+font-size: 100%;
+vertical-align: baseline;
+}
+*/
+/*===Base Body===*/
+body
+{
+text-align: justify;
+line-height: 120%;
+}
+/*===Headings===*/
+h1
+{
+text-indent: 0;
+text-align: center;
+margin: 100px 0 0 0;
+font-size: 2.0em;
+font-weight: bold;
+page-break-before: always;
+line-height: 150%; /* gets squished otherwise on ADE */
+}
+h2
+{
+text-indent: 0;
+text-align: center;
+margin: 50px 0 0 0;
+font-size: 1.5em;
+font-weight: bold;
+page-break-before: always;
+line-height: 135%; /* gets squished otherwise on ADE */
+}
+h3
+{
+text-indent: 0;
+text-align: left;
+font-size: 1.4em;
+font-weight: bold;
+margin: 1.0em 0 0 0;
+padding-bottom: 10px;
+}
+h4
+{
+text-indent: 0;
+text-align: left;
+font-size: 1.2em;
+font-weight: bold;
+margin: 1.0em 0 0 0;
+padding-bottom: 10px;
+}
+h5
+{
+text-indent: 0;
+text-align: left;
+font-size: 1.1em;
+font-weight: bold;
+margin: 1.0em 0 0 0;
+padding-bottom: 10px;
+}
+h6
+{
+text-indent: 0;
+text-align: left;
+font-size: 1.0em;
+font-weight: bold;
+margin: 1.0em 0 0 0;
+padding-bottom: 10px;
+}
+/* Hyphen and pagination Fixer */
+h1, h2, h3, h4, h5, h6
+{
+-webkit-hyphens: none !important;
+hyphens: none;
+page-break-after: avoid;
+page-break-inside: avoid;
+}
+/*===Other Block Elements===*/
+/* first-line indent type paragraph for fiction */
+p
+{
+text-indent: 1.25em;
+margin: 0;
+widows: 2;
+orphans: 2;
+}
+p.blockquote {
+text-indent: 0;
+margin: 0 2.5em;
+padding: 0;
+font-style: italic;
+}
+/* block type paragraph for non-fiction */
+/*
+p
+{
+text-indent: 0;
+margin: 1.0em 0 0 0;
+widows: 2;
+orphans: 2;
+}
+*/
+/*===Images===*/
+img
+{
+max-width: 100%;
+max-height: 100%;
+}
+img.displayed {
+    display: block;
+    margin-left: auto;
+    margin-right: auto }
+/*===Inline Elements===*/
+span.i
+{
+font-style: italic;
+}
+span.b
+{
+font-weight: bold;
+}
+span.u
+{
+text-decoration: underline;
+}
+span.st
+{
+text-decoration: line-through;
+}
+span.sm
+{
+font-variant: small-caps;
+}
+/*==Inline combinations==*/
+/* Using something like <span class="i b">… may seem okay, but it causes problems on the Kindle */
+span.ib
+{
+font-style: italic;
+font-weight: bold;
+}
+span.iu
+{
+font-style: italic;
+text-decoration: underline;
+}
+span.bu
+{
+font-weight: bold;
+text-decoration: underline;
+}
+span.ibu
+{
+font-style: italic;
+font-weight: bold;
+text-decoration: underline;
+}
+/* Superscripted Text */
+.super
+{
+vertical-align: super;
+font-size: 0.6em;
+text-decoration: none;
+}
+p.chapterIntro
+{
+text-align: center;
+font-style:italic;
+}
+/* This fixes the bug where the text-align property of block-level elements is not recognized on iBooks
+example: HTML markup would look like <p class="centered"><span class="ipadcenterfix">Centered Content</span></p> */
+span.ipadcenterfix
+{
+text-align: center;
+}
+span.ipadrightfix
+{
+text-align: right;
+}
+/*==eBook Specific Styles==*/
+span.dropcap
+{
+font-size: 300%;
+font-weight: bold;
+height: 1.0em;
+float: left;
+margin: 0.3em 0.125em -0.4em 0.1em;
+}
+p.texttop
+{
+margin: 1.5em 0 0 0;
+text-indent: 0;
+}
+p.clearit
+{
+clear: both;
+}
+p.authorname
+{
+text-indent: 0;
+margin: 1.0em 0 0 0;
+text-align: center;
+font-size: 130%
+}
+/* for centered text and element wrappers on images */
+p.centered
+{
+text-indent: 0;
+margin: 1.0em 0 0 0;
+text-align: center;
+}
+/* Section Breaks */
+p.centeredbreak
+{
+text-indent: 0;
+margin: 1.0em 0 1.0em 0;
+text-align: center;
+}
+/* section Breaks with a page break */
+p.centeredpgbrk
+{
+text-indent: 0;
+margin: 1.0em 0 0 0;
+text-align: center;
+page-break-before: always;
+}
