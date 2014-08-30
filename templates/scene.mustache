@@ -1,0 +1,9 @@
+{{#paras}}
+ { {{#class}} 'para_class': '{{class}}', {{/class}}
+   {{#needs_para_tag}} 'add_para_tag': True, {{/needs_para_tag}}
+ 'textblock': [
+    {{#textblock}}
+      { {{#text_class}}'{{text_class}}': True,{{/text_class}} 'words': '{{{words}}}' },
+    {{/textblock}}
+   ]},
+{{/paras}}

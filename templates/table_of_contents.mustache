@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+{{#kindle}} 
+<link type="text/css" rel="stylesheet" href="../css/kindle-stylesheet.css" />
+{{/kindle}}
+{{^kindle}}
+<link type="text/css" rel="stylesheet" href="../css/epub-stylesheet.css" />
+{{/kindle}}
+<title>{{title}}</title>
+</head>
+<body>
+<h2>Table of Contents</h2>
+<!-- TODO: don't link to 'cover' in kindle version -->
+{{#front_matter}}{{#toc_entry}}
+<p class="toctexttop"><a href="{{dir}}{{name}}.html">{{toc_entry}}</a></p>
+{{/toc_entry}}{{/front_matter}}
+{{#chapters}}
+<p class="toctexttop"><a href="chap{{nbr}}.html#{{id}}">{{name}}</a></p>
+{{/chapters}}
+{{#back_matter}}
+<p class="toctexttop"><a href="{{dir}}{{name}}.html">{{toc_entry}}</a></p>
+{{/back_matter}}
+</body>
+</html>

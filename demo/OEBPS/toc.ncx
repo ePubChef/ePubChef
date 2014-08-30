@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1" xml:lang="en">
+  <head>
+    <meta content="urn:uuid:57b681b5-137b-4791-b5c5-99fdcfaa41ee" name="dtb:uid" />
+    <meta content="1" name="dtb:depth" /> 
+    <meta content="0" name="dtb:totalPageCount" />
+    <meta content="0" name="dtb:maxPageNumber" />
+  </head>
+  <docTitle>
+    <text>A Demo eBook</text>
+  </docTitle>
+  <docAuthor>
+    <text>John Cobo</text>
+  </docAuthor>
+  <navMap>
+   <!-- TODO: Remove for Kindle and redo playOrder -->
+   <navPoint id="ncx_cover" playOrder="0">
+      <navLabel> <text>Cover</text> </navLabel>
+      <content src="cover.html" />
+   </navPoint>
+   <navPoint id="ncx_title_page" playOrder="1">
+      <navLabel> <text>Title Page</text> </navLabel>
+      <content src="content/title_page.html" />
+   </navPoint>
+   <navPoint id="ncx_table_of_contents" playOrder="2">
+      <navLabel> <text>Table of Contents</text> </navLabel>
+      <content src="content/table_of_contents.html" />
+   </navPoint>
+   <navPoint id="ncx_dedication" playOrder="3">
+      <navLabel> <text>Dedication</text> </navLabel>
+      <content src="dedication.html" />
+   </navPoint>
+   <navPoint id="ncx_h2-1" playOrder="4">
+      <navLabel><text>Chapter 1 - A walk in the Park</text></navLabel>
+      <content src="content/chap1.html#h2-1" />
+   </navPoint>
+   <navPoint id="ncx_h2-2" playOrder="5">
+      <navLabel><text>Chapter 2 - When Butter Hits Bread</text></navLabel>
+      <content src="content/chap2.html#h2-2" />
+   </navPoint>
+   <navPoint id="ncx_h2-3" playOrder="6">
+      <navLabel><text>Chapter 3 - As Butter Melts</text></navLabel>
+      <content src="content/chap3.html#h2-3" />
+   </navPoint>
+   <navPoint id="ncx_description" playOrder="7">
+      <navLabel><text>Description</text></navLabel>
+      <content src="description.html" />
+    </navPoint>
+   <navPoint id="ncx_about_author" playOrder="8">
+      <navLabel><text>About Author</text></navLabel>
+      <content src="about_author.html" />
+    </navPoint>
+  </navMap>
+</ncx>

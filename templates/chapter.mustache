@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+{{#kindle}} 
+<link type="text/css" rel="stylesheet" href="../css/kindle-stylesheet.css" />
+{{/kindle}}
+{{^kindle}}
+<link type="text/css" rel="stylesheet" href="../css/epub-stylesheet.css" />
+{{/kindle}}
+<title>{{title}}</title>
+</head>
+<body>
+    <div id="{{id}}">
+      <h2>Chapter {{nbr}}<br />{{name}}</h2>
+      <img class="displayed" src="../images/{{photo}}" height="100" alt="{{photo}}" /><br />
+    </div>
+    <p class="chapterIntro">{{intro}}</p>
+	  {{#scenes}}
+          {{#divider}}<p class="centered">~~~~~~~~~~~~~~</p>{{/divider}}
+	  {{#paras}}
+	  {{#needs_para_tag}}<p{{#class}} class="{{class}}"{{/class}}>{{/needs_para_tag}}
+            {{#textblock}}
+              {{#em}}<em>{{/em}}
+              {{#text_class}}<span class="{{text_class}}">{{/text_class}}
+                {{{words}}}
+              {{#text_class}}</span>{{/text_class}}
+              {{#em}}</em>{{/em}}
+            {{/textblock}}
+	  {{#needs_para_tag}}</p>{{/needs_para_tag}}
+          {{/paras}}
+	  {{/scenes}}
+  </body>
+</html>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<package version="2.0" xmlns="http://www.idpf.org/2007/opf" unique-identifier="BookId">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
+    <!--Required metadata-->
+    <dc:title>{{title}}</dc:title>
+    <dc:language>en-us</dc:language> 
+    <dc:identifier id="BookId" opf:scheme="uuid">{{uuid}}</dc:identifier>
+    <!--Above identifier is an example of a UUID. To use an ISBN, it would look as follows: <dc:identifier id="BookId" opf:scheme="ISBN">urn:isbn:1234567890123</dc:identifier> -->
+    <dc:creator opf:role="aut">{{author}}</dc:creator> <!--The Author-->
+    <dc:publisher>{{publisher}}</dc:publisher> <!--Name of Publisher or yourself if self-published-->
+    <dc:date>{{publish_date}}</dc:date> <!--Published Date in the format YYYY-MM-DD-->
+    <meta name="cover" content="cover_image" /> <!--Required for KindleGen, Barnes and Noble, and iBookstore-->
+    <!--This is optional metadata that you should include-->
+    <dc:description>{{meta_descn}}</dc:description>
+    {{#subjects}}
+    <dc:subject>{{name}}</dc:subject>
+    {{/subjects}}
+    <!--This is optional metadata that rarely gets used-->
+    <dc:rights>All rights reserved</dc:rights>
+    <dc:type>Text</dc:type>
+    <dc:source>Can be a URL or ISBN number</dc:source> <!-- A prior resource from which the publication was derived -->
+    <dc:relation>Can be a URL or ISBN number</dc:relation> <!-- An identifier of an auxiliary resource and its relationship to the publication -->
+    <dc:coverage>Worldwide</dc:coverage>
+    <!-- This metadata is for additional contributors -->
+    <dc:contributor opf:file-as="Last, First" opf:role="edt">{{author}}</dc:contributor> <!-- example of an editor -->
+  </metadata>
+  <!-- Manifest Section -->
+  <manifest>
+    <item href="toc.ncx" id="ncx" media-type="application/x-dtbncx+xml" />
+     <!-- TODO Remove cover for Kindle -->
+    {{#front_matter}}
+    <item href="{{src}}" id="{{name}}" media-type="application/xhtml+xml" />
+    {{/front_matter}}
+    {{#chapters}}
+    <item href="content/chap{{nbr}}.html" id="chap{{nbr}}" media-type="application/xhtml+xml" />
+    {{/chapters}}
+    {{#back_matter}}
+    <item href="{{src}}" id="{{name}}" media-type="application/xhtml+xml" />
+    {{/back_matter}}
+    <item href="css/epub-stylesheet.css" id="cssstylesheet-epub" media-type="text/css" />
+    <item href="css/kindle-stylesheet.css" id="cssstylesheet-kindle" media-type="text/css" />
+    <item href="cover_image.jpg" id="cover_image" media-type="image/jpeg" />
+    {{#images}}
+    <item href="images/{{image}}.jpg" id="{{id}}" media-type="image/jpeg" />
+    {{/images}}
+  </manifest>
+  <!-- Spine Section -->
+  <spine toc="ncx">
+    {{#content_files}}
+    <itemref idref="{{file}}" />
+    {{/content_files}}
+  </spine>
+  <!-- Guide Section -->
+  <guide>
+    <reference href="cover.html" type="cover" title="Cover" /> 
+    <reference href="content/table_of_contents.html" type="toc" title="Table of Contents" />
+    <reference href="content/chap1.html" type="text" title="Startup Page" />
+  </guide>
+</package>

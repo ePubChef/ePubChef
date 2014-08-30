@@ -1,0 +1,33 @@
+Lorem ipsum dolor sit amet, <em>consectetur</em> adipiscing elit. Pellentesque vitae libero non lectus viverra bibendum. Vestibulum imperdiet leo sit amet ante cursus molestie. Duis in dui adipiscing diam ornare luctus quis eu dui. Integer id tortor ac libero sagittis tempor vel sed nunc. Donec id ligula feugiat, convallis turpis sit amet, hendrerit metus. Praesent et neque sollicitudin, bibendum leo vitae, vestibulum sem. Suspendisse nec magna sagittis sapien rhoncus pellentesque id ac est. Mauris eu magna in sem pharetra euismod. Sed blandit, justo vel pharetra dapibus, nulla erat condimentum lectus, vitae consequat dui orci ut tortor. Mauris vitae tempus orci, vitae dapibus massa. Sed facilisis ipsum eget nisi malesuada, et facilisis felis ultricies. Praesent sed lacus eget odio porta convallis non non sem. Mauris tempor erat vitae neque faucibus iaculis. Donec ut aliquet arcu. Morbi vel lorem ullamcorper augue tincidunt pellentesque.
+<ul> <li>item one </li> <li>item two</li> </ul>
+<ul>
+<li>This is an amppersand dealt with correctly: &</li>
+<li>There was a  double space removed before the word "double."</li>
+<li>	This line began with a tab which has been removed.</li>
+<li>There's a single quote here.</li>
+</ul>
+The previous items are a list.
+    This line had leading whitespace removed.
+Three dots... have been changed to an elipses.
+
+She said, "this is a quote." Then he followed with, "another quotation."
+"All together, there should be 'smart' quotes in use here." She added.
+What follows is an html table.
+<table border="1">
+<tr><td>aaaa</td><td>1111</td></tr>
+<tr><td>bbbb</td><td>222</td></tr> 
+<tr><td>cccc</td><td>8888</td></tr>
+</table>
+The following chapter will be a block quote.
+
+>>>Etiam in suscipit metus. Suspendisse interdum neque in nulla viverra, sodales scelerisque elit cursus. Fusce porta nibh at risus aliquet, sit amet molestie quam consectetur. Quisque viverra ac lacus vehicula fringilla. 
+
+<p>This image is already used in a chapter heading: <img src="../images/jazz_frog.jpg" width="300" alt="jazz frog" /></p>
+
+<p>This image is NOT in a chapter heading: <img src="../images/chef-hat1.jpg" width="100" alt="chef hat image" /></p>
+
+Nam pellentesque, purus eget eleifend sollicitudin, ipsum elit rhoncus tortor, eget ornare urna augue eget nunc. Quisque tempor ipsum metus, et aliquet mi convallis vel. Nam eu pharetra dolor.
+
+Donec in pellentesque libero, sit amet vulputate nisi. Phasellus facilisis felis ut ante ultricies, non suscipit felis sollicitudin. Aliquam venenatis elementum iaculis. Ut molestie nulla at orci bibendum dapibus. Phasellus volutpat dui nisi, id mattis nisi tincidunt vitae. Vestibulum pharetra mollis metus, ac lobortis dolor feugiat imperdiet. Mauris dictum aliquam libero, et consectetur tortor fringilla eget. Duis eu dictum dui. Maecenas vitae nulla neque.
+
+Vivamus tristique odio ac velit convallis, a sollicitudin diam suscipit. Nulla facilisi. Aliquam egestas orci ac nisl semper, at egestas justo pretium. Suspendisse eleifend luctus lectus commodo malesuada. Nulla ac dictum nisl. Phasellus ac porta neque, at accumsan nisl.
