@@ -35,6 +35,8 @@ dirs = {
     'template_dir':'templates',         # templates for ePub files
 	'raw_book': file_name+'_raw', # words and images of the book
 	'oebps': file_name+'/OEBPS',
+    'raw_images': file_name+'_raw'+'/images',
+    'images': file_name+'/OEBPS/images',
 	'content': file_name+'/OEBPS/content',
 	'css':'css',
 	'tmp':'tmp',
@@ -132,35 +134,40 @@ def prepareDirs(dirs):
    
     # top level generated book dir
     createEmptyDir(dirs['gen_dir'],False)
+	
     # main content
     content_dir = dirs['content']
     createEmptyDir(content_dir,False)
-    # images including cover image
-    image_src = os.path.join(dirs['raw_book'],'images')
-    image_dst = os.path.join(dirs['oebps'],'images')
-    shutil.copytree(image_src, image_dst) 
-    # move the cover image up one level
+    
+	# images including cover image
+    #image_src = osdirs['raw_book'],'images')
+    #image_dst = os.path.join(dirs['oebps'],'images')
+    shutil.copytree(dirs['raw_images'], dirs['images']) 
+    
+	# move the cover image up one level
     src = os.path.join(dirs['oebps'],'images', 'cover_image.jpg')
     dst = os.path.join(dirs['oebps'], 'cover_image.jpg')
     shutil.move(src, dst) 
-
+    
+	# ePubChef creation image 
+    src = os.path.join(dirs['template_dir'], 'epubchef_logo.jpg')
+    dst = os.path.join(dirs['oebps'],'images', 'epubchef_logo.jpg')
+    shutil.copyfile(src, dst) 
+    
     # css
     css_src = dirs['css']
     css_dst = os.path.join(dirs['oebps'],'css')
     shutil.copytree(css_src, css_dst) 
-    # mimetype
+    
+	# mimetype
     src = os.path.join(dirs['template_dir'], 'mimetype')
     dst = os.path.join(dirs['gen_dir'], 'mimetype')
     shutil.copyfile(src, dst) 
-    # META-INF
+    
+	# META-INF
     os.makedirs(os.path.join(dirs['gen_dir'], 'META-INF'))
     src = os.path.join(dirs['template_dir'], 'container.xml')
     dst = os.path.join(dirs['gen_dir'], 'META-INF', 'container.xml')
-    shutil.copyfile(src, dst) 
-    
-    # eBook creation image 
-    src = os.path.join(dirs['template_dir'], 'epubchef_logo.jpg')
-    dst = os.path.join(dirs['oebps'],'images', 'epubchef_logo.jpg')
     shutil.copyfile(src, dst) 
     
 def formatScene(in_file, scene_count, auto_dropcaps):
@@ -420,14 +427,19 @@ def augmentBackMatter(back_matter, playorder):
         item['toc_entry'] = prettify(item['name'])
         item['tocncx_entry'] = prettify(item['name'])
 	
-def augmentImages(chapters, images):
-    id = len(images) # start ids with the number of images we already have
+def augmentImages(chapters):
+    # create an images section in 'recipe'
+    recipe['images'] = []
+    images = recipe['images']    
+    id = 0
     # TODO make bulletproof, deal with images in paras and alt words
-    for chapter in chapters:
-        if 'photo' in chapter:
-            id +=1
-            name = chapter['photo'][:-4]  # trim 3 char suffix and dot
-            images.append({'image': name, 'id': 'img'+str(id)}) 
+    all_images = os.listdir(dirs['images'])
+    all_images.remove('Thumbs.db') # not an image
+    #print('images:', all_images)
+    for image in all_images:
+        id+=1
+        image_name = image[:-4] # trim suffix and dot
+        images.append({'image': image_name, 'id': 'img'+str(id)})
 
 def addContentFiles(_recipe):
 # for content.opf spine section
@@ -518,7 +530,7 @@ if __name__ == "__main__": # main processing
     augmentBackMatter(recipe['back_matter'],
 	front_matter_count + chapter_count)
 
-    augmentImages(recipe['chapters'], recipe['images'])
+    augmentImages(recipe['chapters'])
     
     # for each front/back matter page the recipe name refers to:
     # 1. text from the raw folder,

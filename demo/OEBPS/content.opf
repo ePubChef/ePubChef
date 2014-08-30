@@ -34,14 +34,16 @@
     <item href="dedication.html" id="dedication" media-type="application/xhtml+xml" />
     <item href="content/chap1.html" id="chap1" media-type="application/xhtml+xml" />
     <item href="content/chap2.html" id="chap2" media-type="application/xhtml+xml" />
+    <item href="content/chap3.html" id="chap3" media-type="application/xhtml+xml" />
     <item href="description.html" id="description" media-type="application/xhtml+xml" />
     <item href="about_author.html" id="about_author" media-type="application/xhtml+xml" />
     <item href="css/epub-stylesheet.css" id="cssstylesheet-epub" media-type="text/css" />
     <item href="css/kindle-stylesheet.css" id="cssstylesheet-kindle" media-type="text/css" />
     <item href="cover_image.jpg" id="cover_image" media-type="image/jpeg" />
-    <item href="images/epubchef_logo.jpg" id="img1" media-type="image/jpeg" />
-    <item href="images/jazz_frog.jpg" id="img2" media-type="image/jpeg" />
-    <item href="images/relaxed_frog.jpg" id="img3" media-type="image/jpeg" />
+    <item href="images/chef-hat1.jpg" id="img1" media-type="image/jpeg" />
+    <item href="images/epubchef_logo.jpg" id="img2" media-type="image/jpeg" />
+    <item href="images/jazz_frog.jpg" id="img3" media-type="image/jpeg" />
+    <item href="images/relaxed_frog.jpg" id="img4" media-type="image/jpeg" />
   </manifest>
   <!-- Spine Section -->
   <spine toc="ncx">
@@ -51,6 +53,7 @@
     <itemref idref="dedication" />
     <itemref idref="chap1" />
     <itemref idref="chap2" />
+    <itemref idref="chap3" />
     <itemref idref="description" />
     <itemref idref="about_author" />
   </spine>

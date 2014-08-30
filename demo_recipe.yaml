@@ -15,9 +15,9 @@ subjects:
 #ePub_format: kindle | smashwords
 kindle: True  # switches to kindle stylesheet, removes cover
 smashwords: False
-images: # front/back matter images
-      - image: epubchef_logo
-        id: img1
+#images: # front/back matter images
+#      - image: epubchef_logo
+#        id: img1
 
 front_matter: # cover, title_page, and table_of_contents names must not be changed
      - name: cover
@@ -33,6 +33,10 @@ chapters:
      -  code: '002'
         name: When Butter Hits Bread
         intro: Yet another fabulous chapter.
+        photo: relaxed_frog.jpg
+     -  code: '003'
+        name: As Butter Melts
+        intro: This is getting silly.
         photo: relaxed_frog.jpg
 
 back_matter: 

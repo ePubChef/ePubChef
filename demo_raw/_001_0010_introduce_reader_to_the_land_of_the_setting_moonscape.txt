@@ -22,6 +22,10 @@ The following chapter will be a block quote.
 
 >>>Etiam in suscipit metus. Suspendisse interdum neque in nulla viverra, sodales scelerisque elit cursus. Fusce porta nibh at risus aliquet, sit amet molestie quam consectetur. Quisque viverra ac lacus vehicula fringilla. 
 
+<p>This image is already used in a chapter heading: <img src="../images/jazz_frog.jpg" width="300" alt="jazz frog" /></p>
+
+<p>This image is NOT in a chapter heading: <img src="../images/chef-hat1.jpg" width="100" alt="chef hat image" /></p>
+
 Nam pellentesque, purus eget eleifend sollicitudin, ipsum elit rhoncus tortor, eget ornare urna augue eget nunc. Quisque tempor ipsum metus, et aliquet mi convallis vel. Nam eu pharetra dolor.
 
 Donec in pellentesque libero, sit amet vulputate nisi. Phasellus facilisis felis ut ante ultricies, non suscipit felis sollicitudin. Aliquam venenatis elementum iaculis. Ut molestie nulla at orci bibendum dapibus. Phasellus volutpat dui nisi, id mattis nisi tincidunt vitae. Vestibulum pharetra mollis metus, ac lobortis dolor feugiat imperdiet. Mauris dictum aliquam libero, et consectetur tortor fringilla eget. Duis eu dictum dui. Maecenas vitae nulla neque.

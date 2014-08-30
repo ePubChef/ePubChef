@@ -39,11 +39,15 @@
       <navLabel><text>Chapter 2 - When Butter Hits Bread</text></navLabel>
       <content src="content/chap2.html#h2-2" />
    </navPoint>
-   <navPoint id="ncx_description" playOrder="6">
+   <navPoint id="ncx_h2-3" playOrder="6">
+      <navLabel><text>Chapter 3 - As Butter Melts</text></navLabel>
+      <content src="content/chap3.html#h2-3" />
+   </navPoint>
+   <navPoint id="ncx_description" playOrder="7">
       <navLabel><text>Description</text></navLabel>
       <content src="description.html" />
     </navPoint>
-   <navPoint id="ncx_about_author" playOrder="7">
+   <navPoint id="ncx_about_author" playOrder="8">
       <navLabel><text>About Author</text></navLabel>
       <content src="about_author.html" />
     </navPoint>
