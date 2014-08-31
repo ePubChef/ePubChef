@@ -16,6 +16,7 @@ import yaml
 import re
 import json
 import zipfile
+import subprocess
 
 template_dir = "templates"
 
@@ -26,10 +27,9 @@ file_name = sys.argv[1]
 try:
     if sys.argv[2] == 'debug':
         debug_run = True
-        print('DEBUG level run')
+        print('RUNNING in DEBUG mode, see tmp folder')
 except:
     debug_run = False
-    print('not debug')
 
 dirs = {
     'gen_dir': file_name, # folder for the ePub files
@@ -541,6 +541,8 @@ def createArchive(rootDir, outputPath):
     fout.close()
     os.chdir(cwd)
     
+def checkEpub(checkerPath, epubPath):
+        subprocess.call(['java', '-jar', checkerPath, epubPath], shell = True)
 #########################################################################
 if __name__ == "__main__": # main processing
 
@@ -588,7 +590,17 @@ if __name__ == "__main__": # main processing
 
     # write the augmented recipe to a file, just for humans to look at
     writeAugmentedRecipe(recipe)
-    print("done")
+    print("ePubChef is Done")
     
     # zip results into an epub file 
+    print("zipping up to .epub")
     createArchive(file_name, file_name + '.epub')
+    
+    # Optionally validate the epub
+    # NOTE: epubcheck is not part of ePubChef and we won't be offended if you don't run 
+    # it from here. If you do, uncomment the next line, install the Java JDK on your
+    # machine, set your PATH to include java, and put the epubcheck jar file in the folder 
+    # above this one.
+    checkEpub('../epubcheck/epubcheck-3.0.1.jar', file_name + '.epub')
+    
+    print("All done\n")
