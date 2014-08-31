@@ -1,3 +1,22 @@
+'''
+ePubChef - generating EPUB files for eBooks
+    Copyright (C) 2014  John Cobo
+    info@epubchef.org
+
+    This program is free software; you can redistribute it and/or modify
+    it under the terms of the GNU General Public License as published by
+    the Free Software Foundation; either version 2 of the License, or
+    (at your option) any later version.
+
+    This program is distributed in the hope that it will be useful,
+    but WITHOUT ANY WARRANTY; without even the implied warranty of
+    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    GNU General Public License for more details.
+
+    You should have received a copy of the GNU General Public License along
+    with this program; if not, write to the Free Software Foundation, Inc.,
+    51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
+'''
 # generate (cook) eBook from "prepared_ingredients" files of the book
 # and the file recipe.py in the same folder which drives
 # ebook creation.
@@ -504,10 +523,6 @@ def getScenesDict(raw_scenes_dir):
     #print("\nscene_dict:", scene_dict)
     return scene_dict
 
-#def __listManifestItems(contentOPFPath):
-#    tree = etree.parse(contentOPFPath)
-#    return tree.xpath("//opf:manifest/opf:item/@href", #namespaces = {'opf': 'http://www.idpf.org/2007/opf'})
-
 def manifest_items():
     # TODO: this is a dup of functionality in contentopf.mustache - combine
     items = []
@@ -601,6 +616,6 @@ if __name__ == "__main__": # main processing
     # it from here. If you do, uncomment the next line, install the Java JDK on your
     # machine, set your PATH to include java, and put the epubcheck jar file in the folder 
     # above this one.
-    checkEpub('../epubcheck/epubcheck-3.0.1.jar', file_name + '.epub')
+    #checkEpub('../epubcheck/epubcheck-3.0.1.jar', file_name + '.epub')
     
     print("All done\n")
