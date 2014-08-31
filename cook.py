@@ -15,6 +15,8 @@ import codecs
 import yaml
 import re
 import json
+import zipfile
+import subprocess
 
 template_dir = "templates"
 
@@ -25,10 +27,9 @@ file_name = sys.argv[1]
 try:
     if sys.argv[2] == 'debug':
         debug_run = True
-        print('DEBUG level run')
+        print('RUNNING in DEBUG mode, see tmp folder')
 except:
     debug_run = False
-    print('not debug')
 
 dirs = {
     'gen_dir': file_name, # folder for the ePub files
@@ -503,6 +504,45 @@ def getScenesDict(raw_scenes_dir):
     #print("\nscene_dict:", scene_dict)
     return scene_dict
 
+#def __listManifestItems(contentOPFPath):
+#    tree = etree.parse(contentOPFPath)
+#    return tree.xpath("//opf:manifest/opf:item/@href", #namespaces = {'opf': 'http://www.idpf.org/2007/opf'})
+
+def manifest_items():
+    # TODO: this is a dup of functionality in contentopf.mustache - combine
+    items = []
+    items.append("toc.ncx")
+    for item in recipe['front_matter']:
+        items.append(item['src'])
+    for item in recipe['chapters']:
+        items.append("content/chap"+item['nbr']+".html")
+    for item in recipe['back_matter']:
+        items.append(item['src'])
+    items.append('css/epub-stylesheet.css')
+    items.append('css/kindle-stylesheet.css')
+    items.append('cover_image.jpg')
+    for item in recipe['images']:
+        items.append("images/"+item['image']+".jpg")
+    return items
+    
+def createArchive(rootDir, outputPath):
+    fout = zipfile.ZipFile(outputPath, 'w')
+    cwd = os.getcwd()
+    os.chdir(rootDir)
+    fout.write('mimetype', compress_type = zipfile.ZIP_STORED)
+    fileList = []
+    fileList.append(os.path.join('META-INF', 'container.xml'))
+    fileList.append(os.path.join('OEBPS', 'content.opf'))
+    #for itemPath in __listManifestItems(os.path.join('OEBPS', 'content.opf')):
+    for itemPath in manifest_items():
+        fileList.append(os.path.join('OEBPS', itemPath))
+    for filePath in fileList:
+        fout.write(filePath, compress_type = zipfile.ZIP_DEFLATED)
+    fout.close()
+    os.chdir(cwd)
+    
+def checkEpub(checkerPath, epubPath):
+        subprocess.call(['java', '-jar', checkerPath, epubPath], shell = True)
 #########################################################################
 if __name__ == "__main__": # main processing
 
@@ -550,4 +590,17 @@ if __name__ == "__main__": # main processing
 
     # write the augmented recipe to a file, just for humans to look at
     writeAugmentedRecipe(recipe)
-    print("done")
+    print("ePubChef is Done")
+    
+    # zip results into an epub file 
+    print("zipping up to .epub")
+    createArchive(file_name, file_name + '.epub')
+    
+    # Optionally validate the epub
+    # NOTE: epubcheck is not part of ePubChef and we won't be offended if you don't run 
+    # it from here. If you do, uncomment the next line, install the Java JDK on your
+    # machine, set your PATH to include java, and put the epubcheck jar file in the folder 
+    # above this one.
+    checkEpub('../epubcheck/epubcheck-3.0.1.jar', file_name + '.epub')
+    
+    print("All done\n")
