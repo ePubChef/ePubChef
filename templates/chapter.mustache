@@ -14,7 +14,7 @@
 <body>
     <div id="{{id}}">
       <h2>Chapter {{nbr}}<br />{{name}}</h2>
-      <img class="displayed" src="../images/{{photo}}" height="100" alt="{{photo}}" /><br />
+      {{#photo}}<img class="displayed" src="../images/{{photo}}" height="100" alt="{{photo}}" /><br />{{/photo}}
     </div>
     <p class="chapterIntro">{{intro}}</p>
 	  {{#scenes}}
