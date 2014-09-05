@@ -129,8 +129,18 @@ of which there can be many, or a "class" which defines the html class of the par
 renderer = pystache.Renderer()
 
 def importYaml(file_name):
-    with open(file_name+'_recipe.yaml', 'r') as f:
-        doc = yaml.load(f)
+    try:
+        print('Opening recipe for:', file_name)
+        with open(file_name+'_recipe.yaml', 'r') as f:
+            doc = yaml.load(f)
+    except: # create a new recipe from a template
+        print('Creating new recipe for:', file_name)
+        f = open(file_name+'_recipe.yaml', 'w')
+        out = renderer.render_path(os.path.join(dirs['template_dir'], 'recipe.mustache'), dict([("file_name", file_name)]))
+        f.write(out)
+        f.close()
+        with open(file_name+'_recipe.yaml', 'r') as f:
+            doc = yaml.load(f)
     return doc
 
 def createEmptyDir(dir_nm, add_init):
@@ -141,7 +151,7 @@ def createEmptyDir(dir_nm, add_init):
         os.makedirs(dir_nm)
     else:
         # delete contents if it already existed
-        print('deleting', dir_nm)
+        print('deleting previously generated directory:', dir_nm)
         shutil.rmtree(dir_nm)
         try:
             os.makedirs(dir_nm)
@@ -534,7 +544,7 @@ def getScenesDict(raw_scenes_dir):
             isScene = False
             print('Not a scene:', scene)
         if isScene:
-            print ("chapter",chapter_id,scene)
+            print ("  processing scene:",chapter_id,scene)
             if chapter_id not in scene_dict:
                 scene_dict[chapter_id] = []
             
@@ -547,9 +557,13 @@ def checkForChapterFiles():
     # create empty file.
     os.chdir(dirs['raw_book'])
     ingredients_list = glob.glob('./_*.txt')
-    #print(ingredients_list)
+    chapter_code_ingredients = []
+    for item in ingredients_list:
+        chapter_code_ingredients.append(item[3:6])
+    #print('existing raw text files:', ingredients_list, chapter_code_ingredients)
     for chapter in recipe['chapters']:
-        if chapter['code'] not in ingredients_list:
+        if chapter['code'] not in chapter_code_ingredients:
+            print('creating new empty chapter:', chapter['code'])
             f = open('_'+chapter['code']+'_0010_.txt','w+')
             f.close()
     os.chdir('..')
