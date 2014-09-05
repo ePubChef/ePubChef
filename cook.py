@@ -20,7 +20,10 @@ ePubChef - generating EPUB files for eBooks
 # generate (cook) eBook from "prepared_ingredients" files of the book
 # and the file recipe.py in the same folder which drives
 # ebook creation.
-# call with: python cook demo  # if you book is called 'demo'
+# call with: python cook.py demo  # if you book is called 'demo'. 
+# Optional second arguments are "debug", or "validate", eg. python cook.py demo validate
+
+# debug populates a /tmp directory, validate runs EPUB check if it has been set up (Java, etc.)
 # Output generated to the directory specified by the 'file_name' from recipe.py.
 
 import pystache
@@ -42,13 +45,12 @@ template_dir = "templates"
 # get the recipe file for the book
 file_name = sys.argv[1]
 
-# check for a debug level run
+# check for a debug level and validate run
+arg2 = None
 try:
-    if sys.argv[2] == 'debug':
-        debug_run = True
-        print('RUNNING in DEBUG mode, see tmp folder')
+    arg2 = sys.argv[2]
 except:
-    debug_run = False
+    pass
 
 dirs = {
     'gen_dir': file_name, # folder for the ePub files
@@ -57,9 +59,10 @@ dirs = {
 	'oebps': file_name+'/OEBPS',
     'raw_images': file_name+'_raw'+'/images',
     'images': file_name+'/OEBPS/images',
+    'default_cover': 'demo_raw/images',
 	'content': file_name+'/OEBPS/content',
 	'css':'css',
-	'tmp':'tmp',
+	'tmp':'debug',
 	}
 
 ''' structure to be generated for book "bk1" is:
@@ -135,18 +138,23 @@ def createEmptyDir(dir_nm, add_init):
     # from it if it already existed.
     # Optionally add an empty __init__.py to the dir.
     if not os.path.exists(dir_nm): # create it if it does not exist
-            os.makedirs(dir_nm)
+        os.makedirs(dir_nm)
     else:
         # delete contents if it already existed
         print('deleting', dir_nm)
         shutil.rmtree(dir_nm)
+        try:
+            os.makedirs(dir_nm)
+        except:
+            pass # already exists
     if add_init:
         f = open(os.path.join(dir_nm, '__init__.py'),'w+')
         f.close()
 	
 def prepareDirs(dirs):
     # delete previous generated folders
-    if debug_run:
+    if arg2 == 'debug':
+        print('RUNNING in DEBUG mode, see folder:', dirs['tmp'])
         f = open(os.path.join(dirs['tmp'], 'tmp_paras.json'), 'w')
         f.close()
         f = open(os.path.join(dirs['tmp'],'tmp_all_paras.json'), 'w')
@@ -158,12 +166,18 @@ def prepareDirs(dirs):
     # main content
     content_dir = dirs['content']
     createEmptyDir(content_dir,False)
-    
-	# images including cover image
-    #image_src = osdirs['raw_book'],'images')
-    #image_dst = os.path.join(dirs['oebps'],'images')
-    shutil.copytree(dirs['raw_images'], dirs['images']) 
-    
+       
+    # images including cover image
+    try:
+        shutil.copytree(dirs['raw_images'], dirs['images']) 
+    except: # create ..._raw and ..._raw/images if they don't exist
+        os.makedirs(dirs['raw_images'])
+        src = 'demo_raw/images/cover_image.jpg'
+        shutil.copyfile(src, dirs['raw_images']+'/cover_image.jpg')
+       
+        # try again now that chapters and cover image has been created
+        shutil.copytree(dirs['raw_images'], dirs['images']) 
+        
 	# move the cover image up one level
     src = os.path.join(dirs['oebps'],'images', 'cover_image.jpg')
     dst = os.path.join(dirs['oebps'], 'cover_image.jpg')
@@ -373,7 +387,7 @@ def generateJson(all_paras):
     # use a template to generate the scene in json format
     prepared_scene = renderer.render_path(os.path.join(template_dir, 'scene.mustache'), all_paras)
      # write the json file, just for humans
-    if debug_run:
+    if arg2 == 'debug':
         f = open(os.path.join(dirs['tmp'],'tmp_all_paras.json'), 'a')
         f.write("\n")
         json.dump(all_paras, f)
@@ -454,7 +468,10 @@ def augmentImages(chapters):
     id = 0
     # TODO make bulletproof, deal with images in paras and alt words
     all_images = os.listdir(dirs['images'])
-    all_images.remove('Thumbs.db') # not an image
+    try:
+        all_images.remove('Thumbs.db') # not an image
+    except:
+        pass
     #print('images:', all_images)
     for image in all_images:
         id+=1
@@ -481,7 +498,7 @@ def addContentFiles(_recipe):
 
 def writeAugmentedRecipe(recipe):
     # this is merely for humans to look at should they wish
-    if debug_run:
+    if arg2 == 'debug':
         pp = pprint.PrettyPrinter(indent=2)
         entire_structured_book = pprint.pformat(recipe)
         f = codecs.open(join(dirs['tmp'], 'augmented_'+file_name+'_recipe.json'), 'w', 'utf-8')
@@ -489,6 +506,8 @@ def writeAugmentedRecipe(recipe):
         f.close()
 
 def getScenesDict(raw_scenes_dir):
+    # TODO change raw_scenes_dir to dirs['raw_book']
+    checkForChapterFiles()
     # get ordered list of scenes per chapter from raw dir 
     # each file must begin with a chapter id followed by an underscore
     # scenes will be put in alphabetical order by file name within the chapter.
@@ -496,7 +515,7 @@ def getScenesDict(raw_scenes_dir):
     # {'_001': ['0010_scene1',],
     #  '_002': ['0010_scene2','0020_scene3'],
     # }  # the scene numbers are only for the alphabetical order and to allow adding
-    #    # new scenes between existing ones wihout needing to rename everything.
+    #    # new scenes between existing ones without needing to rename everything.
     # raw book files must begin with 3 digits identifying the chapter
     os.chdir(raw_scenes_dir)
     ingredients_list = glob.glob('./_*.txt')
@@ -523,6 +542,18 @@ def getScenesDict(raw_scenes_dir):
     #print("\nscene_dict:", scene_dict)
     return scene_dict
 
+def checkForChapterFiles():
+    # ensure each chapter in the recipe has at least one file, if not
+    # create empty file.
+    os.chdir(dirs['raw_book'])
+    ingredients_list = glob.glob('./_*.txt')
+    #print(ingredients_list)
+    for chapter in recipe['chapters']:
+        if chapter['code'] not in ingredients_list:
+            f = open('_'+chapter['code']+'_0010_.txt','w+')
+            f.close()
+    os.chdir('..')
+    
 def manifest_items():
     # TODO: this is a dup of functionality in contentopf.mustache - combine
     items = []
@@ -560,8 +591,10 @@ def checkEpub(checkerPath, epubPath):
         subprocess.call(['java', '-jar', checkerPath, epubPath], shell = True)
 #########################################################################
 if __name__ == "__main__": # main processing
-
+    createEmptyDir(dirs['tmp'], False)
+        
     recipe = importYaml(file_name)
+    recipe['file_name'] = file_name
 
     prepareDirs(dirs)
 
@@ -595,7 +628,13 @@ if __name__ == "__main__": # main processing
 
     for page in recipe['front_matter'] + recipe['back_matter']:
         if page['name'] not in ['cover','title_page','table_of_contents']:
-            in_file = open(join(dirs['raw_book'], page['name']+'.txt'), 'r')
+            try:
+                in_file = open(join(dirs['raw_book'], page['name']+'.txt'), 'r')
+            except:  # create empty file
+                f = open(os.path.join(dirs['raw_book'], page['name']+'.txt'),'w+')
+                f.close()
+                # try again (with empty file)
+                in_file = open(join(dirs['raw_book'], page['name']+'.txt'), 'r')
             formatted_txt = formatScene(in_file, 0, False)
             recipe[page['name']] = formatted_txt
         genPage(recipe, page['name'])
@@ -613,9 +652,10 @@ if __name__ == "__main__": # main processing
     
     # Optionally validate the epub
     # NOTE: epubcheck is not part of ePubChef and we won't be offended if you don't run 
-    # it from here. If you do, uncomment the next line, install the Java JDK on your
-    # machine, set your PATH to include java, and put the epubcheck jar file in the folder 
-    # above this one.
-    #checkEpub('../epubcheck/epubcheck-3.0.1.jar', file_name + '.epub')
+    # it from here. 
+    # To validate, install the Java JDK on your machine, set your PATH to include java, and put the epubcheck jar file in the folder above this one.
+    # execute cook.py with an additional argument, "python cook.py validate"
+    if arg2 == 'validate':
+        checkEpub('../epubcheck/epubcheck-3.0.1.jar', file_name + '.epub')
     
     print("All done\n")

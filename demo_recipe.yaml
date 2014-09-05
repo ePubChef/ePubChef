@@ -1,8 +1,7 @@
 
-file_name: demo 
 title: A Demo eBook
 author: John Cobo
-coverdesign: Erin Cobo
+coverdesign: John Cobo
 publish_date: 2014-01-01
 uuid: urn:uuid:57b681b5-137b-4791-b5c5-99fdcfaa41ee
 epubchef_voucher: 123456
@@ -13,12 +12,7 @@ subjects:
       - name: COMPUTERS
       - name: WRITING
       - name: PUBLISHING
-#ePub_format: kindle | smashwords
-kindle: True  # switches to kindle stylesheet, removes cover
-smashwords: False
-#images: # front/back matter images
-#      - image: epubchef_logo
-#        id: img1
+kindle: False  # switches to kindle stylesheet, removes cover
 
 front_matter: # cover, title_page, and table_of_contents names must not be changed
      - name: cover
