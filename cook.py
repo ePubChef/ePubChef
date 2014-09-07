@@ -111,9 +111,6 @@ dirs = {
 * = author created book contents
 '''
 
-''' temporary files created:
-'''
-
 '''
 textblocks and paras are created by templates/scene.mustache
 A textblock is a Python dictionary containing a list of word dictionaries.
@@ -132,7 +129,7 @@ def importYaml(file_name):
     try:
         print('Opening recipe for:', file_name)
         with open(file_name+'_recipe.yaml', 'r') as f:
-            doc = yaml.load(f)
+            _recipe = yaml.load(f)
     except: # create a new recipe from a template
         print('Creating new recipe for:', file_name)
         f = open(file_name+'_recipe.yaml', 'w')
@@ -140,8 +137,11 @@ def importYaml(file_name):
         f.write(out)
         f.close()
         with open(file_name+'_recipe.yaml', 'r') as f:
-            doc = yaml.load(f)
-    return doc
+            _recipe = yaml.load(f)
+            
+    # augment recipe by adding the file name to it
+    _recipe['file_name'] = file_name
+    return _recipe
 
 def createEmptyDir(dir_nm, add_init):
     # create a directory if it does not exist, delete files
@@ -259,7 +259,8 @@ def formatScene(in_file, scene_count, auto_dropcaps):
 	
 	# drop capitals in the first character
         if auto_dropcaps and scene_count == 0 and para_count == 0: 
-	    # a drop capital
+            print('dropping:....')
+	        # a drop capital
             drop_letter, line, text_class = dropCap(line)
             drop_text_block = block(para, para_class, text_class, drop_letter)
             textblock.append(drop_text_block)
@@ -308,41 +309,44 @@ def genTocNcx(book):
     f.write(out)
     f.close()
 
-def genChapters(chapters, front_matter_count, scenes_dict):
+def genChapters(_recipe, front_matter_count, scenes_dict):
     chapter_nbr = 0
-    for chapter in chapters:
+    for chapter in _recipe['chapters']:
         chapter_nbr +=1
         chapter['nbr'] = str(chapter_nbr)
         chapter['id'] = 'h2-'+str(chapter_nbr)
         chapter['playorder'] = str(front_matter_count + chapter_nbr)
 
         scene_nbr = 0
-	# TODO: if no raw txt file exists for the chapter, create one (_029_0010_.txt)
-        genChapter(chapter, scenes_dict[chapter['code']])
-    return chapter_nbr
+        chapter = genChapter(chapter, scenes_dict[chapter['code']])
+    
+    print("chapter count: ", chapter_nbr)
+    return _recipe, chapter_nbr
 
-def genChapter(chapter, scenes):
-    chapter['kindle'] = recipe['kindle'] # add the kindle True/False to each 
+def genChapter(_chapter, scenes):
+    _chapter['kindle'] = recipe['kindle'] # add the kindle True/False to each 
     # generate the book using templates and the recipe
-    chapter['scenes'] = []
+    _chapter['scenes'] = []
     scene_count = 0 # counts the position of the scene in this chapter
                       # for dividers and drop_caps
     for scene_name in scenes:
         #add divider between scenes
         if scene_count > 0:
-            chapter['scenes'].append(dict(divider = True))
+            _chapter['scenes'].append(dict(divider = True))
 	# turn the raw text into structured text
         prepared_scene = prepareScene(scene_name, scene_count)
-        chapter['scenes'].append(prepared_scene)
+        _chapter['scenes'].append(prepared_scene)
         scene_count+=1
     # write the chapter
-    f = codecs.open(os.path.join(dirs['content'], 'chap'+chapter['nbr']+'.html'), 'w', 'utf-8')
-    #print('CHAPTER:', chapter)
-    out = renderer.render_path(os.path.join(dirs['template_dir'], 'chapter.mustache'), chapter)
+    f = codecs.open(os.path.join(dirs['content'], 'chap'+_chapter['nbr']+'.html'), 'w', 'utf-8')
+    #print('CHAPTER:', _chapter)
+    out = renderer.render_path(os.path.join(dirs['template_dir'], 'chapter.mustache'), _chapter)
     #remove blank lines
     out =  "".join([s for s in out.strip().splitlines(True) if s.strip()])
     f.write(out)
     f.close()
+    
+    return _chapter
 
 def cleanText(line):
     line = line.replace(' "'," &ldquo;") # left double quote
@@ -418,15 +422,15 @@ def prepareScene(scene_name, scene_count):
     #print('\prepared_scene: ', prepared_scene)
     return prepared_scene
 
-def augmentFrontMatter(front_matter, kindle):
+def augmentFrontMatter(_recipe):
     # add playorder and id values to the recipe
-    front_matter_count = len(recipe['front_matter'])
-    if kindle:
+    front_matter_count = len(_recipe['front_matter'])
+    if _recipe['kindle']:
         front_matter_count -= 1 # don't do a coverpage if kindle
 
     playorder = 0
-    for item in front_matter:
-        if kindle and item['name'] == 'cover':
+    for item in _recipe['front_matter']:
+        if _recipe['kindle'] and item['name'] == 'cover':
             pass # don't include cover on kindle
         else:
             playorder +=1
@@ -443,7 +447,8 @@ def augmentFrontMatter(front_matter, kindle):
             item['toc_entry'] = prettify(item['name'])
         item['tocncx_entry'] = prettify(item['name'])
 	
-    return front_matter_count
+    print("front-matter count:", front_matter_count)
+    return _recipe, front_matter_count
 
 def prettify(messy_string):
     # split string into words (using "_") and capilatize each
@@ -457,8 +462,8 @@ def prettify(messy_string):
     s = s[:-1] # remove final space
     return s
 
-def augmentBackMatter(back_matter, playorder):
-    for item in back_matter:
+def augmentBackMatter(_recipe, playorder):
+    for item in _recipe['back_matter']:
         playorder +=1
         item['playorder'] = playorder
         item['id'] = "ncx_"+item['name']
@@ -470,11 +475,13 @@ def augmentBackMatter(back_matter, playorder):
             item['dir'] = '../'
         item['toc_entry'] = prettify(item['name'])
         item['tocncx_entry'] = prettify(item['name'])
+    
+    return _recipe
 	
-def augmentImages(chapters):
+def augmentImages(_recipe):
     # create an images section in 'recipe'
-    recipe['images'] = []
-    images = recipe['images']    
+    _recipe['images'] = []
+    images = _recipe['images']    
     id = 0
     # TODO make bulletproof, deal with images in paras and alt words
     all_images = os.listdir(dirs['images'])
@@ -487,6 +494,8 @@ def augmentImages(chapters):
         id+=1
         image_name = image[:-4] # trim suffix and dot
         images.append({'image': image_name, 'id': 'img'+str(id)})
+        
+    return _recipe
 
 def addContentFiles(_recipe):
 # for content.opf spine section
@@ -507,7 +516,7 @@ def addContentFiles(_recipe):
     return _recipe
 
 def writeAugmentedRecipe(recipe):
-    # this is merely for humans to look at should they wish
+    # write recipe to a file merely for humans to look at should they wish
     if arg2 == 'debug':
         pp = pprint.PrettyPrinter(indent=2)
         entire_structured_book = pprint.pformat(recipe)
@@ -605,34 +614,29 @@ def checkEpub(checkerPath, epubPath):
         subprocess.call(['java', '-jar', checkerPath, epubPath], shell = True)
 #########################################################################
 if __name__ == "__main__": # main processing
+
     createEmptyDir(dirs['tmp'], False)
         
     recipe = importYaml(file_name)
-    recipe['file_name'] = file_name
-
+    
     prepareDirs(dirs)
-
-    # TODO: ensure scenes are always in the correct order - from glob
    
     # add data to the recipe front matter
-    front_matter_count = augmentFrontMatter(
-	recipe['front_matter'], recipe['kindle'])
-    print("front-matter count:", front_matter_count)
+    recipe, front_matter_count = augmentFrontMatter(recipe)
 
     # prepare a dictionary of scenes 
     scenes_dict = getScenesDict(dirs['raw_book'])
 
     # generate chapters 
-    chapter_count = genChapters(recipe['chapters'], front_matter_count, scenes_dict)
-    print("chapter count: ", chapter_count)
+    recipe, chapter_count = genChapters(recipe, front_matter_count, scenes_dict)
+    
  
     recipe = addContentFiles(recipe)
     
-    # add data to the recipe backmatter
-    augmentBackMatter(recipe['back_matter'],
-	front_matter_count + chapter_count)
+    # add data to the recipe back-matter
+    recipe = augmentBackMatter(recipe, front_matter_count + chapter_count)
 
-    augmentImages(recipe['chapters'])
+    recipe = augmentImages(recipe)
     
     # for each front/back matter page the recipe name refers to:
     # 1. text from the raw folder,
