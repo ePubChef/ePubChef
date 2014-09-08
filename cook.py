@@ -259,7 +259,6 @@ def formatScene(in_file, scene_count, auto_dropcaps):
 	
 	# drop capitals in the first character
         if auto_dropcaps and scene_count == 0 and para_count == 0: 
-            print('dropping:....')
 	        # a drop capital
             drop_letter, line, text_class = dropCap(line)
             drop_text_block = block(para, para_class, text_class, drop_letter)
