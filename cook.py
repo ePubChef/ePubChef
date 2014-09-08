@@ -297,17 +297,17 @@ def genPage(recipe, page_name):
     f.write(out)
     f.close()
 
-def genContentOpf(book):
+def genContentOpf(_recipe):
     # generate content.opf file 
     f = codecs.open(os.path.join(dirs['oebps'],'content.opf'), 'w', 'utf-8')
-    out = renderer.render_path(os.path.join(dirs['template_dir'], 'contentopf.mustache'), book)
+    out = renderer.render_path(os.path.join(dirs['template_dir'], 'contentopf.mustache'), _recipe)
     f.write(out)
     f.close()
 
-def genTocNcx(book):
+def genTocNcx(_recipe):
     # generate toc.ncx
     f = codecs.open(os.path.join(dirs['oebps'],'toc.ncx'), 'w', 'utf-8')
-    out = renderer.render_path(os.path.join(dirs['template_dir'], 'tocncx.mustache'), book)
+    out = renderer.render_path(os.path.join(dirs['template_dir'], 'tocncx.mustache'), _recipe)
     f.write(out)
     f.close()
 
@@ -539,7 +539,7 @@ def getScenesDict(raw_scenes_dir):
     #    # new scenes between existing ones without needing to rename everything.
     # raw book files must begin with 3 digits identifying the chapter
     os.chdir(raw_scenes_dir)
-    ingredients_list = glob.glob('./_*.txt')
+    ingredients_list = sorted(glob.glob('./_*.txt'))
     #print(ingredients_list)
     os.chdir('..')
     # put list into a dict.
