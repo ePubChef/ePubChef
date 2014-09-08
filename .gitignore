@@ -56,4 +56,5 @@ docs/_build/
 headsandtails/
 headsandtails_raw/
 headsandtails*
+epubs/headsandtails*
 
