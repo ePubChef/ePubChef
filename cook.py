@@ -52,17 +52,19 @@ try:
 except:
     pass
 
+gen_dir = file_name+'_generated'
 dirs = {
-    'gen_dir': file_name, # folder for the ePub files
+    'gen_dir': gen_dir, # folder for the ePub files
     'template_dir':'templates',         # templates for ePub files
 	'raw_book': file_name+'_raw', # words and images of the book
-	'oebps': file_name+'/OEBPS',
+	'oebps': gen_dir+'/OEBPS',
     'raw_images': file_name+'_raw'+'/images',
-    'images': file_name+'/OEBPS/images',
+    'images': gen_dir+'/OEBPS/images',
     'default_cover': 'demo_raw/images',
-	'content': file_name+'/OEBPS/content',
+	'content': gen_dir+'/OEBPS/content',
 	'css':'css',
 	'tmp':'debug',
+    'epub_loc': 'epubs',
 	}
 
 ''' structure to be generated for book "bk1" is:
@@ -127,8 +129,9 @@ renderer = pystache.Renderer()
 
 def importYaml(file_name):
     try:
-        print('Opening recipe for:', file_name)
-        with open(file_name+'_recipe.yaml', 'r') as f:
+        recipe_loc = os.path.join(file_name+'_raw', file_name+'_recipe.yaml')
+        print('Opening recipe for:', recipe_loc)
+        with open(recipe_loc, 'r') as f:
             _recipe = yaml.load(f)
     except: # create a new recipe from a template
         print('Creating new recipe for:', file_name)
@@ -259,7 +262,6 @@ def formatScene(in_file, scene_count, auto_dropcaps):
 	
 	# drop capitals in the first character
         if auto_dropcaps and scene_count == 0 and para_count == 0: 
-            print('dropping:....')
 	        # a drop capital
             drop_letter, line, text_class = dropCap(line)
             drop_text_block = block(para, para_class, text_class, drop_letter)
@@ -595,6 +597,7 @@ def manifest_items():
     return items
     
 def createArchive(rootDir, outputPath):
+    print("zipping up to .epub")
     fout = zipfile.ZipFile(outputPath, 'w')
     cwd = os.getcwd()
     os.chdir(rootDir)
@@ -665,8 +668,8 @@ if __name__ == "__main__": # main processing
     print("ePubChef is Done")
     
     # zip results into an epub file 
-    print("zipping up to .epub")
-    createArchive(file_name, file_name + '.epub')
+    epub_file = join(dirs['epub_loc'], file_name + '.epub')
+    createArchive(dirs['gen_dir'], epub_file)
     
     # Optionally validate the epub
     # NOTE: epubcheck is not part of ePubChef and we won't be offended if you don't run 
@@ -674,6 +677,7 @@ if __name__ == "__main__": # main processing
     # To validate, install the Java JDK on your machine, set your PATH to include java, and put the epubcheck jar file in the folder above this one.
     # execute cook.py with an additional argument, "python cook.py validate"
     if arg2 == 'validate':
-        checkEpub('../epubcheck/epubcheck-3.0.1.jar', file_name + '.epub')
+        epub_file = join(dirs['epub_loc'], file_name + '.epub')
+        checkEpub('../epubcheck/epubcheck-3.0.1.jar', epub_file )
     
     print("All done\n")

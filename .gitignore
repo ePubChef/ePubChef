@@ -52,3 +52,9 @@ coverage.xml
 # Sphinx documentation
 docs/_build/
 
+# JC's own books
+headsandtails/
+headsandtails_raw/
+headsandtails*
+epubs/headsandtails*
+
