@@ -15,13 +15,18 @@
 <h2>Table of Contents</h2>
 <!-- TODO: don't link to 'cover' in kindle version -->
 {{#front_matter}}{{#toc_entry}}
-<p class="toctexttop"><a href="{{dir}}{{name}}.html">{{toc_entry}}</a></p>
+<p class="toc_matter"><a href="{{dir}}{{name}}.html">{{toc_entry}}</a></p>
 {{/toc_entry}}{{/front_matter}}
-{{#chapters}}
-<p class="toctexttop"><a href="chap{{nbr}}.html#{{id}}">{{name}}</a></p>
-{{/chapters}}
+
+{{#parts}}
+  <p class="toc_part"><a href="tobecompleted">{{name}}</a></p>
+  {{#chp}}
+    <p class="toc_chapter"><a href="chap{{nbr}}.html#{{id}}">{{name}}</a></p>
+  {{/chp}}
+{{/parts}}
+
 {{#back_matter}}
-<p class="toctexttop"><a href="{{dir}}{{name}}.html">{{toc_entry}}</a></p>
+<p class="toc_matter"><a href="{{dir}}{{name}}.html">{{toc_entry}}</a></p>
 {{/back_matter}}
 </body>
 </html>

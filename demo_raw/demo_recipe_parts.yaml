@@ -20,41 +20,36 @@ front_matter: # cover, title_page, and table_of_contents names must not be chang
      - name: table_of_contents
      - name: dedication
 
-parts: # starter (optional)
-     - code: '01'
-       name: Part One
-       chapter_codes: ['001','002']
-     - code: '02'
-       name: Part Two
-       chapter_codes: ['003']
+parts: # (optional)
+     - name: Part One
+     - name: Part Two
+     - name: Part Three
        
-parts: # augmented
-     - code: '01'
-       name: Part One
-       chapter_codes: ['001','002']
-       chapters:
+chapters:
+  -  code: '001'
+     name: A walk in the Park
+     intro: This will be a great chapter.
+     photo: jazz_frog.jpg
+     starts_part: Part One # only if using parts
+  -  code: '002'
+     name: When Butter Hits Bread
+     intro: Yet another fabulous chapter.
+     photo: relaxed_frog.jpg
+  -  code: '003'
+     name: As Butter Melts
+     intro: This is getting silly.
+     photo: relaxed_frog.jpg
+     starts_part: Part Two
+
          
-     - code: '02'
-       name: Part Two
-       chapter_codes: ['003']
-# too complicated
-parts:
-    part_name: Part One
-    chapters:
-      -  code: '001'
-         name: A walk in the Park
-         intro: This will be a great chapter.
-         photo: jazz_frog.jpg
-      -  code: '002'
-         name: When Butter Hits Bread
-         intro: Yet another fabulous chapter.
-         photo: relaxed_frog.jpg
-    part_name: Part Two
-    chapters:
-      -  code: '003'
-         name: As Butter Melts
-         intro: This is getting silly.
-         photo: relaxed_frog.jpg
+################################       
+parts: # augmented
+     - name: Part One
+       chapter['001']
+       chapter['002']
+     - name: Part Two
+       chapter['003']
+##############################
 
 back_matter: 
      - name: description

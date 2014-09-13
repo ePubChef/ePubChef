@@ -21,14 +21,12 @@
       <content src="{{src}}" />
    </navPoint>
    {{/front_matter}}
-   {{#parts}}
    {{#chapters}}
    <navPoint id="ncx_{{id}}" playOrder="{{playorder}}">
       <navLabel><text>Chapter {{nbr}} - {{name}}</text></navLabel>
       <content src="content/chap{{nbr}}.html#{{id}}" />
    </navPoint>
    {{/chapters}}
-   {{/parts}}
    {{#back_matter}}
    <navPoint id="{{id}}" playOrder="{{playorder}}">
       <navLabel><text>{{tocncx_entry}}</text></navLabel>

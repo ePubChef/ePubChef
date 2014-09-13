@@ -241,3 +241,25 @@ margin: 1.0em 0 0 0;
 text-align: center;
 page-break-before: always;
 }
+/* table of contents */
+p.toc_part
+{
+text-indent: 1.25em;
+margin: 0;
+text-align: left;
+font-size: 110%
+}
+p.toc_chapter
+{
+text-indent: 2em;
+margin: 0;
+text-align: left;
+font-size: 100%
+}
+p.toc_matter
+{
+text-indent: 1.25em;
+margin: 0;
+text-align: left;
+font-size: 100%
+}

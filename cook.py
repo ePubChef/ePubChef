@@ -23,7 +23,7 @@ ePubChef - generating EPUB files for eBooks
 # call with: python cook.py demo  # if you book is called 'demo'. 
 # Optional second arguments are "debug", or "validate", eg. python cook.py demo validate
 
-# debug populates a /tmp directory, validate runs EPUB check if it has been set up (Java, etc.)
+# debug populates a /debug directory, validate runs EPUB check if it has been set up (Java, etc.)
 # Output generated to the directory specified by the 'file_name' from recipe.py.
 
 import pystache
@@ -168,6 +168,7 @@ def prepareDirs(dirs):
     # delete previous generated folders
     if arg2 == 'debug':
         print('RUNNING in DEBUG mode, see folder:', dirs['tmp'])
+        #os.makedirs(dirs['tmp'])
         f = open(os.path.join(dirs['tmp'], 'tmp_paras.json'), 'w')
         f.close()
         f = open(os.path.join(dirs['tmp'],'tmp_all_paras.json'), 'w')
@@ -284,7 +285,7 @@ def formatScene(in_file, scene_count, auto_dropcaps):
     _scene = dict(paras = paras) 
     return _scene
 
-def genPage(recipe, page_name):
+def genPage(_recipe, page_name):
     # generate a page (non-chapter page)
     if page_name in ['table_of_contents','title_page']:
         out_dir = 'content'
@@ -293,7 +294,7 @@ def genPage(recipe, page_name):
 
     f = codecs.open(os.path.join(dirs[out_dir], page_name+".html"), 'w', 'utf-8')
     out = renderer.render_path(os.path.join(dirs['template_dir'], 
-	    page_name+'.mustache'), recipe)
+	    page_name+'.mustache'), _recipe)
     f.write(out)
     f.close()
 
@@ -463,7 +464,49 @@ def prettify(messy_string):
             s = s + word+ ' '
     s = s[:-1] # remove final space
     return s
-
+def getChapterMetadata(c):
+    chapter_metadata = {'id':c['id'], 
+                        'playorder': c['playorder'],
+                        'name': c['name'], 
+                        'nbr':c['nbr']}
+    return chapter_metadata
+    
+def augmentParts(_recipe):
+    # add chapters to the parts section of the recipe, create parts if not existing.
+    if 'parts' in _recipe:
+        print('has parts:')
+        
+        for part in _recipe['parts']:
+            print('PART:', part)
+            part['chp'] = []
+            include_chapter_in_part = False
+            for c in _recipe['chapters']:
+                print('  CHAPTER:', c['code'])
+                if 'starts_part' in c:  # first chapter in a part
+                    if c['starts_part'] == part['name']: 
+                        # start of current part
+                        include_chapter_in_part = True
+                    else: # start of next part
+                        include_chapter_in_part = False
+                else: # this chapter is not the start of a new part
+                    #include_chapter_in_part = True
+                    pass
+                if include_chapter_in_part:
+                    print('  score:', part['name'], c['code'])
+                    chapter_metadata = getChapterMetadata(c)
+                    part['chp'].append(chapter_metadata)
+                    
+    else: # user entered no parts, so make 1 default part.
+        parts_dict = {'name': 'Chapters:', 'chp': []}
+        for c in _recipe['chapters']:
+            chapter_metadata = getChapterMetadata(c)
+            parts_dict['chp'].append(chapter_metadata)
+        _recipe['parts'] = [parts_dict]
+        
+    
+    print ('parts:', _recipe['parts'])
+    return _recipe
+    
 def augmentBackMatter(_recipe, playorder):
     for item in _recipe['back_matter']:
         playorder +=1
@@ -640,6 +683,8 @@ if __name__ == "__main__": # main processing
     recipe = augmentBackMatter(recipe, front_matter_count + chapter_count)
 
     recipe = augmentImages(recipe)
+
+    recipe = augmentParts(recipe)
     
     # for each front/back matter page the recipe name refers to:
     # 1. text from the raw folder,
@@ -660,6 +705,7 @@ if __name__ == "__main__": # main processing
             recipe[page['name']] = formatted_txt
         genPage(recipe, page['name'])
 
+    
     genContentOpf(recipe) # generate the content.opf file
     genTocNcx(recipe) # generate the ncx table of contents
 
