@@ -25,16 +25,18 @@
    
    <!-- Parts and Chapters -->
    {{#parts}}
+     {{#playorder}}
      <navPoint id="ncx_{{playorder}}" playOrder="{{playorder}}">
      <navLabel><text>{{part_name}}</text></navLabel>
      <content src="content/chap{{starting_chapter}}.html#part" />
+     {{/playorder}}
      {{#chp}}
        <navPoint id="ncx_{{id}}" playOrder="{{playorder}}">
          <navLabel><text>Chapter {{nbr}} - {{name}}</text></navLabel>
          <content src="content/chap{{nbr}}.html#{{id}}" />
        </navPoint>
      {{/chp}}
-     </navPoint>
+     {{#playorder}}</navPoint>{{/playorder}}
    {{/parts}}
    
    <!-- back matter -->

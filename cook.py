@@ -329,9 +329,11 @@ def genChapters(_recipe, front_matter_count, scenes_dict):
 
         scene_nbr = 0
         chapter = genChapter(chapter, scenes_dict[chapter['code']])
+    if part_nbr > 1: # don't increment if there is only the default part.
+        next_playorder = next_playorder +1
     
     print("chapter count: ", chapter_nbr)
-    return _recipe, next_playorder + 1
+    return _recipe, next_playorder
 
 def genChapter(_chapter, scenes):
     _chapter['kindle'] = recipe['kindle'] # add the kindle True/False to each 
