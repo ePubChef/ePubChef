@@ -15,6 +15,7 @@
   </docAuthor>
   <navMap>
    <!-- TODO: Remove for Kindle and redo playOrder -->
+   <!-- front matter -->
    <navPoint id="ncx_cover" playOrder="1">
       <navLabel> <text>Cover</text> </navLabel>
       <content src="cover.html" />
@@ -31,23 +32,35 @@
       <navLabel> <text>Dedication</text> </navLabel>
       <content src="dedication.html" />
    </navPoint>
-   <navPoint id="ncx_h2-1" playOrder="5">
-      <navLabel><text>Chapter 1 - A walk in the Park</text></navLabel>
-      <content src="content/chap1.html#h2-1" />
-   </navPoint>
-   <navPoint id="ncx_h2-2" playOrder="6">
-      <navLabel><text>Chapter 2 - When Butter Hits Bread</text></navLabel>
-      <content src="content/chap2.html#h2-2" />
-   </navPoint>
-   <navPoint id="ncx_h2-3" playOrder="7">
-      <navLabel><text>Chapter 3 - As Butter Melts</text></navLabel>
-      <content src="content/chap3.html#h2-3" />
-   </navPoint>
-   <navPoint id="ncx_description" playOrder="8">
+   
+   <!-- Parts and Chapters -->
+     <navPoint id="ncx_5" playOrder="5">
+     <navLabel><text>Part One</text></navLabel>
+     <content src="content/chap1.html#part" />
+       <navPoint id="ncx_h2-1" playOrder="6">
+         <navLabel><text>Chapter 1 - A walk in the Park</text></navLabel>
+         <content src="content/chap1.html#h2-1" />
+       </navPoint>
+       <navPoint id="ncx_h2-2" playOrder="7">
+         <navLabel><text>Chapter 2 - When Butter Hits Bread</text></navLabel>
+         <content src="content/chap2.html#h2-2" />
+       </navPoint>
+     </navPoint>
+     <navPoint id="ncx_8" playOrder="8">
+     <navLabel><text>Part Two</text></navLabel>
+     <content src="content/chap3.html#part" />
+       <navPoint id="ncx_h2-3" playOrder="9">
+         <navLabel><text>Chapter 3 - As Butter Melts</text></navLabel>
+         <content src="content/chap3.html#h2-3" />
+       </navPoint>
+     </navPoint>
+   
+   <!-- back matter -->
+   <navPoint id="ncx_description" playOrder="10">
       <navLabel><text>Description</text></navLabel>
       <content src="description.html" />
     </navPoint>
-   <navPoint id="ncx_about_author" playOrder="9">
+   <navPoint id="ncx_about_author" playOrder="11">
       <navLabel><text>About Author</text></navLabel>
       <content src="about_author.html" />
     </navPoint>

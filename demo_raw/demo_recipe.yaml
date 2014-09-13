@@ -20,11 +20,16 @@ front_matter: # cover, title_page, and table_of_contents names must not be chang
      - name: table_of_contents
      - name: dedication
 
+parts:
+     - part_name: Part One
+     - part_name: Part Two
+
 chapters:
      -  code: '001'
         name: A walk in the Park
         intro: This will be a great chapter.
         photo: jazz_frog.jpg
+        starts_part: Part One
      -  code: '002'
         name: When Butter Hits Bread
         intro: Yet another fabulous chapter.
@@ -33,6 +38,7 @@ chapters:
         name: As Butter Melts
         intro: This is getting silly.
         photo: relaxed_frog.jpg
+        starts_part: Part Two
 
 back_matter: 
      - name: description

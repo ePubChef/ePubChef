@@ -23,7 +23,7 @@ ePubChef - generating EPUB files for eBooks
 # call with: python cook.py demo  # if you book is called 'demo'. 
 # Optional second arguments are "debug", or "validate", eg. python cook.py demo validate
 
-# debug populates a /tmp directory, validate runs EPUB check if it has been set up (Java, etc.)
+# debug populates a /debug directory, validate runs EPUB check if it has been set up (Java, etc.)
 # Output generated to the directory specified by the 'file_name' from recipe.py.
 
 import pystache
@@ -168,6 +168,7 @@ def prepareDirs(dirs):
     # delete previous generated folders
     if arg2 == 'debug':
         print('RUNNING in DEBUG mode, see folder:', dirs['tmp'])
+        #os.makedirs(dirs['tmp'])
         f = open(os.path.join(dirs['tmp'], 'tmp_paras.json'), 'w')
         f.close()
         f = open(os.path.join(dirs['tmp'],'tmp_all_paras.json'), 'w')
@@ -284,7 +285,7 @@ def formatScene(in_file, scene_count, auto_dropcaps):
     _scene = dict(paras = paras) 
     return _scene
 
-def genPage(recipe, page_name):
+def genPage(_recipe, page_name):
     # generate a page (non-chapter page)
     if page_name in ['table_of_contents','title_page']:
         out_dir = 'content'
@@ -293,37 +294,46 @@ def genPage(recipe, page_name):
 
     f = codecs.open(os.path.join(dirs[out_dir], page_name+".html"), 'w', 'utf-8')
     out = renderer.render_path(os.path.join(dirs['template_dir'], 
-	    page_name+'.mustache'), recipe)
+	    page_name+'.mustache'), _recipe)
     f.write(out)
     f.close()
 
-def genContentOpf(book):
+def genContentOpf(_recipe):
     # generate content.opf file 
     f = codecs.open(os.path.join(dirs['oebps'],'content.opf'), 'w', 'utf-8')
-    out = renderer.render_path(os.path.join(dirs['template_dir'], 'contentopf.mustache'), book)
+    out = renderer.render_path(os.path.join(dirs['template_dir'], 'contentopf.mustache'), _recipe)
     f.write(out)
     f.close()
 
-def genTocNcx(book):
+def genTocNcx(_recipe):
     # generate toc.ncx
     f = codecs.open(os.path.join(dirs['oebps'],'toc.ncx'), 'w', 'utf-8')
-    out = renderer.render_path(os.path.join(dirs['template_dir'], 'tocncx.mustache'), book)
+    out = renderer.render_path(os.path.join(dirs['template_dir'], 'tocncx.mustache'), _recipe)
     f.write(out)
     f.close()
 
 def genChapters(_recipe, front_matter_count, scenes_dict):
     chapter_nbr = 0
+    part_nbr = 0
     for chapter in _recipe['chapters']:
         chapter_nbr +=1
         chapter['nbr'] = str(chapter_nbr)
         chapter['id'] = 'h2-'+str(chapter_nbr)
-        chapter['playorder'] = str(front_matter_count + chapter_nbr)
+        next_playorder = front_matter_count + chapter_nbr + part_nbr
+        if 'starts_part' in chapter:
+            _recipe['parts'][part_nbr]['playorder'] = next_playorder
+            chapter['playorder'] = str(next_playorder + 1)
+            part_nbr+=1
+        else:
+            chapter['playorder'] = str(next_playorder)
 
         scene_nbr = 0
         chapter = genChapter(chapter, scenes_dict[chapter['code']])
+    if part_nbr > 1: # don't increment if there is only the default part.
+        next_playorder = next_playorder +1
     
     print("chapter count: ", chapter_nbr)
-    return _recipe, chapter_nbr
+    return _recipe, next_playorder
 
 def genChapter(_chapter, scenes):
     _chapter['kindle'] = recipe['kindle'] # add the kindle True/False to each 
@@ -463,7 +473,53 @@ def prettify(messy_string):
             s = s + word+ ' '
     s = s[:-1] # remove final space
     return s
-
+def getChapterMetadata(c):
+    chapter_metadata = {'id':c['id'], 
+                        'playorder': c['playorder'],
+                        'name': c['name'], 
+                        'nbr':c['nbr']}
+    return chapter_metadata
+    
+def augmentParts(_recipe):
+    # add chapters to the parts section of the recipe, create parts if not existing.
+    if 'parts' in _recipe:
+        #print('has parts:')
+        
+        for part in _recipe['parts']:
+            print('PART:', part)
+            part['chp'] = []
+            include_chapter_in_part = False
+            for c in _recipe['chapters']:
+                print('  CHAPTER:', c['code'])
+                if 'starts_part' in c:  # first chapter in a part
+                    if c['starts_part'] == part['part_name']: 
+                        # start of current part
+                        starting_chapter = c['nbr']
+                        include_chapter_in_part = True
+                    else: # start of next part
+                        include_chapter_in_part = False
+                else: # this chapter is not the start of a new part
+                    #include_chapter_in_part = True
+                    pass
+                if include_chapter_in_part:
+                    print('  score:', part['part_name'], c['code'])
+                    chapter_metadata = getChapterMetadata(c)
+                    part['chp'].append(chapter_metadata)
+            part['starting_chapter'] = starting_chapter
+            part['chap_toc_style'] = 'toc_chapter_with_parts'          
+    else: # user entered no parts, so make 1 default part.
+        parts_dict = {'name': 'Chapters:', 'chp': [], 
+                      'starting_chapter': '1',
+                      'chap_toc_style': 'toc_chapter_no_parts'}
+        for c in _recipe['chapters']:
+            chapter_metadata = getChapterMetadata(c)
+            parts_dict['chp'].append(chapter_metadata)
+        _recipe['parts'] = [parts_dict]
+     
+    
+    #print ('parts:', _recipe['parts'])
+    return _recipe
+    
 def augmentBackMatter(_recipe, playorder):
     for item in _recipe['back_matter']:
         playorder +=1
@@ -539,7 +595,7 @@ def getScenesDict(raw_scenes_dir):
     #    # new scenes between existing ones without needing to rename everything.
     # raw book files must begin with 3 digits identifying the chapter
     os.chdir(raw_scenes_dir)
-    ingredients_list = glob.glob('./_*.txt')
+    ingredients_list = sorted(glob.glob('./_*.txt'))
     #print(ingredients_list)
     os.chdir('..')
     # put list into a dict.
@@ -631,15 +687,16 @@ if __name__ == "__main__": # main processing
     scenes_dict = getScenesDict(dirs['raw_book'])
 
     # generate chapters 
-    recipe, chapter_count = genChapters(recipe, front_matter_count, scenes_dict)
+    recipe, next_playorder = genChapters(recipe, front_matter_count, scenes_dict)
     
- 
     recipe = addContentFiles(recipe)
     
     # add data to the recipe back-matter
-    recipe = augmentBackMatter(recipe, front_matter_count + chapter_count)
+    recipe = augmentBackMatter(recipe, next_playorder)
 
     recipe = augmentImages(recipe)
+
+    recipe = augmentParts(recipe)
     
     # for each front/back matter page the recipe name refers to:
     # 1. text from the raw folder,
@@ -660,6 +717,7 @@ if __name__ == "__main__": # main processing
             recipe[page['name']] = formatted_txt
         genPage(recipe, page['name'])
 
+    
     genContentOpf(recipe) # generate the content.opf file
     genTocNcx(recipe) # generate the ncx table of contents
 
