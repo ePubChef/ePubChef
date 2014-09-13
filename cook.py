@@ -474,7 +474,7 @@ def getChapterMetadata(c):
 def augmentParts(_recipe):
     # add chapters to the parts section of the recipe, create parts if not existing.
     if 'parts' in _recipe:
-        print('has parts:')
+        #print('has parts:')
         
         for part in _recipe['parts']:
             print('PART:', part)
@@ -483,8 +483,9 @@ def augmentParts(_recipe):
             for c in _recipe['chapters']:
                 print('  CHAPTER:', c['code'])
                 if 'starts_part' in c:  # first chapter in a part
-                    if c['starts_part'] == part['name']: 
+                    if c['starts_part'] == part['part_name']: 
                         # start of current part
+                        starting_chapter = c['nbr']
                         include_chapter_in_part = True
                     else: # start of next part
                         include_chapter_in_part = False
@@ -492,19 +493,22 @@ def augmentParts(_recipe):
                     #include_chapter_in_part = True
                     pass
                 if include_chapter_in_part:
-                    print('  score:', part['name'], c['code'])
+                    print('  score:', part['part_name'], c['code'])
                     chapter_metadata = getChapterMetadata(c)
                     part['chp'].append(chapter_metadata)
-                    
+            part['starting_chapter'] = starting_chapter
+            part['chap_toc_style'] = 'toc_chapter_with_parts'          
     else: # user entered no parts, so make 1 default part.
-        parts_dict = {'name': 'Chapters:', 'chp': []}
+        parts_dict = {'name': 'Chapters:', 'chp': [], 
+                      'starting_chapter': '1',
+                      'chap_toc_style': 'toc_chapter_no_parts'}
         for c in _recipe['chapters']:
             chapter_metadata = getChapterMetadata(c)
             parts_dict['chp'].append(chapter_metadata)
         _recipe['parts'] = [parts_dict]
-        
+     
     
-    print ('parts:', _recipe['parts'])
+    #print ('parts:', _recipe['parts'])
     return _recipe
     
 def augmentBackMatter(_recipe, playorder):

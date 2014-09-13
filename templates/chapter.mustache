@@ -12,6 +12,12 @@
 <title>{{title}}</title>
 </head>
 <body>
+{{#starts_part}}
+<h2 id="p-{{id}}">{{starts_part}}</h2>
+<hr/>
+<div style="page-break-before:always;"></div>
+{{/starts_part}}
+
     <div id="{{id}}">
       <h2>Chapter {{nbr}}<br />{{name}}</h2>
       {{#photo}}<img class="displayed" src="../images/{{photo}}" height="100" alt="{{photo}}" /><br />{{/photo}}

@@ -19,9 +19,9 @@
 {{/toc_entry}}{{/front_matter}}
 
 {{#parts}}
-  <p class="toc_part"><a href="tobecompleted">{{name}}</a></p>
+  <p class="toc_part"><a href="chap{{starting_chapter}}.html#part">{{part_name}}</a></p>
   {{#chp}}
-    <p class="toc_chapter"><a href="chap{{nbr}}.html#{{id}}">{{name}}</a></p>
+    <p class="{{chap_toc_style}}"><a href="chap{{nbr}}.html#{{id}}">{{name}}</a></p>
   {{/chp}}
 {{/parts}}
 

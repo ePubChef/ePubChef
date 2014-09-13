@@ -20,9 +20,9 @@ front_matter: # cover, title_page, and table_of_contents names must not be chang
      - name: table_of_contents
      - name: dedication
 
-#parts:
-#     - name: Part One
-#     - name: Part Two
+parts:
+     - part_name: Part One
+     - part_name: Part Two
 
 chapters:
      -  code: '001'

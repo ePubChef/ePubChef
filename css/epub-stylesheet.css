@@ -249,9 +249,16 @@ margin: 0;
 text-align: left;
 font-size: 110%
 }
-p.toc_chapter
+p.toc_chapter_with_parts
 {
 text-indent: 2em;
+margin: 0;
+text-align: left;
+font-size: 100%
+}
+p.toc_chapter_no_parts
+{
+text-indent: 1.25em;
 margin: 0;
 text-align: left;
 font-size: 100%
