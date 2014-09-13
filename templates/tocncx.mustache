@@ -15,20 +15,29 @@
   </docAuthor>
   <navMap>
    <!-- TODO: Remove for Kindle and redo playOrder -->
+   <!-- front matter -->
    {{#front_matter}}
    <navPoint id="{{id}}" playOrder="{{playorder}}">
       <navLabel> <text>{{tocncx_entry}}</text> </navLabel>
       <content src="{{src}}" />
    </navPoint>
    {{/front_matter}}
+   
+   <!-- Parts and Chapters -->
    {{#parts}}
-   {{#chapters}}
-   <navPoint id="ncx_{{id}}" playOrder="{{playorder}}">
-      <navLabel><text>Chapter {{nbr}} - {{name}}</text></navLabel>
-      <content src="content/chap{{nbr}}.html#{{id}}" />
-   </navPoint>
-   {{/chapters}}
+     <navPoint id="ncx_{{playorder}}" playOrder="{{playorder}}">
+     <navLabel><text>{{part_name}}</text></navLabel>
+     <content src="content/chap{{starting_chapter}}.html#part" />
+     {{#chp}}
+       <navPoint id="ncx_{{id}}" playOrder="{{playorder}}">
+         <navLabel><text>Chapter {{nbr}} - {{name}}</text></navLabel>
+         <content src="content/chap{{nbr}}.html#{{id}}" />
+       </navPoint>
+     {{/chp}}
+     </navPoint>
    {{/parts}}
+   
+   <!-- back matter -->
    {{#back_matter}}
    <navPoint id="{{id}}" playOrder="{{playorder}}">
       <navLabel><text>{{tocncx_entry}}</text></navLabel>

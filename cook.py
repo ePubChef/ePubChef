@@ -314,17 +314,24 @@ def genTocNcx(_recipe):
 
 def genChapters(_recipe, front_matter_count, scenes_dict):
     chapter_nbr = 0
+    part_nbr = 0
     for chapter in _recipe['chapters']:
         chapter_nbr +=1
         chapter['nbr'] = str(chapter_nbr)
         chapter['id'] = 'h2-'+str(chapter_nbr)
-        chapter['playorder'] = str(front_matter_count + chapter_nbr)
+        next_playorder = front_matter_count + chapter_nbr + part_nbr
+        if 'starts_part' in chapter:
+            _recipe['parts'][part_nbr]['playorder'] = next_playorder
+            chapter['playorder'] = str(next_playorder + 1)
+            part_nbr+=1
+        else:
+            chapter['playorder'] = str(next_playorder)
 
         scene_nbr = 0
         chapter = genChapter(chapter, scenes_dict[chapter['code']])
     
     print("chapter count: ", chapter_nbr)
-    return _recipe, chapter_nbr
+    return _recipe, next_playorder + 1
 
 def genChapter(_chapter, scenes):
     _chapter['kindle'] = recipe['kindle'] # add the kindle True/False to each 
@@ -678,13 +685,12 @@ if __name__ == "__main__": # main processing
     scenes_dict = getScenesDict(dirs['raw_book'])
 
     # generate chapters 
-    recipe, chapter_count = genChapters(recipe, front_matter_count, scenes_dict)
+    recipe, next_playorder = genChapters(recipe, front_matter_count, scenes_dict)
     
- 
     recipe = addContentFiles(recipe)
     
     # add data to the recipe back-matter
-    recipe = augmentBackMatter(recipe, front_matter_count + chapter_count)
+    recipe = augmentBackMatter(recipe, next_playorder)
 
     recipe = augmentImages(recipe)
 
