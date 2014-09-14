@@ -26,6 +26,8 @@ The following chapter will be a block quote.
 
 <p>This image is NOT in a chapter heading: <img src="../images/chef-hat1.jpg" width="100" alt="chef hat image" /></p>
 
+This line contains utf-8 character (r squared =20), r²=20.
+
 Nam pellentesque, purus eget eleifend sollicitudin, ipsum elit rhoncus tortor, eget ornare urna augue eget nunc. Quisque tempor ipsum metus, et aliquet mi convallis vel. Nam eu pharetra dolor.
 
 Donec in pellentesque libero, sit amet vulputate nisi. Phasellus facilisis felis ut ante ultricies, non suscipit felis sollicitudin. Aliquam venenatis elementum iaculis. Ut molestie nulla at orci bibendum dapibus. Phasellus volutpat dui nisi, id mattis nisi tincidunt vitae. Vestibulum pharetra mollis metus, ac lobortis dolor feugiat imperdiet. Mauris dictum aliquam libero, et consectetur tortor fringilla eget. Duis eu dictum dui. Maecenas vitae nulla neque.
