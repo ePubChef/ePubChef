@@ -369,18 +369,27 @@ def genChapter(_chapter, scenes):
     return _chapter
 
 def cleanText(line):
-    line = line.replace(' "'," &ldquo;") # left double quote
+    # left double quotes
+    line = line.replace(' "'," &ldquo;") # replace straight double quote following a space with left smart quote
+    if line[0] == '"': # replace straight double quote at start of a line with a left smart quote
+        line = line.replace('"',"&ldquo;", 1)
+    
     line = line.replace('<a &ldquo;','<a "') # undo smart quotes on HTML links
-    # TODO: add left smart quote if at beginning of a line.
-    #line = line.replace('"([a-zA-Z])'," &ldquo;") # left double quote
-    #line = re.sub(r'"([a-zA-Z])'," $1&ldquo;", line) # left double quote
-    line = line.replace('" ',"&rdquo; ") # right double quote
-    line = line.replace('."',"&rdquo;") # right double quote
+    
+    # right double quotes
+    line = line.replace('" ',"&rdquo; ") # replace straight double quote preceding a space with a right smart quote
+    line = line.replace('."',".&rdquo;") # replace straight double quote following a period with a right smart quote
 
-    # remove tabs
-    # leading whitespace
-    # trailing whitespace
-    # fancy aposthrophes
+    # left single quotes
+    line = line.replace(" '"," &lsquo;") # replace straight single quote following a space with left smart quote
+    if line[0] == "'": # replace straight single quote at start of a line with a left smart quote
+        line = line.replace("'","&lsquo;", 1)
+    
+    # right single quotes
+    line = line.replace("' ","&rsquo; ") # replace straight single quote preceding a space with a right smart quote
+    line = line.replace(".'",".&rsquo;") # replace straight single quote following a period with a right smart quote
+
+ 
 
     return line
 

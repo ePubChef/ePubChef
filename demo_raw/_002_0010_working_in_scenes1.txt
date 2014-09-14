@@ -1,0 +1,36 @@
+There are manny things you may want to do within your text. ePubChef will do several things automatically. For example, it will change boring straight quotes to smart quotes as in the following paragraph. The tool will create a new paragraph after each blank line in your text. A setting in the recipe will create drop-caps for the first letter of each chapter.
+ 
+<ul> 
+  <li>put text in <em>italics</em></li> 
+  <li>create a list like this one</li> 
+</ul>
+
+She said, "this is a quote." Then she followed with, "another quotation."
+
+"What is this quotation about?" she said.
+
+If you prefer single quotes: She said, 'this is a quote.' Then she followed with, 'another quotation.'
+
+'What is this quotation about?' she said.
+
+<ul>
+  <li>characters such as ampersand are dealt with correctly: &</li>
+  <li>There was a  double space removed before the word double.</li>
+  <li>	This line began with a tab which has been removed.</li>
+  <li>There's a single quote here which was converted to a smart quote.</li>
+  </ul>
+
+       This line had leading white-space removed and replaced with a normal paragraph indentation. Three dots... have been changed to an ellipses which looks nicer. This line contains utf-8 character (r squared =20), r²=20. For full control one can enter any HTML. HTML will pass through ePubChef unaltered. For example, an HTML table. Full style control is available by tailoring CSS.
+<table border="1">
+  <tr><td>aaaa</td><td>1111</td></tr>
+  <tr><td>bbbb</td><td>222</td></tr> 
+  <tr><td>cccc</td><td>8888</td></tr>
+</table>
+
+The following chapter will be a block quote.
+
+>>>Etiam in suscipit metus. Suspendisse interdum neque in nulla viverra, sodales scelerisque elit cursus. Fusce porta nibh at risus aliquet, sit amet molestie quam consectetur. Quisque viverra ac lacus vehicula fringilla. 
+
+<p>Images can be placed in the pages: <img src="../images/chef-hat1.jpg" width="100" alt="chef hat image" /> but inline HTML must be put within paragraph or other HTML tags.</p>
+
+
