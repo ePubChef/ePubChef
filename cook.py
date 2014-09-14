@@ -634,7 +634,28 @@ def checkForChapterFiles():
             f = open('_'+chapter['code']+'_0010_.txt','w+')
             f.close()
     os.chdir('..')
-    
+        
+def genFrontBackMatter(_recipe):
+    # for each front/back matter page the recipe name refers to:
+    # 1. text from the raw folder,
+    # 2. a mustache template from the templates folder,
+    # 3. output to an html file in the OEPBS folder, the exceptions are
+    #     toc.html and title_page.html which go in the content folder
+
+    for page in _recipe['front_matter'] + _recipe['back_matter']:
+        if page['name'] not in ['cover','title_page','table_of_contents']:
+            try:
+                in_file = open(join(dirs['raw_book'], page['name']+'.txt'), 'r')
+            except:  # create empty file
+                f = open(os.path.join(dirs['raw_book'], page['name']+'.txt'),'w+')
+                f.close()
+                # try again (with empty file)
+                in_file = open(join(dirs['raw_book'], page['name']+'.txt'), 'r')
+            formatted_txt = formatScene(in_file, 0, False)
+            _recipe[page['name']] = formatted_txt
+        genPage(_recipe, page['name'])
+    return _recipe
+
 def manifest_items():
     # TODO: this is a dup of functionality in contentopf.mustache - combine
     items = []
@@ -698,25 +719,7 @@ if __name__ == "__main__": # main processing
 
     recipe = augmentParts(recipe)
     
-    # for each front/back matter page the recipe name refers to:
-    # 1. text from the raw folder,
-    # 2. a mustache template from the templates folder,
-    # 3. output to an html file in the OEPBS folder, the exceptions are
-    #     toc.html and title_page.html which go in the content folder
-
-    for page in recipe['front_matter'] + recipe['back_matter']:
-        if page['name'] not in ['cover','title_page','table_of_contents']:
-            try:
-                in_file = open(join(dirs['raw_book'], page['name']+'.txt'), 'r')
-            except:  # create empty file
-                f = open(os.path.join(dirs['raw_book'], page['name']+'.txt'),'w+')
-                f.close()
-                # try again (with empty file)
-                in_file = open(join(dirs['raw_book'], page['name']+'.txt'), 'r')
-            formatted_txt = formatScene(in_file, 0, False)
-            recipe[page['name']] = formatted_txt
-        genPage(recipe, page['name'])
-
+    recipe = genFrontBackMatter(recipe)
     
     genContentOpf(recipe) # generate the content.opf file
     genTocNcx(recipe) # generate the ncx table of contents
