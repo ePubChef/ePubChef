@@ -53,6 +53,7 @@ except:
     pass
 
 gen_dir = file_name+'_generated'
+
 dirs = {
     'gen_dir': gen_dir, # folder for the ePub files
     'template_dir':'templates',         # templates for ePub files
@@ -67,41 +68,38 @@ dirs = {
     'epub_loc': 'epubs',
 	}
 
-''' structure to be generated for book "bk1" is:
-  chef/gen_bk1 (generated book root dir)
+''' structure to be generated for "mybook" is:
+  /mybook_generated (generated book root dir)
       mimetype
-  gen_bk1//META-INF
+  mybook_generated/META-INF
      container.xml
-  gen_bk1/OEBPS
+  mybook_generated/OEBPS
      content.opf
      cover_image.jpg
      cover.html (not for kindle)
      toc.ncx
-  gen_bk1/OEBPS/content
+  mybook_generated/OEBPS/content
      content001.html
      content...html
      htmloc.html
-  gen_bk1/OEBPS/css
+  mybook_generated/OEBPS/css
      epub-stylesheet.css (change for kindle)
-  gen_bk1/OEBPS/images
+  mybook_generated/OEBPS/images
      ... images
 '''    
 
 ''' source files are:
-  chef (root)
+  / ( eBookChef root)
      cook.py
-     prepare.py
-     recipe.py * (later generate this)
-  chef/css
+  /css
      epub-stylesheet.css
      kindle-stylesheet.css
-  chef/raw_book
-     chapter_intros.py *
-     scene_1.txt *
-     scene_....txt *
-  chef/raw_book/images
+  /mybook_raw
+     mybook_recipe.yaml
+     _0010_010_scene....txt (many scene files) 
+  /mybook_raw/images
      ...jpg *
-  chef/templates
+  /templates
      content.mustache
      json.mustache
      table_of_contents.mustache
@@ -110,7 +108,7 @@ dirs = {
      container.xml
      ....(more)
 
-* = author created book contents
+
 '''
 
 '''
@@ -135,11 +133,17 @@ def importYaml(file_name):
             _recipe = yaml.load(f)
     except: # create a new recipe from a template
         print('Creating new recipe for:', file_name)
-        f = open(file_name+'_recipe.yaml', 'w')
-        out = renderer.render_path(os.path.join(dirs['template_dir'], 'recipe.mustache'), dict([("file_name", file_name)]))
-        f.write(out)
+        try:
+            f = open(join(dirs['raw_book'], file_name+'_recipe.yaml'), 'w')
+        except:   # create the dir if it did not exist
+            os.makedirs(dirs['raw_book'])
+            f = open(join(dirs['raw_book'], file_name+'_recipe.yaml'), 'w')
+
+        new_recipe = renderer.render_path(os.path.join(dirs['template_dir'], 'recipe.mustache'), dict([("file_name", file_name)]))
+
+        f.write(new_recipe)
         f.close()
-        with open(file_name+'_recipe.yaml', 'r') as f:
+        with open(join(dirs['raw_book'], file_name+'_recipe.yaml'), 'r') as f:
             _recipe = yaml.load(f)
             
     # augment recipe by adding the file name to it
@@ -218,6 +222,14 @@ def prepareDirs(dirs):
     dst = os.path.join(dirs['gen_dir'], 'META-INF', 'container.xml')
     shutil.copyfile(src, dst) 
     
+def removeBlankLines(input):
+    # TODO improve this hack to git rid of blank lines
+    non_blank_lines = [] 
+    for line in input:
+        if len(line) > 0:
+            non_blank_lines.append(line)
+    return non_blank_lines
+
 def formatScene(in_file, scene_count, auto_dropcaps):
     # replace characters we don't like
     lines = [line.strip() for line in in_file]
@@ -225,11 +237,7 @@ def formatScene(in_file, scene_count, auto_dropcaps):
     style = next_para_style = None
     all_paras = {}
     paras = []
-
-    non_blank_lines = []  # TODO improve this hack to git rid of blank lines
-    for line in lines:
-        if len(line) > 0:
-            non_blank_lines.append(line)
+    non_blank_lines = removeBlankLines(lines)
 
     need_to_clear = False    
     para_count = 0
