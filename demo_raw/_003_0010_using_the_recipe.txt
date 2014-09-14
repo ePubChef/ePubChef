@@ -1,0 +1,3 @@
+An ePubChef "recipe" file is the control file for generation of an eBook. Open /demo_raw/demo_recipe.yaml for an example. Entries in the front and back matter sections can be moved, added to, or removed. If you create a new entry, you must also create a template file with the same name. It is usually best to copy an existing, similar template and alter it.
+
+Entries under sections "parts" and "chapters" can be added or changed. Alter the appropriate change in the template to match. 

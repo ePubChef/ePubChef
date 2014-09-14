@@ -14,7 +14,7 @@ subjects:
       - name: PUBLISHING
 kindle: False  # switches to kindle stylesheet, removes cover
 
-front_matter: # cover, title_page, and table_of_contents names must not be changed
+front_matter:
      - name: cover
      - name: title_page
      - name: table_of_contents
@@ -26,19 +26,19 @@ parts:
 
 chapters:
      -  code: '001'
-        name: A walk in the Park
-        intro: This will be a great chapter.
+        name: About This Book
+        intro: An introduction to the ePubChef
         photo: jazz_frog.jpg
         starts_part: Part One
      -  code: '002'
-        name: When Butter Hits Bread
-        intro: Yet another fabulous chapter.
-        photo: relaxed_frog.jpg
-     -  code: '003'
-        name: As Butter Melts
-        intro: This is getting silly.
+        name: Examples
+        intro: Some things you can do within the text of a chapter.
         photo: relaxed_frog.jpg
         starts_part: Part Two
+     -  code: '003'
+        name: Using the ePbubChef Recipe
+        intro: Flexibility and Power
+        photo: relaxed_frog.jpg
 
 back_matter: 
      - name: description
