@@ -428,7 +428,7 @@ def generateJson(all_paras):
 	
 def prepareScene(scene_name, scene_count):
     # open raw scene file
-    in_file = open(join(dirs['raw_book'], scene_name+'.txt'), 'r')
+    in_file = codecs.open(join(dirs['raw_book'], scene_name+'.txt'), 'r', 'utf-8')
     prepared_scene = formatScene(in_file, scene_count, recipe['auto_dropcaps'])
     in_file.close() 
     #print('\prepared_scene: ', prepared_scene)
