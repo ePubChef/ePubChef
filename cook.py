@@ -337,8 +337,8 @@ def genChapters(_recipe, front_matter_count, scenes_dict):
 
         scene_nbr = 0
         chapter = genChapter(chapter, scenes_dict[chapter['code']])
-    if part_nbr > 1: # don't increment if there is only the default part.
-        next_playorder = next_playorder +1
+    #if part_nbr > 1: # don't increment if there is only the default part.
+    #    next_playorder = next_playorder +1
     
     print("chapter count: ", chapter_nbr)
     return _recipe, next_playorder
@@ -379,6 +379,13 @@ def cleanText(line):
     # right double quotes
     line = line.replace('" ',"&rdquo; ") # replace straight double quote preceding a space with a right smart quote
     line = line.replace('."',".&rdquo;") # replace straight double quote following a period with a right smart quote
+    
+    # undo smart quotes on image HTML links - part one
+    line = line.replace('.jpg&rdquo;','.jpg"') 
+    # undo smart quotes on image HTML links - part two
+    line = line.replace('&rdquo;/>','"/>') 
+    # undo smart quotes on image HTML links - part three
+    line = line.replace('&rdquo; alt=','" alt=') 
 
     # left single quotes
     line = line.replace(" '"," &lsquo;") # replace straight single quote following a space with left smart quote
@@ -451,6 +458,28 @@ def prepareScene(scene_name, scene_count):
     #print('\prepared_scene: ', prepared_scene)
     return prepared_scene
 
+def checkFrontBackMatter(_recipe):
+    # create an empty list for front_matter if there is no list from the recipe
+    if 'front_matter' not in _recipe:
+        _recipe['front_matter'] = []
+    if type(_recipe['front_matter']) is not list:
+        _recipe['front_matter'] = []
+       
+    # create an empty list for back_matter if there is no list from the recipe
+    if 'back_matter' not in _recipe:
+        _recipe['back_matter'] = []
+    if type(_recipe['back_matter']) is not list:
+        _recipe['back_matter'] = []       
+
+    if {'name':'cover'} not in _recipe['front_matter']:
+        print('front_matter:', _recipe['front_matter'])
+        raise Exception("You must have 'cover' in front_matter!")
+        
+    if ({'name':'table_of_contents'} not in _recipe['front_matter']) and \
+       ({'name':'table_of_contents'} not in _recipe['back_matter']):
+        raise Exception("You must have 'table_of_contents' in front_matter or back_matter!")
+    return _recipe
+    
 def augmentFrontMatter(_recipe):
     # add playorder and id values to the recipe
     front_matter_count = len(_recipe['front_matter'])
@@ -476,7 +505,7 @@ def augmentFrontMatter(_recipe):
             item['toc_entry'] = prettify(item['name'])
         item['tocncx_entry'] = prettify(item['name'])
 	
-    print("front-matter count:", front_matter_count)
+    print("front_matter count:", front_matter_count)
     return _recipe, front_matter_count
 
 def prettify(messy_string):
@@ -550,7 +579,7 @@ def augmentBackMatter(_recipe, playorder):
             item['dir'] = '../'
         item['toc_entry'] = prettify(item['name'])
         item['tocncx_entry'] = prettify(item['name'])
-    
+   
     return _recipe
 	
 def augmentImages(_recipe):
@@ -585,9 +614,8 @@ def addContentFiles(_recipe):
         _recipe['content_files'].append({'file': "chap"+chapter['nbr']})
 
     for item  in _recipe['back_matter']:
-	    #name = item  #['src'][:-5] #strip off ".html"
-	    #name = name.split("/")[-1] # strip off any path
 	    _recipe['content_files'].append({'file': item['name']})
+        
     return _recipe
 
 def writeAugmentedRecipe(recipe):
@@ -718,6 +746,8 @@ if __name__ == "__main__": # main processing
     
     prepareDirs(dirs)
    
+    recipe = checkFrontBackMatter(recipe)
+    
     # add data to the recipe front matter
     recipe, front_matter_count = augmentFrontMatter(recipe)
 
@@ -729,7 +759,7 @@ if __name__ == "__main__": # main processing
     
     recipe = addContentFiles(recipe)
     
-    # add data to the recipe back-matter
+    # add data to the recipe back_matter
     recipe = augmentBackMatter(recipe, next_playorder)
 
     recipe = augmentImages(recipe)

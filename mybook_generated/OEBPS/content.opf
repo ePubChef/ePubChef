@@ -2,12 +2,12 @@
 <package version="2.0" xmlns="http://www.idpf.org/2007/opf" unique-identifier="BookId">
   <metadata xmlns:dc="http://purl.org/dc/elements/1.1/" xmlns:opf="http://www.idpf.org/2007/opf">
     <!--Required metadata-->
-    <dc:title>A Demo eBook</dc:title>
+    <dc:title>mybook</dc:title>
     <dc:language>en-us</dc:language> 
-    <dc:identifier id="BookId" opf:scheme="uuid">urn:uuid:57b681b5-137b-4791-b5c5-99fdcfaa41ee</dc:identifier>
+    <dc:identifier id="BookId" opf:scheme="uuid">urn:uuid:57b681b5-137b-4791-b5c5-88fdcfaa41ee</dc:identifier>
     <!--Above identifier is an example of a UUID. To use an ISBN, it would look as follows: <dc:identifier id="BookId" opf:scheme="ISBN">urn:isbn:1234567890123</dc:identifier> -->
     <dc:creator opf:role="aut">Ann Author</dc:creator> <!--The Author-->
-    <dc:publisher>John Cobo</dc:publisher> <!--Name of Publisher or yourself if self-published-->
+    <dc:publisher>A. Publisher</dc:publisher> <!--Name of Publisher or yourself if self-published-->
     <dc:date>2014-01-01</dc:date> <!--Published Date in the format YYYY-MM-DD-->
     <meta name="cover" content="cover_image" /> <!--Required for KindleGen, Barnes and Noble, and iBookstore-->
     <!--This is optional metadata that you should include-->
@@ -40,10 +40,7 @@
     <item href="css/epub-stylesheet.css" id="cssstylesheet-epub" media-type="text/css" />
     <item href="css/kindle-stylesheet.css" id="cssstylesheet-kindle" media-type="text/css" />
     <item href="cover_image.jpg" id="cover_image" media-type="image/jpeg" />
-    <item href="images/chef-hat1.jpg" id="img1" media-type="image/jpeg" />
-    <item href="images/epubchef_logo.jpg" id="img2" media-type="image/jpeg" />
-    <item href="images/jazz_frog.jpg" id="img3" media-type="image/jpeg" />
-    <item href="images/relaxed_frog.jpg" id="img4" media-type="image/jpeg" />
+    <item href="images/epubchef_logo.jpg" id="img1" media-type="image/jpeg" />
   </manifest>
   <!-- Spine Section -->
   <spine toc="ncx">
