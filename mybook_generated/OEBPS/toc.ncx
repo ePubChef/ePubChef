@@ -2,13 +2,13 @@
 <!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
 <ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1" xml:lang="en">
   <head>
-    <meta content="urn:uuid:57b681b5-137b-4791-b5c5-99fdcfaa41ee" name="dtb:uid" />
+    <meta content="urn:uuid:57b681b5-137b-4791-b5c5-88fdcfaa41ee" name="dtb:uid" />
     <meta content="1" name="dtb:depth" /> 
     <meta content="0" name="dtb:totalPageCount" />
     <meta content="0" name="dtb:maxPageNumber" />
   </head>
   <docTitle>
-    <text>A Demo eBook</text>
+    <text>mybook</text>
   </docTitle>
   <docAuthor>
     <text>Ann Author</text>
@@ -34,33 +34,26 @@
    </navPoint>
    
    <!-- Parts and Chapters -->
-     <navPoint id="ncx_5" playOrder="5">
-     <navLabel><text>Part One</text></navLabel>
-     <content src="content/chap1.html#part" />
-       <navPoint id="ncx_h2-1" playOrder="6">
-         <navLabel><text>Chapter 1 - About This Book</text></navLabel>
+       <navPoint id="ncx_h2-1" playOrder="5">
+         <navLabel><text>Chapter 1 - The First Chapter</text></navLabel>
          <content src="content/chap1.html#h2-1" />
        </navPoint>
-     </navPoint>
-     <navPoint id="ncx_7" playOrder="7">
-     <navLabel><text>Part Two</text></navLabel>
-     <content src="content/chap2.html#part" />
-       <navPoint id="ncx_h2-2" playOrder="8">
-         <navLabel><text>Chapter 2 - Examples</text></navLabel>
+       <navPoint id="ncx_h2-2" playOrder="6">
+         <navLabel><text>Chapter 2 - The Second Chapter</text></navLabel>
          <content src="content/chap2.html#h2-2" />
        </navPoint>
-       <navPoint id="ncx_h2-3" playOrder="9">
-         <navLabel><text>Chapter 3 - Using the ePbubChef Recipe</text></navLabel>
+       <navPoint id="ncx_h2-3" playOrder="7">
+         <navLabel><text>Chapter 3 - The Third Chapter</text></navLabel>
          <content src="content/chap3.html#h2-3" />
        </navPoint>
-     </navPoint>
+     
    
    <!-- back matter -->
-   <navPoint id="ncx_description" playOrder="10">
+   <navPoint id="ncx_description" playOrder="8">
       <navLabel><text>Description</text></navLabel>
       <content src="description.html" />
     </navPoint>
-   <navPoint id="ncx_about_author" playOrder="11">
+   <navPoint id="ncx_about_author" playOrder="9">
       <navLabel><text>About Author</text></navLabel>
       <content src="about_author.html" />
     </navPoint>

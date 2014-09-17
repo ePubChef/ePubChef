@@ -1,10 +1,10 @@
 
 title: A Demo eBook
-author: John Cobo
+author: Ann Author
 coverdesign: John Cobo
 publish_date: 2014-01-01
 uuid: urn:uuid:57b681b5-137b-4791-b5c5-99fdcfaa41ee
-epubchef_voucher: 123456
+epubchef_voucher: abc123
 publisher: John Cobo
 auto_dropcaps: True
 meta_descn: A book about cooking books
