@@ -76,14 +76,14 @@ dirs = {
   mybook_generated/OEBPS
      content.opf
      cover_image.jpg
-     cover.html (not for kindle)
+     cover.html
      toc.ncx
   mybook_generated/OEBPS/content
      content001.html
      content...html
      htmloc.html
   mybook_generated/OEBPS/css
-     epub-stylesheet.css (change for kindle)
+     epub-stylesheet.css
   mybook_generated/OEBPS/images
      ... images
 '''    
@@ -93,7 +93,6 @@ dirs = {
      cook.py
   /css
      epub-stylesheet.css
-     kindle-stylesheet.css
   /mybook_raw
      mybook_recipe.yaml
      _0010_010_scene....txt (many scene files) 
@@ -344,7 +343,6 @@ def genChapters(_recipe, front_matter_count, scenes_dict):
     return _recipe, next_playorder
 
 def genChapter(_chapter, scenes):
-    _chapter['kindle'] = recipe['kindle'] # add the kindle True/False to each 
     # generate the book using templates and the recipe
     _chapter['scenes'] = []
     scene_count = 0 # counts the position of the scene in this chapter
@@ -483,15 +481,16 @@ def checkFrontBackMatter(_recipe):
 def augmentFrontMatter(_recipe):
     # add playorder and id values to the recipe
     front_matter_count = len(_recipe['front_matter'])
-    if _recipe['kindle']:
-        front_matter_count -= 1 # don't do a coverpage if kindle
+    #if _recipe['kindle']:
+    #    front_matter_count -= 1 # don't do a coverpage if kindle
 
     playorder = 0
     for item in _recipe['front_matter']:
-        if _recipe['kindle'] and item['name'] == 'cover':
-            pass # don't include cover on kindle
-        else:
-            playorder +=1
+        #if _recipe['kindle'] and item['name'] == 'cover':
+        #    pass # don't include cover on kindle
+        #else:
+        #    playorder +=1
+        playorder +=1
         item['playorder'] = playorder
         item['id'] = "ncx_"+item['name']
         
@@ -712,7 +711,7 @@ def manifest_items():
     for item in recipe['back_matter']:
         items.append(item['src'])
     items.append('css/epub-stylesheet.css')
-    items.append('css/kindle-stylesheet.css')
+    #items.append('css/kindle-stylesheet.css')
     items.append('cover_image.jpg')
     for item in recipe['images']:
         items.append("images/"+item['image']+".jpg")

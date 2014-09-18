@@ -9,7 +9,7 @@
     <dc:creator opf:role="aut">Ann Author</dc:creator> <!--The Author-->
     <dc:publisher>John Cobo</dc:publisher> <!--Name of Publisher or yourself if self-published-->
     <dc:date>2014-01-01</dc:date> <!--Published Date in the format YYYY-MM-DD-->
-    <meta name="cover" content="cover_image" /> <!--Required for KindleGen, Barnes and Noble, and iBookstore-->
+    <meta name="cover" content="cover_image" /> 
     <!--This is optional metadata that you should include-->
     <dc:description>A book about cooking books</dc:description>
     <dc:subject>COMPUTERS</dc:subject>
@@ -27,7 +27,6 @@
   <!-- Manifest Section -->
   <manifest>
     <item href="toc.ncx" id="ncx" media-type="application/x-dtbncx+xml" />
-     <!-- TODO Remove cover for Kindle -->
     <item href="cover.html" id="cover" media-type="application/xhtml+xml" />
     <item href="content/title_page.html" id="title_page" media-type="application/xhtml+xml" />
     <item href="content/table_of_contents.html" id="table_of_contents" media-type="application/xhtml+xml" />
@@ -38,7 +37,6 @@
     <item href="description.html" id="description" media-type="application/xhtml+xml" />
     <item href="about_author.html" id="about_author" media-type="application/xhtml+xml" />
     <item href="css/epub-stylesheet.css" id="cssstylesheet-epub" media-type="text/css" />
-    <item href="css/kindle-stylesheet.css" id="cssstylesheet-kindle" media-type="text/css" />
     <item href="cover_image.jpg" id="cover_image" media-type="image/jpeg" />
     <item href="images/chef-hat1.jpg" id="img1" media-type="image/jpeg" />
     <item href="images/epubchef_logo.jpg" id="img2" media-type="image/jpeg" />

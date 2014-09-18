@@ -14,7 +14,6 @@
     <text>Ann Author</text>
   </docAuthor>
   <navMap>
-   <!-- TODO: Remove for Kindle and redo playOrder -->
    <!-- front matter -->
    <navPoint id="ncx_cover" playOrder="1">
       <navLabel> <text>Cover</text> </navLabel>

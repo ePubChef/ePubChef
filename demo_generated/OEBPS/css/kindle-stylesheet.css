@@ -189,6 +189,7 @@ margin: 1.0em 0 0 0;
 text-align: center;
 page-break-before: always;
 }
+
 /*==For Kindle Fire, Kindle Touch, and Other KF8 devices==*/
 @media amzn-kf8{
 span.dropcap
@@ -224,6 +225,8 @@ font-size: 1.5em;
 font-weight: bold;
 }
 }
+
+
 /* table of contents */
 p.toc_part
 {

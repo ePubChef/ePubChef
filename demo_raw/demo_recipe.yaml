@@ -12,7 +12,6 @@ subjects:
       - name: COMPUTERS
       - name: WRITING
       - name: PUBLISHING
-kindle: False  # switches to kindle stylesheet, removes cover
 
 front_matter:
      - name: cover
