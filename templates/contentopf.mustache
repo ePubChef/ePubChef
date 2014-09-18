@@ -9,7 +9,7 @@
     <dc:creator opf:role="aut">{{author}}</dc:creator> <!--The Author-->
     <dc:publisher>{{publisher}}</dc:publisher> <!--Name of Publisher or yourself if self-published-->
     <dc:date>{{publish_date}}</dc:date> <!--Published Date in the format YYYY-MM-DD-->
-    <meta name="cover" content="cover_image" /> <!--Required for KindleGen, Barnes and Noble, and iBookstore-->
+    <meta name="cover" content="cover_image" /> 
     <!--This is optional metadata that you should include-->
     <dc:description>{{meta_descn}}</dc:description>
     {{#subjects}}
@@ -27,7 +27,6 @@
   <!-- Manifest Section -->
   <manifest>
     <item href="toc.ncx" id="ncx" media-type="application/x-dtbncx+xml" />
-     <!-- TODO Remove cover for Kindle -->
     {{#front_matter}}
     <item href="{{src}}" id="{{name}}" media-type="application/xhtml+xml" />
     {{/front_matter}}
@@ -38,7 +37,6 @@
     <item href="{{src}}" id="{{name}}" media-type="application/xhtml+xml" />
     {{/back_matter}}
     <item href="css/epub-stylesheet.css" id="cssstylesheet-epub" media-type="text/css" />
-    <item href="css/kindle-stylesheet.css" id="cssstylesheet-kindle" media-type="text/css" />
     <item href="cover_image.jpg" id="cover_image" media-type="image/jpeg" />
     {{#images}}
     <item href="images/{{image}}.jpg" id="{{id}}" media-type="image/jpeg" />
