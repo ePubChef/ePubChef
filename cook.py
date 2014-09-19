@@ -735,7 +735,11 @@ def createArchive(rootDir, outputPath):
     os.chdir(cwd)
     
 def checkEpub(checkerPath, epubPath):
-        subprocess.call(['java', '-jar', checkerPath, epubPath], shell = True)
+    subprocess.call(['java', '-jar', checkerPath, epubPath], shell = True)
+        
+def kindlegen(checkerPath, epubPath):
+    subprocess.call([checkerPath, epubPath], shell = True)
+    
 #########################################################################
 if __name__ == "__main__": # main processing
 
@@ -783,8 +787,18 @@ if __name__ == "__main__": # main processing
     # it from here. 
     # To validate, install the Java JDK on your machine, set your PATH to include java, and put the epubcheck jar file in the folder above this one.
     # execute cook.py with an additional argument, "python cook.py validate"
-    if arg2 == 'validate':
+    if arg2 in ['validate','kindlegen']:
         epub_file = join(dirs['epub_loc'], file_name + '.epub')
         checkEpub('../epubcheck/epubcheck-3.0.1.jar', epub_file )
     
+    # Optionally run kindlgen to create a .mobi
+    # NOTE: kindlgen is not part of ePubChef and we won't be offended if you don't run 
+    # it from here. 
+    # To run kindlegen, extract kindlegen to a folder above this one (beside epubchef folder).
+    # execute cook.py with an additional argument, "python cook.py kindlegen" (validate will run too)
+    if arg2 == 'kindlegen':
+        epub_file = join(dirs['epub_loc'], file_name + '.epub')
+        # this is the windows command, adjust for other operating systems.
+        kindlegen('..\kindlegen_win32_v2_9\kindlegen', epub_file )
+        
     print("All done\n")
