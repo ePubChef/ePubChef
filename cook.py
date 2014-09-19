@@ -21,7 +21,7 @@ ePubChef - generating EPUB files for eBooks
 # and the file recipe.py in the same folder which drives
 # ebook creation.
 # call with: python cook.py demo  # if you book is called 'demo'. 
-# Optional second arguments are "debug", or "validate", eg. python cook.py demo validate
+# Optional second arguments are "debug", or "validate", or "kindlegen" eg. python cook.py demo validate
 
 # debug populates a /debug directory, validate runs EPUB check if it has been set up (Java, etc.)
 # Output generated to the directory specified by the 'file_name' from recipe.py.
@@ -100,11 +100,8 @@ dirs = {
      ...jpg *
   /templates
      content.mustache
-     json.mustache
      table_of_contents.mustache
      title.mustache
-     mimetype
-     container.xml
      ....(more)
 
 
@@ -301,21 +298,21 @@ def genPage(_recipe, page_name):
 
     f = codecs.open(os.path.join(dirs[out_dir], page_name+".html"), 'w', 'utf-8')
     out = renderer.render_path(os.path.join(dirs['template_dir'], 
-	    page_name+'.mustache'), _recipe)
+	    page_name+'.html'), _recipe)
     f.write(out)
     f.close()
 
 def genContentOpf(_recipe):
     # generate content.opf file 
     f = codecs.open(os.path.join(dirs['oebps'],'content.opf'), 'w', 'utf-8')
-    out = renderer.render_path(os.path.join(dirs['template_dir'], 'contentopf.mustache'), _recipe)
+    out = renderer.render_path(os.path.join(dirs['template_dir'], 'contentopf.html'), _recipe)
     f.write(out)
     f.close()
 
 def genTocNcx(_recipe):
     # generate toc.ncx
     f = codecs.open(os.path.join(dirs['oebps'],'toc.ncx'), 'w', 'utf-8')
-    out = renderer.render_path(os.path.join(dirs['template_dir'], 'tocncx.mustache'), _recipe)
+    out = renderer.render_path(os.path.join(dirs['template_dir'], 'tocncx.html'), _recipe)
     f.write(out)
     f.close()
 
@@ -358,7 +355,7 @@ def genChapter(_chapter, scenes):
     # write the chapter
     f = codecs.open(os.path.join(dirs['content'], 'chap'+_chapter['nbr']+'.html'), 'w', 'utf-8')
     #print('CHAPTER:', _chapter)
-    out = renderer.render_path(os.path.join(dirs['template_dir'], 'chapter.mustache'), _chapter)
+    out = renderer.render_path(os.path.join(dirs['template_dir'], 'chapter.html'), _chapter)
     #remove blank lines
     out =  "".join([s for s in out.strip().splitlines(True) if s.strip()])
     f.write(out)
