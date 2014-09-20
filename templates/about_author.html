@@ -15,5 +15,18 @@
    {{/textblock}}
   <br/></p>
 {{/paras}}{{/about_author}}
+
+{{#point_of_sale}}
+<hr/>
+<p class="centered"><span class="ipadcenterfix">Purchased by: {{purchaser}} on {{date}} for {{{price}}}.</span></p>
+<p class="centered"><span class="ipadcenterfix">Thank you.</span></p>
+<p class="centered">What did you think of this book:</p>
+ <ul>
+   <li><a href="{{stats_url}}lovedit">Loved it, show me more!</a></li>
+   <li><a href="{{stats_url}}notforme">Not for me</a></li>
+ </ul>
+
+<hr/>
+{{/point_of_sale}}
 </body>
 </html>

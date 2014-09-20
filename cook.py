@@ -266,7 +266,7 @@ def formatScene(in_file, scene_count, auto_dropcaps):
         # split the paragraph into blocks by style to be applied to the text
 	
 	# drop capitals in the first character
-        if auto_dropcaps and scene_count == 0 and para_count == 0: 
+        if auto_dropcaps and scene_count == 0 and para_count == 0 and line[0] not in ['&']: 
 	        # a drop capital
             drop_letter, line, text_class = dropCap(line)
             drop_text_block = block(para, para_class, text_class, drop_letter)
@@ -473,6 +473,22 @@ def checkFrontBackMatter(_recipe):
     if ({'name':'table_of_contents'} not in _recipe['front_matter']) and \
        ({'name':'table_of_contents'} not in _recipe['back_matter']):
         raise Exception("You must have 'table_of_contents' in front_matter or back_matter!")
+    return _recipe
+    
+def addPOSData(_recipe, pos_data_loc):
+    # adds last second Point Of Sale data to the recipe.
+    # pos_data_loc is a file system or http location of date to add to the recipe
+    # it must be YAML file similar to the book recipe file. It will be appended to the recipe
+    # TODO: augment to read from a URL or as input to this job
+    # local file read works fine for demonstrations.
+    try:
+        pos_data_loc = os.path.join(file_name+'_raw', file_name+'_pos_data.yaml')
+        print('Opening Point Of Sale data for:', pos_data_loc)
+        with open(pos_data_loc, 'r') as f:
+            _recipe['point_of_sale'] = yaml.load(f)
+    except: # create a new recipe from a template
+        print('No Point of Sale data this time.')
+        
     return _recipe
     
 def augmentFrontMatter(_recipe):
@@ -748,6 +764,8 @@ if __name__ == "__main__": # main processing
    
     recipe = checkFrontBackMatter(recipe)
     
+    recipe = addPOSData(recipe, 'pos')
+    
     # add data to the recipe front matter
     recipe, front_matter_count = augmentFrontMatter(recipe)
 
@@ -773,7 +791,7 @@ if __name__ == "__main__": # main processing
 
     # write the augmented recipe to a file, just for humans to look at
     writeAugmentedRecipe(recipe)
-    print("ePubChef is Done")
+    print("ePubChef is finished, see /epubs.")
     
     # zip results into an epub file 
     epub_file = join(dirs['epub_loc'], file_name + '.epub')
