@@ -35,8 +35,6 @@
     <item id="table_of_contents" href="content/table_of_contents.xhtml"  media-type="application/xhtml+xml" properties="nav"/>
     <item id="dedication" href="dedication.xhtml"  media-type="application/xhtml+xml" />
     
-    <item id="cover-image" properties="cover-image" href="images/cover_image.jpg"
-      media-type="image/jpeg"/>
     <item id="style" href="css/epub-stylesheet.css" media-type="text/css"/>
       
     <item id="chap1" href="content/chap1.xhtml"  media-type="application/xhtml+xml" />
@@ -47,9 +45,10 @@
     <item id="about_author"  href="about_author.xhtml" media-type="application/xhtml+xml" />
     
     <item id="img1" href="images/chef-hat1.jpg" media-type="image/jpeg" />
-    <item id="img2" href="images/epubchef_logo.jpg" media-type="image/jpeg" />
-    <item id="img3" href="images/jazz_frog.jpg" media-type="image/jpeg" />
-    <item id="img4" href="images/relaxed_frog.jpg" media-type="image/jpeg" />
+	<item id="cover-image" properties="cover-image" href="images/cover_image.jpg" media-type="image/jpeg"/>
+    <item id="img3" href="images/epubchef_logo.jpg" media-type="image/jpeg" />
+    <item id="img4" href="images/jazz_frog.jpg" media-type="image/jpeg" />
+    <item id="img5" href="images/relaxed_frog.jpg" media-type="image/jpeg" />
 
   </manifest>
  

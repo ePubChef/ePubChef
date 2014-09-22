@@ -273,7 +273,10 @@ margin: 0;
 text-align: left;
 font-size: 100%
 }
-
+ol.toc
+{
+list-style-type: none;
+}
 /* Kindle */
 /*==For Kindle Fire, Kindle Touch, and Other KF8 devices==*/
 @media amzn-kf8{

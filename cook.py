@@ -77,7 +77,6 @@ dirs = {
      container.xml
   mybook_generated/OEBPS
      content.opf
-     cover_image.jpg
      cover.xhtml
      toc.ncx
   mybook_generated/OEBPS/content
@@ -87,6 +86,7 @@ dirs = {
   mybook_generated/OEBPS/css
      epub-stylesheet.css
   mybook_generated/OEBPS/images
+     cover_image.jpg
      ... images
   mybook_generated/OEBPS/fonts
      ... fonts
@@ -199,9 +199,9 @@ def prepareDirs(dirs):
         shutil.copytree(dirs['raw_images'], dirs['images']) 
         
 	# move the cover image up one level
-    src = os.path.join(dirs['oebps'],'images', 'cover_image.jpg')
-    dst = os.path.join(dirs['oebps'], 'cover_image.jpg')
-    shutil.move(src, dst) 
+    #src = os.path.join(dirs['oebps'],'images', 'cover_image.jpg')
+    #dst = os.path.join(dirs['oebps'], 'cover_image.jpg')
+    #shutil.move(src, dst) 
     
 	# ePubChef creation image 
     src = os.path.join(dirs['template_dir'], 'epubchef_logo.jpg')
@@ -379,31 +379,31 @@ def genChapter(_chapter, scenes):
 
 def cleanText(line):
     # left double quotes
-    line = line.replace(' "'," &ldquo;") # replace straight double quote following a space with left smart quote
+    line = line.replace(' "'," &#8220;") # replace straight double quote following a space with left smart quote
     if line[0] == '"': # replace straight double quote at start of a line with a left smart quote
-        line = line.replace('"',"&ldquo;", 1)
+        line = line.replace('"',"&#8220;", 1)
     
-    line = line.replace('<a &ldquo;','<a "') # undo smart quotes on xhtml links
+    line = line.replace('<a &#8220;','<a "') # undo smart quotes on xhtml links
     
     # right double quotes
-    line = line.replace('" ',"&rdquo; ") # replace straight double quote preceding a space with a right smart quote
-    line = line.replace('."',".&rdquo;") # replace straight double quote following a period with a right smart quote
+    line = line.replace('" ',"&#8221; ") # replace straight double quote preceding a space with a right smart quote
+    line = line.replace('."',".&#8221;") # replace straight double quote following a period with a right smart quote
     
     # undo smart quotes on image xhtml links - part one
-    line = line.replace('.jpg&rdquo;','.jpg"') 
+    line = line.replace('.jpg&#8221;','.jpg"') 
     # undo smart quotes on image xhtml links - part two
-    line = line.replace('&rdquo;/>','"/>') 
+    line = line.replace('&#8221;/>','"/>') 
     # undo smart quotes on image xhtml links - part three
-    line = line.replace('&rdquo; alt=','" alt=') 
+    line = line.replace('&#8221; alt=','" alt=') 
 
     # left single quotes
-    line = line.replace(" '"," &lsquo;") # replace straight single quote following a space with left smart quote
+    line = line.replace(" '"," &#8216;") # replace straight single quote following a space with left smart quote
     if line[0] == "'": # replace straight single quote at start of a line with a left smart quote
-        line = line.replace("'","&lsquo;", 1)
+        line = line.replace("'","&#8216;", 1)
     
     # right single quotes
-    line = line.replace("' ","&rsquo; ") # replace straight single quote preceding a space with a right smart quote
-    line = line.replace(".'",".&rsquo;") # replace straight single quote following a period with a right smart quote
+    line = line.replace("' ","&#8217; ") # replace straight single quote preceding a space with a right smart quote
+    line = line.replace(".'",".&#8217;") # replace straight single quote following a period with a right smart quote
 
  
 
@@ -619,7 +619,10 @@ def augmentImages(_recipe):
     for image in all_images:
         id+=1
         image_name = image[:-4] # trim suffix and dot
-        images.append({'image': image_name, 'id': 'img'+str(id)})
+        if image_name == 'cover_image':
+            images.append({'image': image_name, 'id': 'img'+str(id), 'cover':True})
+        else:
+	        images.append({'image': image_name, 'id': 'img'+str(id)})
         
     return _recipe
     
@@ -757,7 +760,7 @@ def manifest_items():
         items.append(item['src'])
     items.append('css/epub-stylesheet.css')
     #items.append('css/kindle-stylesheet.css')
-    items.append('cover_image.jpg')
+    #items.append('cover_image.jpg')
     for item in recipe['images']:
         items.append("images/"+item['image']+".jpg")
     for item in recipe['fonts']:

@@ -34,8 +34,6 @@
     <item id="{{name}}" href="{{src}}"  media-type="application/xhtml+xml" {{#properties}}properties="{{properties}}"{{/properties}}/>
     {{/front_matter}}
     
-    <item id="cover-image" properties="cover-image" href="images/cover_image.jpg"
-      media-type="image/jpeg"/>
     <item id="style" href="css/epub-stylesheet.css" media-type="text/css"/>
       
     {{#chapters}}
@@ -47,7 +45,12 @@
     {{/back_matter}}
     
     {{#images}}
+	  {{#cover}}
+	<item id="cover-image" properties="cover-image" href="images/cover_image.jpg" media-type="image/jpeg"/>
+	  {{/cover}}
+	  {{^cover}}
     <item id="{{id}}" href="images/{{image}}.jpg" media-type="image/jpeg" />
+      {{/cover}}
     {{/images}}
 
   </manifest>

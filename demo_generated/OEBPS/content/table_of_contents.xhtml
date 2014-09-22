@@ -1,28 +1,52 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
 <head>
-<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
-<link type="text/css" rel="stylesheet" href="../css/epub-stylesheet.css" />
-<title>A Demo eBook</title>
+  <title>A Demo eBook</title>
+  <link rel="stylesheet" type="text/css" href="../css/epub-stylesheet.css"/>
+  <meta charset="utf-8"/>
 </head>
 <body>
-<h2>Table of Contents</h2>
+ <section class="frontmatter TableOfContents" epub:type="frontmatter toc">
+    <header><div id="h1-1"><h1>Table of Contents</h1></div></header>
+<nav xmlns:epub="http://www.idpf.org/2007/ops" epub:type="toc" id="toc">
+<ol class="toc">
 
-<p class="toc_matter"><a href="../cover.xhtml">Cover</a></p>
+  <li class="toc_matter"><a href="../cover.xhtml">Cover</a></li>
 
-<p class="toc_matter"><a href="title_page.xhtml">Title Page</a></p>
+  <li class="toc_matter"><a href="title_page.xhtml">Title Page</a></li>
 
-<p class="toc_matter"><a href="../dedication.xhtml">Dedication</a></p>
+  <li class="toc_matter"><a href="../dedication.xhtml">Dedication</a></li>
 
 
-    <p class="toc_part"><a href="chap1.xhtml#part">Part One</a></p>
-    <p class="toc_chapter_with_parts"><a href="chap1.xhtml#h2-1">About This Book</a></p>
-    <p class="toc_part"><a href="chap2.xhtml#part">Part Two</a></p>
-    <p class="toc_chapter_with_parts"><a href="chap2.xhtml#h2-2">Examples</a></p>
-    <p class="toc_chapter_with_parts"><a href="chap3.xhtml#h2-3">Using the ePbubChef Recipe</a></p>
+  <li class="toc_part"><a href="chap1.xhtml#part">Part One</a>
+  <ol class="toc">
+    <li class="toc_chapter_with_parts"><a href="chap1.xhtml#h2-1">About This Book</a></li>
+    </ol>
+  </li>
 
-<p class="toc_matter"><a href="../description.xhtml">Description</a></p>
-<p class="toc_matter"><a href="../about_author.xhtml">About Author</a></p>
+  <li class="toc_part"><a href="chap2.xhtml#part">Part Two</a>
+  <ol class="toc">
+    <li class="toc_chapter_with_parts"><a href="chap2.xhtml#h2-2">Examples</a></li>
+    <li class="toc_chapter_with_parts"><a href="chap3.xhtml#h2-3">Using the ePbubChef Recipe</a></li>
+    </ol>
+  </li>
+
+
+  <li class="toc_matter"><a href="../description.xhtml">Description</a></li>
+  <li class="toc_matter"><a href="../about_author.xhtml">About Author</a></li>
+</ol>
+</nav>
+<nav xmlns:epub="http://www.idpf.org/2007/ops" epub:type="landmarks" id="guide" hidden="hidden">
+		<h2>Guide</h2>
+		<ol>
+		   <li>
+			  <a epub:type="toc" href="#toc">Table of Contents</a>
+		   </li>
+		   <li>
+			  <a epub:type="bodymatter" href="chap1.xhtml">Begin Reading</a>
+		   </li>
+		</ol>
+</nav>
+</section>
 </body>
 </html>
