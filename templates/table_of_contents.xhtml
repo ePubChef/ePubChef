@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+<link type="text/css" rel="stylesheet" href="../css/epub-stylesheet.css" />
+<title>{{title}}</title>
+</head>
+<body>
+<h2>Table of Contents</h2>
+{{#front_matter}}{{#toc_entry}}
+<p class="toc_matter"><a href="{{dir}}{{name}}.xhtml">{{toc_entry}}</a></p>
+{{/toc_entry}}{{/front_matter}}
+
+{{#parts}}
+  {{#playorder}}
+    <p class="toc_part"><a href="chap{{starting_chapter}}.xhtml#part">{{part_name}}</a></p>
+  {{/playorder}}
+  {{#chp}}
+    <p class="{{chap_toc_style}}"><a href="chap{{nbr}}.xhtml#{{id}}">{{name}}</a></p>
+  {{/chp}}
+{{/parts}}
+
+{{#back_matter}}
+<p class="toc_matter"><a href="{{dir}}{{name}}.xhtml">{{toc_entry}}</a></p>
+{{/back_matter}}
+</body>
+</html>

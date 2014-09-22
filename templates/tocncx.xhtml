@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1" xml:lang="en">
+  <head>
+    <meta content="{{identifier}}" name="dtb:uid" />
+    <meta content="1" name="dtb:depth" /> 
+    <meta content="0" name="dtb:totalPageCount" />
+    <meta content="0" name="dtb:maxPageNumber" />
+  </head>
+  <docTitle>
+    <text>{{title}}</text>
+  </docTitle>
+  <docAuthor>
+    <text>{{author}}</text>
+  </docAuthor>
+  <navMap>
+   <!-- front matter -->
+   {{#front_matter}}
+   <navPoint id="{{id}}" playOrder="{{playorder}}">
+      <navLabel> <text>{{tocncx_entry}}</text> </navLabel>
+      <content src="{{src}}" />
+   </navPoint>
+   {{/front_matter}}
+   
+   <!-- Parts and Chapters -->
+   {{#parts}}
+     {{#playorder}}
+     <navPoint id="ncx_{{playorder}}" playOrder="{{playorder}}">
+     <navLabel><text>{{part_name}}</text></navLabel>
+     <content src="content/chap{{starting_chapter}}.xhtml#part" />
+     {{/playorder}}
+     {{#chp}}
+       <navPoint id="ncx_{{id}}" playOrder="{{playorder}}">
+         <navLabel><text>Chapter {{nbr}} - {{name}}</text></navLabel>
+         <content src="content/chap{{nbr}}.xhtml#{{id}}" />
+       </navPoint>
+     {{/chp}}
+     {{#playorder}}</navPoint>{{/playorder}}
+   {{/parts}}
+   
+   <!-- back matter -->
+   {{#back_matter}}
+   <navPoint id="{{id}}" playOrder="{{playorder}}">
+      <navLabel><text>{{tocncx_entry}}</text></navLabel>
+      <content src="{{src}}" />
+    </navPoint>
+   {{/back_matter}}
+  </navMap>
+</ncx>

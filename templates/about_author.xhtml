@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<head>
+<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
+<link type="text/css" rel="stylesheet" href="css/epub-stylesheet.css" />
+<title>{{title}}</title>
+</head>
+<body>
+<section class="frontmatter-rw Introduction-rw" epub:type="frontmatter">
+<header>
+  <h1>About the Author</h1>
+</header>
+{{#about_author}}{{#paras}}
+  <p><br/>
+   {{#textblock}}
+     {{#em}}<em>{{/em}}{{{words}}}{{#em}}</em>{{/em}}
+   {{/textblock}}
+  <br/></p>
+{{/paras}}{{/about_author}}
+
+{{#point_of_sale}}
+<hr/>
+<p class="centered"><span class="ipadcenterfix">Purchased by: {{purchaser}} on {{date}} for {{{price}}}.</span></p>
+<p class="centered"><span class="ipadcenterfix">Thank you.</span></p>
+<p class="centered">What did you think of this book:</p>
+ <ul>
+   <li><a href="{{stats_url}}lovedit">Loved it, show me more!</a></li>
+   <li><a href="{{stats_url}}notforme">Not for me</a></li>
+ </ul>
+
+<hr/>
+{{/point_of_sale}}
+</section></body></html>

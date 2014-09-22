@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" version="3.0" xml:lang="en" unique-identifier="pub-id" prefix="cc: http://creativecommons.org/ns#">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <dc:title id="title">{{title}}</dc:title>
+    <meta refines="#title" property="title-type">main</meta>
+    <dc:creator id="creator">{{author}}</dc:creator>
+    <meta refines="#creator" property="file-as">{{file_as}}</meta>
+    <meta refines="#creator" property="role" scheme="marc:relators">aut</meta>
+    <dc:identifier id="pub-id">{{identifier}}</dc:identifier>
+    <dc:language>en-US</dc:language>
+    <meta property="dcterms:modified">2012-01-18T12:47:00Z</meta>
+    <dc:publisher>{{publisher}}</dc:publisher>
+    <dc:contributor id="contrib1">{{contributor}}</dc:contributor>
+    <meta refines="#contrib1" property="role" scheme="marc:relators">mrk</meta>
+    <dc:rights>This work is shared with the public using the Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0) license.</dc:rights>        
+    <link rel="cc:license" href="http://creativecommons.org/licenses/by-sa/3.0/"/>
+    <meta property="cc:attributionURL">{{attributionURL}}</meta>
+  </metadata>
+  
+  <manifest>
+    <item id="font.stix.regular" href="fonts/STIXGeneral.otf"
+      media-type="application/vnd.ms-opentype"/>
+    <item id="font.stix.italic" href="fonts/STIXGeneralItalic.otf"
+      media-type="application/vnd.ms-opentype"/>
+    <item id="font.stix.bold" href="fonts/STIXGeneralBol.otf"
+      media-type="application/vnd.ms-opentype"/>
+    <item id="font.stix.bold.italic" href="fonts/STIXGeneralBolIta.otf"
+      media-type="application/vnd.ms-opentype"/>
+      
+    <!--<item id="toc" properties="nav" href="content/table_of_contents.xhtml" media-type="application/xhtml+xml"/> -->
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
+    
+    {{#front_matter}}
+    <item id="{{name}}" href="{{src}}"  media-type="application/xhtml+xml" {{#properties}}properties="{{properties}}"{{/properties}}/>
+    {{/front_matter}}
+    
+    <item id="cover-image" properties="cover-image" href="images/cover_image.jpg"
+      media-type="image/jpeg"/>
+    <item id="style" href="css/epub-stylesheet.css" media-type="text/css"/>
+      
+    {{#chapters}}
+    <item id="chap{{nbr}}" href="content/chap{{nbr}}.xhtml"  media-type="application/xhtml+xml" />
+    {{/chapters}}
+
+    {{#back_matter}}
+    <item id="{{name}}"  href="{{src}}" media-type="application/xhtml+xml" />
+    {{/back_matter}}
+    
+    {{#images}}
+    <item id="{{id}}" href="images/{{image}}.jpg" media-type="image/jpeg" />
+    {{/images}}
+
+  </manifest>
+ 
+  <spine toc="ncx">
+    {{#content_files}}
+    <itemref idref="{{file}}" linear="{{linear}}"/>
+    {{/content_files}}
+  </spine>
+</package>

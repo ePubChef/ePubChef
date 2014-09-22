@@ -1,8 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<!DOCTYPE ncx PUBLIC "-//NISO//DTD ncx 2005-1//EN" "http://www.daisy.org/z3986/2005/ncx-2005-1.dtd">
 <ncx xmlns="http://www.daisy.org/z3986/2005/ncx/" version="2005-1" xml:lang="en">
   <head>
-    <meta content="urn:uuid:57b681b5-137b-4791-b5c5-99fdcfaa41ee" name="dtb:uid" />
+    <meta content="code.google.com.epub-samples.moby-dick-basic" name="dtb:uid" />
     <meta content="1" name="dtb:depth" /> 
     <meta content="0" name="dtb:totalPageCount" />
     <meta content="0" name="dtb:maxPageNumber" />
@@ -17,51 +16,51 @@
    <!-- front matter -->
    <navPoint id="ncx_cover" playOrder="1">
       <navLabel> <text>Cover</text> </navLabel>
-      <content src="cover.html" />
+      <content src="cover.xhtml" />
    </navPoint>
    <navPoint id="ncx_title_page" playOrder="2">
       <navLabel> <text>Title Page</text> </navLabel>
-      <content src="content/title_page.html" />
+      <content src="content/title_page.xhtml" />
    </navPoint>
    <navPoint id="ncx_table_of_contents" playOrder="3">
       <navLabel> <text>Table of Contents</text> </navLabel>
-      <content src="content/table_of_contents.html" />
+      <content src="content/table_of_contents.xhtml" />
    </navPoint>
    <navPoint id="ncx_dedication" playOrder="4">
       <navLabel> <text>Dedication</text> </navLabel>
-      <content src="dedication.html" />
+      <content src="dedication.xhtml" />
    </navPoint>
    
    <!-- Parts and Chapters -->
      <navPoint id="ncx_5" playOrder="5">
      <navLabel><text>Part One</text></navLabel>
-     <content src="content/chap1.html#part" />
+     <content src="content/chap1.xhtml#part" />
        <navPoint id="ncx_h2-1" playOrder="6">
          <navLabel><text>Chapter 1 - About This Book</text></navLabel>
-         <content src="content/chap1.html#h2-1" />
+         <content src="content/chap1.xhtml#h2-1" />
        </navPoint>
      </navPoint>
      <navPoint id="ncx_7" playOrder="7">
      <navLabel><text>Part Two</text></navLabel>
-     <content src="content/chap2.html#part" />
+     <content src="content/chap2.xhtml#part" />
        <navPoint id="ncx_h2-2" playOrder="8">
          <navLabel><text>Chapter 2 - Examples</text></navLabel>
-         <content src="content/chap2.html#h2-2" />
+         <content src="content/chap2.xhtml#h2-2" />
        </navPoint>
        <navPoint id="ncx_h2-3" playOrder="9">
          <navLabel><text>Chapter 3 - Using the ePbubChef Recipe</text></navLabel>
-         <content src="content/chap3.html#h2-3" />
+         <content src="content/chap3.xhtml#h2-3" />
        </navPoint>
      </navPoint>
    
    <!-- back matter -->
    <navPoint id="ncx_description" playOrder="10">
       <navLabel><text>Description</text></navLabel>
-      <content src="description.html" />
+      <content src="description.xhtml" />
     </navPoint>
    <navPoint id="ncx_about_author" playOrder="11">
       <navLabel><text>About Author</text></navLabel>
-      <content src="about_author.html" />
+      <content src="about_author.xhtml" />
     </navPoint>
   </navMap>
 </ncx>

@@ -1,11 +1,16 @@
 
 title: A Demo eBook
 author: Ann Author
+file_as: Author, Ann
+identifier: code.google.com.epub-samples.moby-dick-basic
 coverdesign: John Cobo
 publish_date: 2014-01-01
 uuid: urn:uuid:57b681b5-137b-4791-b5c5-99fdcfaa41ee
 epubchef_voucher: abc123
-publisher: John Cobo
+publisher: jcobobooks
+contributor: John Cobo
+attributionURL: http://jcobobooks.com/
+
 auto_dropcaps: True
 meta_descn: A book about cooking books
 subjects: 

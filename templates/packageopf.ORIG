@@ -31,7 +31,7 @@
     <item href="{{src}}" id="{{name}}" media-type="application/xhtml+xml" />
     {{/front_matter}}
     {{#chapters}}
-    <item href="content/chap{{nbr}}.html" id="chap{{nbr}}" media-type="application/xhtml+xml" />
+    <item href="content/chap{{nbr}}.xhtml" id="chap{{nbr}}" media-type="application/xhtml+xml" />
     {{/chapters}}
     {{#back_matter}}
     <item href="{{src}}" id="{{name}}" media-type="application/xhtml+xml" />
@@ -50,8 +50,8 @@
   </spine>
   <!-- Guide Section -->
   <guide>
-    <reference href="cover.html" type="cover" title="Cover" /> 
-    <reference href="content/table_of_contents.html" type="toc" title="Table of Contents" />
-    <reference href="content/chap1.html" type="text" title="Startup Page" />
+    <reference href="cover.xhtml" type="cover" title="Cover" /> 
+    <reference href="content/table_of_contents.xhtml" type="toc" title="Table of Contents" />
+    <reference href="content/chap1.xhtml" type="text" title="Startup Page" />
   </guide>
 </package>
