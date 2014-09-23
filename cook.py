@@ -269,7 +269,7 @@ def formatScene(in_file, scene_count, auto_dropcaps):
         
 	# escape odd characters
         line = line.replace("'","&#39;") # single quote
-        line = re.sub(r'&(?![#a-zA-Z0-9]+?;)', "&amp;", line) # ampersands
+        line = re.sub(r'&(?![#a-zA-Z0-9]+?;)', "&#38;", line) # ampersands
 	# double spaces to single
 	# three dots ... to an elipsis
         line = line.replace('...',"&#8230;") 
