@@ -197,11 +197,6 @@ def prepareDirs(dirs):
        
         # try again now that chapters and cover image has been created
         shutil.copytree(dirs['raw_images'], dirs['images']) 
-        
-	# move the cover image up one level
-    #src = os.path.join(dirs['oebps'],'images', 'cover_image.jpg')
-    #dst = os.path.join(dirs['oebps'], 'cover_image.jpg')
-    #shutil.move(src, dst) 
     
 	# ePubChef creation image 
     src = os.path.join(dirs['template_dir'], 'epubchef_logo.jpg')
@@ -212,7 +207,9 @@ def prepareDirs(dirs):
     try:
         shutil.copytree(dirs['raw_fonts'], dirs['fonts']) 
     except: # create ..._raw and ..._raw/fonts if they don't exist
-        os.makedirs(dirs['raw_fonts'])
+        #os.makedirs(dirs['raw_fonts'])
+        src = 'demo_raw/fonts'
+        shutil.copytree(src, dirs['raw_fonts'])
         # try again
         shutil.copytree(dirs['raw_fonts'], dirs['fonts']) 
         
@@ -405,8 +402,6 @@ def cleanText(line):
     line = line.replace("' ","&#8217; ") # replace straight single quote preceding a space with a right smart quote
     line = line.replace(".'",".&#8217;") # replace straight single quote following a period with a right smart quote
 
- 
-
     return line
 
 def setParaClass(para_count, scene_count):
@@ -458,7 +453,6 @@ def generateJson(all_paras):
         f.close()
     return prepared_scene
 	
-	
 def prepareScene(scene_name, scene_count):
     # open raw scene file
     in_file = codecs.open(join(dirs['raw_book'], scene_name+'.txt'), 'r', 'utf-8')
@@ -484,9 +478,20 @@ def checkFrontBackMatter(_recipe):
         print('front_matter:', _recipe['front_matter'])
         raise Exception("You must have 'cover' in front_matter!")
         
-    if ({'name':'table_of_contents'} not in _recipe['front_matter']) and \
-       ({'name':'table_of_contents'} not in _recipe['back_matter']):
-        raise Exception("You must have 'table_of_contents' in front_matter or back_matter!")
+    if {'name':'title_page'} not in _recipe['front_matter']:
+        print('front_matter:', _recipe['front_matter'])
+        raise Exception("You must have 'title_page' in front_matter!")
+        
+    if {'name':'table_of_contents'} not in _recipe['front_matter']:
+        print('front_matter:', _recipe['front_matter'])
+        raise Exception("You must have 'table_of_contents' in front_matter!")
+        
+    for fname in _recipe['front_matter'] + _recipe['back_matter'] :
+        # create a dummy template if none exist
+        if not os.path.isfile(join(dirs['template_dir'],fname['name']+'.xhtml')):
+            src = join(dirs['template_dir'], 'template_template.xhtml')
+            dst = join(dirs['template_dir'], fname['name']+'.xhtml')
+            shutil.copyfile(src, dst)
     return _recipe
     
 def addPOSData(_recipe, pos_data_loc):
@@ -541,6 +546,7 @@ def prettify(messy_string):
             s = s + word+ ' '
     s = s[:-1] # remove final space
     return s
+    
 def getChapterMetadata(c):
     chapter_metadata = {'id':c['id'], 
                         'playorder': c['playorder'],
@@ -583,8 +589,7 @@ def augmentParts(_recipe):
             chapter_metadata = getChapterMetadata(c)
             parts_dict['chp'].append(chapter_metadata)
         _recipe['parts'] = [parts_dict]
-     
-    
+         
     #print ('parts:', _recipe['parts'])
     return _recipe
     
@@ -636,8 +641,7 @@ def augmentFonts(_recipe):
     for font in all_fonts:
         id+=1
         font_name = font[:-4] # trim suffix and dot
-        fonts.append({'font': font_name, 'id': 'fnt'+str(id)})
-        
+        fonts.append({'font': font_name, 'id': 'fnt'+str(id)})       
     return _recipe
 
 def determineLinear(_item_name):
@@ -648,7 +652,7 @@ def determineLinear(_item_name):
     return linear
     
 def addContentFiles(_recipe):
-# for package.opf spine section
+    # for package.opf spine section
     # add front, back and chapter data to the _recipe
     _recipe['content_files'] = []
     for item  in _recipe['front_matter']:
@@ -665,11 +669,11 @@ def addContentFiles(_recipe):
         
     return _recipe
 
-def writeAugmentedRecipe(recipe):
+def writeAugmentedRecipe(_recipe):
     # write recipe to a file merely for humans to look at should they wish
     if arg2 == 'debug':
         pp = pprint.PrettyPrinter(indent=2)
-        entire_structured_book = pprint.pformat(recipe)
+        entire_structured_book = pprint.pformat(_recipe)
         f = codecs.open(join(dirs['tmp'], 'augmented_'+file_name+'_recipe.json'), 'w', 'utf-8')
         f.write(entire_structured_book)
         f.close()
@@ -776,7 +780,7 @@ def createArchive(rootDir, outputPath):
     fileList = []
     fileList.append(os.path.join('META-INF', 'container.xml'))
     fileList.append(os.path.join('OEBPS', 'package.opf'))
-    #for itemPath in __listManifestItems(os.path.join('OEBPS', 'content.opf')):
+
     for itemPath in manifest_items():
         fileList.append(os.path.join('OEBPS', itemPath))
     for filePath in fileList:
@@ -784,7 +788,7 @@ def createArchive(rootDir, outputPath):
     fout.close()
     os.chdir(cwd)
     
-def checkEpub(checkerPath, epubPath):
+def epubcheck(checkerPath, epubPath):
     subprocess.call(['java', '-jar', checkerPath, epubPath], shell = True)
         
 def kindlegen(checkerPath, epubPath):
@@ -843,7 +847,7 @@ if __name__ == "__main__": # main processing
     # execute cook.py with an additional argument, "python cook.py validate"
     if arg2 in ['validate','kindlegen']:
         epub_file = join(dirs['epub_loc'], file_name + '.epub')
-        checkEpub('../epubcheck/epubcheck-3.0.1.jar', epub_file )
+        epubcheck('../epubcheck/epubcheck-3.0.1.jar', epub_file )
     
     # Optionally run kindlgen to create a .mobi
     # NOTE: kindlgen is not part of ePubChef and we won't be offended if you don't run 
