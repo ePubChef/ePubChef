@@ -66,6 +66,8 @@ dirs = {
 	'css':'css',
 	'tmp':'debug',
     'epub_loc': 'epubs',
+    'raw_fonts': file_name+'_raw'+'/fonts',
+    'fonts': gen_dir+'/OEBPS/fonts',
 	}
 
 ''' structure to be generated for "mybook" is:
@@ -75,17 +77,19 @@ dirs = {
      container.xml
   mybook_generated/OEBPS
      content.opf
-     cover_image.jpg
-     cover.html
+     cover.xhtml
      toc.ncx
   mybook_generated/OEBPS/content
-     content001.html
-     content...html
-     htmloc.html
+     content001.xhtml
+     content...xhtml
+     xhtmloc.xhtml
   mybook_generated/OEBPS/css
      epub-stylesheet.css
   mybook_generated/OEBPS/images
+     cover_image.jpg
      ... images
+  mybook_generated/OEBPS/fonts
+     ... fonts
 '''    
 
 ''' source files are:
@@ -98,6 +102,8 @@ dirs = {
      _0010_010_scene....txt (many scene files) 
   /mybook_raw/images
      ...jpg *
+  /mybook_raw/fonts
+     ...otf
   /templates
      content.mustache
      table_of_contents.mustache
@@ -117,7 +123,7 @@ Each item in the list contains "words" and optionally a "text_class." For exampl
 	     ]
 
 paragraphs are items in a dictionary called "paras". Each item is either a "textblock"
-of which there can be many, or a "class" which defines the html class of the paragraph.
+of which there can be many, or a "class" which defines the xhtml class of the paragraph.
 '''
 renderer = pystache.Renderer()
 
@@ -191,17 +197,22 @@ def prepareDirs(dirs):
        
         # try again now that chapters and cover image has been created
         shutil.copytree(dirs['raw_images'], dirs['images']) 
-        
-	# move the cover image up one level
-    src = os.path.join(dirs['oebps'],'images', 'cover_image.jpg')
-    dst = os.path.join(dirs['oebps'], 'cover_image.jpg')
-    shutil.move(src, dst) 
     
 	# ePubChef creation image 
     src = os.path.join(dirs['template_dir'], 'epubchef_logo.jpg')
     dst = os.path.join(dirs['oebps'],'images', 'epubchef_logo.jpg')
     shutil.copyfile(src, dst) 
     
+    # fonts
+    try:
+        shutil.copytree(dirs['raw_fonts'], dirs['fonts']) 
+    except: # create ..._raw and ..._raw/fonts if they don't exist
+        #os.makedirs(dirs['raw_fonts'])
+        src = 'demo_raw/fonts'
+        shutil.copytree(src, dirs['raw_fonts'])
+        # try again
+        shutil.copytree(dirs['raw_fonts'], dirs['fonts']) 
+        
     # css
     css_src = dirs['css']
     css_dst = os.path.join(dirs['oebps'],'css')
@@ -243,19 +254,19 @@ def formatScene(in_file, scene_count, auto_dropcaps):
         textblock = []
         text_class = False # default
         
-	# determine if the line is already html and so does not need <p> tags
+	# determine if the line is already xhtml and so does not need <p> tags
         if not line.endswith(">"):  # TODO: make this more foolproof
-	    # a text line (not HTML)
+	    # a text line (not XHTML)
             para['needs_para_tag'] = True
             line = cleanText(line)
         else:
-            # an HTML line
+            # an xhtml line
             pass
             #print(line)
         
 	# escape odd characters
         line = line.replace("'","&#39;") # single quote
-        line = re.sub(r'&(?![#a-zA-Z0-9]+?;)', "&amp;", line) # ampersands
+        line = re.sub(r'&(?![#a-zA-Z0-9]+?;)', "&#38;", line) # ampersands
 	# double spaces to single
 	# three dots ... to an elipsis
         line = line.replace('...',"&#8230;") 
@@ -296,23 +307,23 @@ def genPage(_recipe, page_name):
     else:
         out_dir = 'oebps'
 
-    f = codecs.open(os.path.join(dirs[out_dir], page_name+".html"), 'w', 'utf-8')
+    f = codecs.open(os.path.join(dirs[out_dir], page_name+".xhtml"), 'w', 'utf-8')
     out = renderer.render_path(os.path.join(dirs['template_dir'], 
-	    page_name+'.html'), _recipe)
+	    page_name+'.xhtml'), _recipe)
     f.write(out)
     f.close()
 
-def genContentOpf(_recipe):
-    # generate content.opf file 
-    f = codecs.open(os.path.join(dirs['oebps'],'content.opf'), 'w', 'utf-8')
-    out = renderer.render_path(os.path.join(dirs['template_dir'], 'contentopf.html'), _recipe)
+def genPackageOpf(_recipe):
+    # generate package.opf file 
+    f = codecs.open(os.path.join(dirs['oebps'],'package.opf'), 'w', 'utf-8')
+    out = renderer.render_path(os.path.join(dirs['template_dir'], 'packageopf.xhtml'), _recipe)
     f.write(out)
     f.close()
 
 def genTocNcx(_recipe):
     # generate toc.ncx
     f = codecs.open(os.path.join(dirs['oebps'],'toc.ncx'), 'w', 'utf-8')
-    out = renderer.render_path(os.path.join(dirs['template_dir'], 'tocncx.html'), _recipe)
+    out = renderer.render_path(os.path.join(dirs['template_dir'], 'tocncx.xhtml'), _recipe)
     f.write(out)
     f.close()
 
@@ -353,9 +364,9 @@ def genChapter(_chapter, scenes):
         _chapter['scenes'].append(prepared_scene)
         scene_count+=1
     # write the chapter
-    f = codecs.open(os.path.join(dirs['content'], 'chap'+_chapter['nbr']+'.html'), 'w', 'utf-8')
+    f = codecs.open(os.path.join(dirs['content'], 'chap'+_chapter['nbr']+'.xhtml'), 'w', 'utf-8')
     #print('CHAPTER:', _chapter)
-    out = renderer.render_path(os.path.join(dirs['template_dir'], 'chapter.html'), _chapter)
+    out = renderer.render_path(os.path.join(dirs['template_dir'], 'chapter.xhtml'), _chapter)
     #remove blank lines
     out =  "".join([s for s in out.strip().splitlines(True) if s.strip()])
     f.write(out)
@@ -365,33 +376,31 @@ def genChapter(_chapter, scenes):
 
 def cleanText(line):
     # left double quotes
-    line = line.replace(' "'," &ldquo;") # replace straight double quote following a space with left smart quote
+    line = line.replace(' "'," &#8220;") # replace straight double quote following a space with left smart quote
     if line[0] == '"': # replace straight double quote at start of a line with a left smart quote
-        line = line.replace('"',"&ldquo;", 1)
+        line = line.replace('"',"&#8220;", 1)
     
-    line = line.replace('<a &ldquo;','<a "') # undo smart quotes on HTML links
+    line = line.replace('<a &#8220;','<a "') # undo smart quotes on xhtml links
     
     # right double quotes
-    line = line.replace('" ',"&rdquo; ") # replace straight double quote preceding a space with a right smart quote
-    line = line.replace('."',".&rdquo;") # replace straight double quote following a period with a right smart quote
+    line = line.replace('" ',"&#8221; ") # replace straight double quote preceding a space with a right smart quote
+    line = line.replace('."',".&#8221;") # replace straight double quote following a period with a right smart quote
     
-    # undo smart quotes on image HTML links - part one
-    line = line.replace('.jpg&rdquo;','.jpg"') 
-    # undo smart quotes on image HTML links - part two
-    line = line.replace('&rdquo;/>','"/>') 
-    # undo smart quotes on image HTML links - part three
-    line = line.replace('&rdquo; alt=','" alt=') 
+    # undo smart quotes on image xhtml links - part one
+    line = line.replace('.jpg&#8221;','.jpg"') 
+    # undo smart quotes on image xhtml links - part two
+    line = line.replace('&#8221;/>','"/>') 
+    # undo smart quotes on image xhtml links - part three
+    line = line.replace('&#8221; alt=','" alt=') 
 
     # left single quotes
-    line = line.replace(" '"," &lsquo;") # replace straight single quote following a space with left smart quote
+    line = line.replace(" '"," &#8216;") # replace straight single quote following a space with left smart quote
     if line[0] == "'": # replace straight single quote at start of a line with a left smart quote
-        line = line.replace("'","&lsquo;", 1)
+        line = line.replace("'","&#8216;", 1)
     
     # right single quotes
-    line = line.replace("' ","&rsquo; ") # replace straight single quote preceding a space with a right smart quote
-    line = line.replace(".'",".&rsquo;") # replace straight single quote following a period with a right smart quote
-
- 
+    line = line.replace("' ","&#8217; ") # replace straight single quote preceding a space with a right smart quote
+    line = line.replace(".'",".&#8217;") # replace straight single quote following a period with a right smart quote
 
     return line
 
@@ -444,7 +453,6 @@ def generateJson(all_paras):
         f.close()
     return prepared_scene
 	
-	
 def prepareScene(scene_name, scene_count):
     # open raw scene file
     in_file = codecs.open(join(dirs['raw_book'], scene_name+'.txt'), 'r', 'utf-8')
@@ -470,9 +478,20 @@ def checkFrontBackMatter(_recipe):
         print('front_matter:', _recipe['front_matter'])
         raise Exception("You must have 'cover' in front_matter!")
         
-    if ({'name':'table_of_contents'} not in _recipe['front_matter']) and \
-       ({'name':'table_of_contents'} not in _recipe['back_matter']):
-        raise Exception("You must have 'table_of_contents' in front_matter or back_matter!")
+    if {'name':'title_page'} not in _recipe['front_matter']:
+        print('front_matter:', _recipe['front_matter'])
+        raise Exception("You must have 'title_page' in front_matter!")
+        
+    if {'name':'table_of_contents'} not in _recipe['front_matter']:
+        print('front_matter:', _recipe['front_matter'])
+        raise Exception("You must have 'table_of_contents' in front_matter!")
+        
+    for fname in _recipe['front_matter'] + _recipe['back_matter'] :
+        # create a dummy template if none exist
+        if not os.path.isfile(join(dirs['template_dir'],fname['name']+'.xhtml')):
+            src = join(dirs['template_dir'], 'template_template.xhtml')
+            dst = join(dirs['template_dir'], fname['name']+'.xhtml')
+            shutil.copyfile(src, dst)
     return _recipe
     
 def addPOSData(_recipe, pos_data_loc):
@@ -494,23 +513,19 @@ def addPOSData(_recipe, pos_data_loc):
 def augmentFrontMatter(_recipe):
     # add playorder and id values to the recipe
     front_matter_count = len(_recipe['front_matter'])
-    #if _recipe['kindle']:
-    #    front_matter_count -= 1 # don't do a coverpage if kindle
 
     playorder = 0
     for item in _recipe['front_matter']:
-        #if _recipe['kindle'] and item['name'] == 'cover':
-        #    pass # don't include cover on kindle
-        #else:
-        #    playorder +=1
         playorder +=1
         item['playorder'] = playorder
         item['id'] = "ncx_"+item['name']
         
         if item['name'] in ['table_of_contents', 'title_page']:
-            item['src'] = 'content/'+item['name']+'.html'
+            item['src'] = 'content/'+item['name']+'.xhtml'
+            if item['name'] == 'table_of_contents':
+                item['properties'] = 'nav'
         else:
-            item['src'] = item['name']+'.html'
+            item['src'] = item['name']+'.xhtml'
             item['dir'] = '../'
         if item['name'] not in ['table_of_contents']: 
 	    # don't have toc as an entry in the toc
@@ -531,6 +546,7 @@ def prettify(messy_string):
             s = s + word+ ' '
     s = s[:-1] # remove final space
     return s
+    
 def getChapterMetadata(c):
     chapter_metadata = {'id':c['id'], 
                         'playorder': c['playorder'],
@@ -573,8 +589,7 @@ def augmentParts(_recipe):
             chapter_metadata = getChapterMetadata(c)
             parts_dict['chp'].append(chapter_metadata)
         _recipe['parts'] = [parts_dict]
-     
-    
+         
     #print ('parts:', _recipe['parts'])
     return _recipe
     
@@ -585,9 +600,9 @@ def augmentBackMatter(_recipe, playorder):
         item['id'] = "ncx_"+item['name']
         
         if item['name'] in ['table_of_contents', 'title_page']:
-            item['src'] = 'content/'+item['name']+'.html'
+            item['src'] = 'content/'+item['name']+'.xhtml'
         else:
-            item['src'] = item['name']+'.html'
+            item['src'] = item['name']+'.xhtml'
             item['dir'] = '../'
         item['toc_entry'] = prettify(item['name'])
         item['tocncx_entry'] = prettify(item['name'])
@@ -609,32 +624,56 @@ def augmentImages(_recipe):
     for image in all_images:
         id+=1
         image_name = image[:-4] # trim suffix and dot
-        images.append({'image': image_name, 'id': 'img'+str(id)})
+        if image_name == 'cover_image':
+            images.append({'image': image_name, 'id': 'img'+str(id), 'cover':True})
+        else:
+	        images.append({'image': image_name, 'id': 'img'+str(id)})
         
     return _recipe
+    
+def augmentFonts(_recipe):
+    # create a fonts section in 'recipe'
+    _recipe['fonts'] = []
+    fonts = _recipe['fonts']    
+    id = 0
+    all_fonts = os.listdir(dirs['fonts'])
+    #print('fonts:', all_fonts)
+    for font in all_fonts:
+        id+=1
+        font_name = font[:-4] # trim suffix and dot
+        fonts.append({'font': font_name, 'id': 'fnt'+str(id)})       
+    return _recipe
 
+def determineLinear(_item_name):
+    if _item_name in ['cover', 'table_of_contents']:
+        linear = 'yes'
+    else:
+        linear = 'no'
+    return linear
+    
 def addContentFiles(_recipe):
-# for content.opf spine section
+    # for package.opf spine section
     # add front, back and chapter data to the _recipe
     _recipe['content_files'] = []
     for item  in _recipe['front_matter']:
-            #name = item #['src'][:-5] #strip off ".html"
-            #name = name.split("/")[-1] # strip off any path
-            _recipe['content_files'].append({'file': item['name']})
+        linear = determineLinear(item['name'])
+        _recipe['content_files'].append({'file': item['name'], 'linear': linear})
     
     for chapter in _recipe['chapters']:
-        _recipe['content_files'].append({'file': "chap"+chapter['nbr']})
-
+        linear = determineLinear(item['name'])
+        _recipe['content_files'].append({'file': "chap"+chapter['nbr'], 'linear': linear})
+        
     for item  in _recipe['back_matter']:
-	    _recipe['content_files'].append({'file': item['name']})
+        linear = determineLinear(item['name'])
+        _recipe['content_files'].append({'file': item['name'], 'linear': linear})
         
     return _recipe
 
-def writeAugmentedRecipe(recipe):
+def writeAugmentedRecipe(_recipe):
     # write recipe to a file merely for humans to look at should they wish
     if arg2 == 'debug':
         pp = pprint.PrettyPrinter(indent=2)
-        entire_structured_book = pprint.pformat(recipe)
+        entire_structured_book = pprint.pformat(_recipe)
         f = codecs.open(join(dirs['tmp'], 'augmented_'+file_name+'_recipe.json'), 'w', 'utf-8')
         f.write(entire_structured_book)
         f.close()
@@ -696,8 +735,8 @@ def genFrontBackMatter(_recipe):
     # for each front/back matter page the recipe name refers to:
     # 1. text from the raw folder,
     # 2. a mustache template from the templates folder,
-    # 3. output to an html file in the OEPBS folder, the exceptions are
-    #     toc.html and title_page.html which go in the content folder
+    # 3. output to an xhtml file in the OEPBS folder, the exceptions are
+    #     toc.xhtml and title_page.xhtml which go in the content folder
 
     for page in _recipe['front_matter'] + _recipe['back_matter']:
         if page['name'] not in ['cover','title_page','table_of_contents']:
@@ -720,14 +759,16 @@ def manifest_items():
     for item in recipe['front_matter']:
         items.append(item['src'])
     for item in recipe['chapters']:
-        items.append("content/chap"+item['nbr']+".html")
+        items.append("content/chap"+item['nbr']+".xhtml")
     for item in recipe['back_matter']:
         items.append(item['src'])
     items.append('css/epub-stylesheet.css')
     #items.append('css/kindle-stylesheet.css')
-    items.append('cover_image.jpg')
+    #items.append('cover_image.jpg')
     for item in recipe['images']:
         items.append("images/"+item['image']+".jpg")
+    for item in recipe['fonts']:
+        items.append("fonts/"+item['font']+".otf")
     return items
     
 def createArchive(rootDir, outputPath):
@@ -738,8 +779,8 @@ def createArchive(rootDir, outputPath):
     fout.write('mimetype', compress_type = zipfile.ZIP_STORED)
     fileList = []
     fileList.append(os.path.join('META-INF', 'container.xml'))
-    fileList.append(os.path.join('OEBPS', 'content.opf'))
-    #for itemPath in __listManifestItems(os.path.join('OEBPS', 'content.opf')):
+    fileList.append(os.path.join('OEBPS', 'package.opf'))
+
     for itemPath in manifest_items():
         fileList.append(os.path.join('OEBPS', itemPath))
     for filePath in fileList:
@@ -747,7 +788,7 @@ def createArchive(rootDir, outputPath):
     fout.close()
     os.chdir(cwd)
     
-def checkEpub(checkerPath, epubPath):
+def epubcheck(checkerPath, epubPath):
     subprocess.call(['java', '-jar', checkerPath, epubPath], shell = True)
         
 def kindlegen(checkerPath, epubPath):
@@ -781,12 +822,14 @@ if __name__ == "__main__": # main processing
     recipe = augmentBackMatter(recipe, next_playorder)
 
     recipe = augmentImages(recipe)
+    
+    recipe = augmentFonts(recipe)
 
     recipe = augmentParts(recipe)
     
     recipe = genFrontBackMatter(recipe)
     
-    genContentOpf(recipe) # generate the content.opf file
+    genPackageOpf(recipe) # generate the content.opf file
     genTocNcx(recipe) # generate the ncx table of contents
 
     # write the augmented recipe to a file, just for humans to look at
@@ -804,7 +847,7 @@ if __name__ == "__main__": # main processing
     # execute cook.py with an additional argument, "python cook.py validate"
     if arg2 in ['validate','kindlegen']:
         epub_file = join(dirs['epub_loc'], file_name + '.epub')
-        checkEpub('../epubcheck/epubcheck-3.0.1.jar', epub_file )
+        epubcheck('../epubcheck/epubcheck-3.0.1.jar', epub_file )
     
     # Optionally run kindlgen to create a .mobi
     # NOTE: kindlgen is not part of ePubChef and we won't be offended if you don't run 

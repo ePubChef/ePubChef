@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<package xmlns="http://www.idpf.org/2007/opf" version="3.0" xml:lang="en" 
+         unique-identifier="pub-id" 
+		 prefix="ibooks: http://vocabulary.itunes.apple.com/rdf/ibooks/vocabulary-extensions-1.0/">
+  <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
+    <dc:title id="title">A Demo eBook</dc:title>
+    <meta refines="#title" property="title-type">main</meta>
+    <dc:creator id="creator">Ann Author</dc:creator>
+    <meta refines="#creator" property="file-as">Author, Ann</meta>
+    <meta refines="#creator" property="role" scheme="marc:relators">aut</meta>
+    <dc:identifier id="pub-id">code.google.com.epub-samples.moby-dick-basic</dc:identifier>
+	<dc:identifier id="uid">urn:uuid:57b681b5-137b-4791-b5c5-99fdcfaa41ee</dc:identifier>
+    <meta refines="#uid" property="identifier-type" scheme="onix:codelist5">ISBN</meta>
+    <dc:language>en-US</dc:language>
+    <meta property="dcterms:modified">2012-01-18T12:47:00Z</meta>
+    <dc:publisher>jcobobooks</dc:publisher>
+    <dc:contributor id="contrib1">John Cobo</dc:contributor>
+    <meta refines="#contrib1" property="role" scheme="marc:relators">mrk</meta>
+    <dc:rights>This work is shared with the public using the Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0) license.</dc:rights>        
+	<meta property="ibooks:specified-fonts">true</meta>
+  </metadata>
+  
+  <manifest>
+    <item id="font.stix.regular" href="fonts/STIXGeneral.otf"
+      media-type="application/vnd.ms-opentype"/>
+    <item id="font.stix.italic" href="fonts/STIXGeneralItalic.otf"
+      media-type="application/vnd.ms-opentype"/>
+    <item id="font.stix.bold" href="fonts/STIXGeneralBol.otf"
+      media-type="application/vnd.ms-opentype"/>
+    <item id="font.stix.bold.italic" href="fonts/STIXGeneralBolIta.otf"
+      media-type="application/vnd.ms-opentype"/>
+      
+    <!--<item id="toc" properties="nav" href="content/table_of_contents.xhtml" media-type="application/xhtml+xml"/> -->
+    <item id="ncx" href="toc.ncx" media-type="application/x-dtbncx+xml"/>
+    
+    <item id="cover" href="cover.xhtml"  media-type="application/xhtml+xml" />
+    <item id="title_page" href="content/title_page.xhtml"  media-type="application/xhtml+xml" />
+    <item id="table_of_contents" href="content/table_of_contents.xhtml"  media-type="application/xhtml+xml" properties="nav"/>
+    <item id="dedication" href="dedication.xhtml"  media-type="application/xhtml+xml" />
+    
+    <item id="style" href="css/epub-stylesheet.css" media-type="text/css"/>
+      
+    <item id="chap1" href="content/chap1.xhtml"  media-type="application/xhtml+xml" />
+    <item id="chap2" href="content/chap2.xhtml"  media-type="application/xhtml+xml" />
+    <item id="chap3" href="content/chap3.xhtml"  media-type="application/xhtml+xml" />
+
+    <item id="description"  href="description.xhtml" media-type="application/xhtml+xml" />
+    <item id="about_author"  href="about_author.xhtml" media-type="application/xhtml+xml" />
+    
+    <item id="img1" href="images/chef-hat1.jpg" media-type="image/jpeg" />
+	<item id="cover-image" properties="cover-image" href="images/cover_image.jpg" media-type="image/jpeg"/>
+    <item id="img3" href="images/epubchef_logo.jpg" media-type="image/jpeg" />
+    <item id="img4" href="images/jazz_frog.jpg" media-type="image/jpeg" />
+    <item id="img5" href="images/relaxed_frog.jpg" media-type="image/jpeg" />
+
+  </manifest>
+ 
+  <spine toc="ncx">
+    <itemref idref="cover" linear="yes"/>
+    <itemref idref="title_page" linear="no"/>
+    <itemref idref="table_of_contents" linear="yes"/>
+    <itemref idref="dedication" linear="no"/>
+    <itemref idref="chap1" linear="no"/>
+    <itemref idref="chap2" linear="no"/>
+    <itemref idref="chap3" linear="no"/>
+    <itemref idref="description" linear="no"/>
+    <itemref idref="about_author" linear="no"/>
+  </spine>
+</package>

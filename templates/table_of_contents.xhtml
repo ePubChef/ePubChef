@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
+<head>
+  <title>{{title}}</title>
+  <link rel="stylesheet" type="text/css" href="../css/epub-stylesheet.css"/>
+  <meta charset="utf-8"/>
+</head>
+<body>
+ <section class="frontmatter TableOfContents" epub:type="frontmatter toc">
+    <header><div id="h1-1"><h1>Table of Contents</h1></div></header>
+<nav xmlns:epub="http://www.idpf.org/2007/ops" epub:type="toc" id="toc">
+<ol class="toc">
+{{#front_matter}}{{#toc_entry}}
+  <li class="toc_matter"><a href="{{dir}}{{name}}.xhtml">{{toc_entry}}</a></li>
+{{/toc_entry}}{{/front_matter}}
+
+{{#parts}}
+  {{#part_name}}
+  <li class="toc_part"><a href="chap{{starting_chapter}}.xhtml#part">{{part_name}}</a>
+  <ol class="toc">
+  {{/part_name}}
+  {{#chp}}
+    <li class="{{chap_toc_style}}"><a href="chap{{nbr}}.xhtml#{{id}}">{{name}}</a></li>
+  {{/chp}}
+  {{#part_name}}
+    </ol>
+  </li>
+  {{/part_name}}
+
+{{/parts}}
+
+{{#back_matter}}
+  <li class="toc_matter"><a href="{{dir}}{{name}}.xhtml">{{toc_entry}}</a></li>
+{{/back_matter}}
+</ol>
+</nav>
+<nav xmlns:epub="http://www.idpf.org/2007/ops" epub:type="landmarks" id="guide" hidden="hidden">
+		<h2>Guide</h2>
+		<ol>
+            <li><a epub:type="cover" href="../cover.xhtml">Cover</a></li>
+            <li><a epub:type="titlepage" href="title_page.xhtml">Title Page</a></li>
+            <li><a epub:type="toc" href="table_of_contents.xhtml">Table of Contents</a></li>
+            <li><a epub:type="bodymatter" href="chap1.xhtml">Start of Content</a></li>
+	
+		</ol>
+</nav>
+</section>
+</body>
+</html>

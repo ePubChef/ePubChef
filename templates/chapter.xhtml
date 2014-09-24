@@ -1,10 +1,7 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en">
+<?xml version="1.0" encoding="UTF-8"?><html xmlns="http://www.w3.org/1999/xhtml" xmlns:epub="http://www.idpf.org/2007/ops">
 <head>
-<meta http-equiv="Content-Type" content="application/xhtml+xml; charset=utf-8" />
-<link type="text/css" rel="stylesheet" href="../css/epub-stylesheet.css" />
-<title>{{title}}</title>
+<title>{{title}}</title><link rel="stylesheet" href="../css/epub-stylesheet.css" type="text/css"/>
+<meta charset="utf-8"/>
 </head>
 <body>
 {{#starts_part}}
@@ -13,10 +10,14 @@
 </div>
 {{/starts_part}}
 
-    <div id="{{id}}">
-      <h2>Chapter {{nbr}}<br />{{name}}</h2>
-      {{#photo}}<img class="displayed" src="../images/{{photo}}" height="100" alt="{{photo}}" /><br />{{/photo}}
-    </div>
+<section class="body-rw Chapter-rw" epub:type="bodymatter chapter">
+<header>
+  <div id="{{id}}">
+    <h1>Chapter {{nbr}}<br/>{{name}}</h1>
+    {{#photo}}<img class="displayed" src="../images/{{photo}}" height="100" alt="{{photo}}" /><br/>{{/photo}}
+  </div>
+</header>
+
     <p class="chapterIntro">{{{intro}}}</p>
 	  {{#scenes}}
           {{#divider}}<p class="centered">~~~~~~~~~~~~~~</p>{{/divider}}
@@ -32,5 +33,4 @@
 	  {{#needs_para_tag}}</p>{{/needs_para_tag}}
           {{/paras}}
 	  {{/scenes}}
-  </body>
-</html>
+</section></body></html>
