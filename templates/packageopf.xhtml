@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<package xmlns="http://www.idpf.org/2007/opf" version="3.0" xml:lang="en" unique-identifier="pub-id" prefix="cc: http://creativecommons.org/ns#">
+<package xmlns="http://www.idpf.org/2007/opf" version="3.0" xml:lang="en" 
+         unique-identifier="pub-id" 
+		 prefix="ibooks: http://vocabulary.itunes.apple.com/rdf/ibooks/vocabulary-extensions-1.0/">
   <metadata xmlns:dc="http://purl.org/dc/elements/1.1/">
     <dc:title id="title">{{title}}</dc:title>
     <meta refines="#title" property="title-type">main</meta>
@@ -7,14 +9,15 @@
     <meta refines="#creator" property="file-as">{{file_as}}</meta>
     <meta refines="#creator" property="role" scheme="marc:relators">aut</meta>
     <dc:identifier id="pub-id">{{identifier}}</dc:identifier>
+	<dc:identifier id="uid">{{uuid}}</dc:identifier>
+    <meta refines="#uid" property="identifier-type" scheme="onix:codelist5">15</meta>
     <dc:language>en-US</dc:language>
     <meta property="dcterms:modified">2012-01-18T12:47:00Z</meta>
     <dc:publisher>{{publisher}}</dc:publisher>
     <dc:contributor id="contrib1">{{contributor}}</dc:contributor>
     <meta refines="#contrib1" property="role" scheme="marc:relators">mrk</meta>
     <dc:rights>This work is shared with the public using the Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0) license.</dc:rights>        
-    <link rel="cc:license" href="http://creativecommons.org/licenses/by-sa/3.0/"/>
-    <meta property="cc:attributionURL">{{attributionURL}}</meta>
+	<meta property="ibooks:specified-fonts">true</meta>
   </metadata>
   
   <manifest>
