@@ -1,0 +1,16 @@
+This White paper is for authors and publishers of electronic publications interested in the creation of EPUB compliant files for eBooks.
+
+The paper describes a simple method of crafting EPUB files from a format that is easy for people to write and for computers to read. An additional benefit is that the format and code suggested is highly future proof enabling books written now to be read and re-processed many years into the future. The code and formatting is known as the ePubChef.
+
+The ePubChef design is:
+<ol>
+<li>Text of the book is in multiple .txt files - one per scene or chapter.</li>
+<li>For an average novel the .txt files will only need to include very minimal mark-up such as links to images, block quotes and emphasis tags. These can be HTML tags.</li>
+<li>Modifiable templates exist for all the files of an EPUB (toc.html, package.opf, about_author.html, chapters, etc.). Code will inject text into those templates. Templates are standard HTML which can be modified.</li>
+<li>The author creates a <em>recipe</em> file with meta-data including: book name, chapter names, ISBN, etc.</li>
+<li>The ePubChef code generates an eBook from the recipe, templates and text files.</li>
+</ol>
+
+The key difference between this project and similar attempts at generating EPUB is that the ePubChef code will be fully owned by the author and act as a wrapper around the book text. This code ownership  enables the author to retain full control of his or her work. A valid set of EPUB files can be produced as often as desired during the life of the book from first outline to completed work. The ePubChef can run on Windows, Mac, or Linux. There is the capability for creative formatting of the book and even automated personalization of each copy. 
+
+With the ePubChef ugly, poorly formatted electronic publications should become a thing of the past. Authors will not be dependent on technical experts to publish. EBook experts can concentrate on adding value through style and formatting without monotonous, error prone copying and pasting. EPubChef takes care of EPUB specifics allowing those with more common web skills such as HTML, CSS and templating to produce quality eBooks. 

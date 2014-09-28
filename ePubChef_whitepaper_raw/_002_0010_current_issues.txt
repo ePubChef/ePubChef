@@ -1,0 +1,16 @@
+At present the creation of EPUB files follows one of four patterns:
+<ol>
+<li>created manually by an EPUB expert</li>
+<li>created by specialist software purchased by the author</li>
+<li>created by specialist cloud based software</li>
+<li>conversion from generic word processing software</li>
+</ol>
+Option 1 can result in a beautifully crafted book if the expert is good at the job. However, this can be fairly expensive and is often a one-off exercise. Changes to the text of a book after the EPUB is created may be time consuming and involve additional expense.
+
+Options 2 and 3 require the text of the book to be held and often written in software by a company which may or may not exist in a few years time. There is currently a lot of flux in the publishing and writing arena. Authors should not need to risk the long term future of their book on the success or failure of a particular software company.
+
+Specialist software tends to offer a trade-off between ease of use and the ability to customize the output. Too often such tools appear easy and productive at first, but fail to support authors and publishers when they want to produce anything outside of what the coder had in mind.
+
+Option 4, conversion from generic word processors, rarely produces an attractive eBook which readers and authors deserve.
+
+It can be seen from author support forums that current production of EPUB files is problematic.

@@ -1,0 +1,1 @@
+This white paper is an introduction to the newly developed ePubChef software for authors, publishers and those who support them. EPubChef software creates valid EPUB files in a way that is both easy to use and highly configurable. The software is small, open source, and without dependencies. As such, it can be owned by the author along with his or her book.

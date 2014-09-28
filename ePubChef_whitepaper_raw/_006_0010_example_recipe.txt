@@ -1,0 +1,14 @@
+<h3>Example Recipe</h3>
+<h4>Part 1 - meta-data</h4>
+<p><img src="../images/recipe1.jpg" width="300" alt="recipe example 1" /></p>
+
+<h4>Part 2 - front-matter</h4>
+<p><img src="../images/recipe2.jpg" width="300" alt="recipe example 1" /></p>
+
+<h4>Part 3 - chapters</h4>
+<p><img src="../images/recipe3.jpg" width="300" alt="recipe example 1" /></p>
+
+<h4>Part 4 - back-matter</h4>
+<p><img src="../images/recipe4.jpg" width="300" alt="recipe example 1" /></p>
+
+This "recipe" and a file of words for each chapter is all that is needed to generate an EPUB. 
