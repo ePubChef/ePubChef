@@ -8,7 +8,7 @@
     <dc:creator id="creator">Ann Author</dc:creator>
     <meta refines="#creator" property="file-as">Author, Ann</meta>
     <meta refines="#creator" property="role" scheme="marc:relators">aut</meta>
-    <dc:identifier id="pub-id">code.google.com.epub-samples.moby-dick-basic</dc:identifier>
+    <dc:identifier id="pub-id">jcobobooks.com.epub-samples.demo</dc:identifier>
 	<dc:identifier id="uid">urn:uuid:57b681b5-137b-4791-b5c5-99fdcfaa41ee</dc:identifier>
     <meta refines="#uid" property="identifier-type" scheme="onix:codelist5">ISBN</meta>
     <dc:language>en-US</dc:language>

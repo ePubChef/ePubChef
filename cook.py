@@ -173,7 +173,7 @@ def createEmptyDir(dir_nm, add_init):
 def prepareDirs(dirs):
     # delete previous generated folders
     if arg2 == 'debug':
-        print('RUNNING in DEBUG mode, see folder:', dirs['tmp'])
+        print('RUNNING in DEBUG mode, see folder: /', dirs['tmp'])
         #os.makedirs(dirs['tmp'])
         f = open(os.path.join(dirs['tmp'], 'tmp_paras.json'), 'w')
         f.close()

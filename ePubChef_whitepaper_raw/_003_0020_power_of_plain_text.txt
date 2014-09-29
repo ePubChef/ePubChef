@@ -1,7 +1,0 @@
-<h3>The Power of Plain Text</h3>
-Many authors find that popular word processing programs which are fine for writing a business report or letter are not appropriate for large works such as books.
-
-Almost all existing processes to create EPUB begin with the removal of all mark-up from proprietary word processors. The ePubChef now makes it viable to write a book using a plain text file for each scene or chapter. The ePubChef will combine text files into an eBook on demand. Configurable scene dividers are added automatically in the generated book.
-
-Below is a snapshot of ePubChef text files used for the creation of this white paper. Of course, sophisticated word processors can be used and the plain text copied into .txt files at time of EPUB generation.
-<p><img class="displayed" src="../images/book_text_files.jpg" height="400" alt="chapter code" /></p>

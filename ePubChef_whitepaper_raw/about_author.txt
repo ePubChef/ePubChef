@@ -1,3 +1,0 @@
-John Cobo, the author of this white paper and creator of the ePubChef works by day as a software engineer at top UK corporation.  Like many, John decided to try his hand at writing a novel. That masterpiece is yet unfinished due to an irritating lack of depth in few of the characters. 
-
-When looking at options for converting to EPUB John thought that there must be a better way and ePubChef was born.

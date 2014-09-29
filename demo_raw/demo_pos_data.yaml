@@ -1,7 +1,7 @@
-# Point of Sale Date
-purchaser: John Smith
+# Point of Sale Data
+purchaser: Fred Smith
 date: 2014-09-19
-country: UK
+country: USA
 transaction_id: frt553tge3ss6
 price: $4.99
 stats_url: http://jcobobooks.com/frt553tge3ss6/
