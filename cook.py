@@ -173,7 +173,7 @@ def createEmptyDir(dir_nm, add_init):
 def prepareDirs(dirs):
     # delete previous generated folders
     if arg2 == 'debug':
-        print('RUNNING in DEBUG mode, see folder:', dirs['tmp'])
+        print('RUNNING in DEBUG mode, see folder: /', dirs['tmp'])
         #os.makedirs(dirs['tmp'])
         f = open(os.path.join(dirs['tmp'], 'tmp_paras.json'), 'w')
         f.close()
@@ -268,6 +268,7 @@ def formatScene(in_file, scene_count, auto_dropcaps):
         line = line.replace("'","&#39;") # single quote
         line = re.sub(r'&(?![#a-zA-Z0-9]+?;)', "&#38;", line) # ampersands
 	# double spaces to single
+       # TODO double spaces to single
 	# three dots ... to an elipsis
         line = line.replace('...',"&#8230;") 
 	# culy quotes, double and single
@@ -384,7 +385,10 @@ def cleanText(line):
     
     # right double quotes
     line = line.replace('" ',"&#8221; ") # replace straight double quote preceding a space with a right smart quote
+    # end of paragraphs
     line = line.replace('."',".&#8221;") # replace straight double quote following a period with a right smart quote
+    line = line.replace('?"',"?&#8221;") # replace straight double quote following a question mark with a right smart quote
+    line = line.replace('!"',"!&#8221;") # replace straight double quote following a exclamation with a right smart quote
     
     # undo smart quotes on image xhtml links - part one
     line = line.replace('.jpg&#8221;','.jpg"') 
@@ -707,7 +711,7 @@ def getScenesDict(raw_scenes_dir):
             isScene = False
             print('Not a scene:', scene)
         if isScene:
-            print ("  processing scene:",chapter_id,scene)
+            #print ("  processing scene:",chapter_id,scene)
             if chapter_id not in scene_dict:
                 scene_dict[chapter_id] = []
             
