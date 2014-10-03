@@ -1,4 +1,4 @@
-There are manny things you may want to do within your text. ePubChef will do several things automatically. For example, it will change boring straight quotes to smart quotes as in the following paragraph. The tool will create a new paragraph after each blank line in your text. A setting in the recipe will create drop-caps for the first letter of each chapter.
+There are many things you may want to do within your text. ePubChef will do several things automatically. For example, it will change boring straight quotes to smart quotes as in the following paragraph. The tool will create a new paragraph after each blank line in your text. A setting in the recipe will create drop-caps for the first letter of each chapter.
  
 <ul> 
   <li>put text in <em>italics</em></li> 
