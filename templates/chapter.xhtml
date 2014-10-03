@@ -6,7 +6,7 @@
 <body>
 {{#starts_part}}
 <div class="part_start">
-  <h2 id="part">{{starts_part}}</h2>
+  <h1 id="part">{{starts_part}}</h1>
 </div>
 {{/starts_part}}
 
@@ -23,11 +23,9 @@
 	{{#paras}}
 	  {{#needs_para_tag}}<p{{#class}} class="{{class}}"{{/class}}>{{/needs_para_tag}}
         {{#textblock}}
-          {{#em}}<em>{{/em}}
           {{#text_class}}<span class="{{text_class}}">{{/text_class}}
             {{{words}}}
           {{#text_class}}</span>{{/text_class}}
-          {{#em}}</em>{{/em}}
         {{/textblock}}
 	  {{#needs_para_tag}}</p>{{/needs_para_tag}}
     {{/paras}}

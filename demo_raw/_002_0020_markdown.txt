@@ -22,3 +22,5 @@ At the moment, nested lists and ordered lists of more than 9 items are not suppo
 The following chapter will be a block quote.
 
 > Etiam in suscipit metus. Suspendisse interdum neque in nulla viverra, sodales scelerisque elit cursus. Fusce porta nibh at risus aliquet, sit amet molestie quam consectetur. Quisque viverra ac lacus vehicula fringilla.
+
+Words can be _emphasised_ or made **bold** or even _**both**_.

@@ -251,6 +251,13 @@ def processMarkdown(_line, contains_markdown):
     # block quote
     if _line[0:2] == "> ":
         _line = markdown.markdown(_line)
+        
+    # emphasis
+    if _line.count("_") >= 2:
+        _line = markdown.markdown(_line)
+        
+    if _line.count("*") >= 2:
+        _line = markdown.markdown(_line)
     
     return _line
     
@@ -326,13 +333,17 @@ def formatScene(in_file, scene_count, auto_dropcaps):
 	
 	    # drop capitals in the first character of a chapter
         if auto_dropcaps and scene_count == 0 and para_count == 0 and line[0] not in ['&']: 
+            
+            # XXXX send all lines (paragraphs) through markdown, change 
+            # the <p> and add drop cap after markdown.
+            
 	        # a drop capital
             drop_letter, line, text_class = dropCap(line)
             drop_text_block = block(para, para_class, text_class, drop_letter)
             textblock.append(drop_text_block)
             text_class = False # default
-        elif line[0:3] == ">>>":  # a block quote
-            line, para_class = blockquote(line)
+        #elif line[0:3] == ">>>":  # a block quote
+        #    line, para_class = blockquote(line)
 
         # text_class and words
         std_text_block = block(para, para_class, text_class, line)
@@ -343,7 +354,7 @@ def formatScene(in_file, scene_count, auto_dropcaps):
         paras.append(para)
         all_paras['paras'] = paras
  
-        n+=1
+        n+=1 # go to next line
         
     prepared_scene = generateJson(all_paras)
 
