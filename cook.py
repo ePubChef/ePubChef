@@ -238,6 +238,27 @@ def removeBlankLines(input):
             non_blank_lines.append(line)
     return non_blank_lines
 
+def processMarkdown(_line):
+    # markdown headers - add an extra level as the chapter header is <h1>
+    for n in range(1,4):
+        if _line[0:n] in ["####", "###", "##", "#"]:
+            _line = markdown.markdown("#"+_line)
+    # lists
+    
+    return _line
+    
+def groupMarkdown(_n, lines):
+    line = lines[_n]
+    if line[0] == "*":  # markdown list
+        m = _n+1
+        while lines[m][0] == "*":
+            line = line + "\n" + lines[m]
+            _n+=1
+            m+=1
+        line = markdown.markdown(line)
+        
+    return _n, line
+    
 def formatScene(in_file, scene_count, auto_dropcaps):
     # replace characters we don't like
     lines = [line.strip() for line in in_file]
@@ -249,16 +270,22 @@ def formatScene(in_file, scene_count, auto_dropcaps):
 
     need_to_clear = False    
     para_count = 0
-    for line in non_blank_lines:
+    #print("nonblanks:",non_blank_lines, len(non_blank_lines))
+    #lines = non_blank_lines
+    #nbr_lines = 
+    #for n in range(0,len(lines)):
+    n = 0
+    while n < len(non_blank_lines):
+        line = non_blank_lines[n]
         para_class = setParaClass(para_count, scene_count=0)
         para = {}
         textblock = []
         text_class = False # default
         
-        # markdown headers - add an extra level as the chapter header is <h1>
-        for n in range(1,4):
-            if line[0:n] in ["####", "###", "##", "#"]:
-                line = markdown.markdown("#"+line)
+        # group together markdown which should be processed as one line, eg. one HTML entity such as a list or table.
+        n, line = groupMarkdown(n,non_blank_lines)
+        line = processMarkdown(line)
+
             
 	    # determine if the line is already xhtml and so does not need <p> tags
         if not line.endswith(">"):  # TODO: make this more foolproof
@@ -270,20 +297,20 @@ def formatScene(in_file, scene_count, auto_dropcaps):
             pass
             #print(line)
         
-	# escape odd characters
+	    # escape odd characters
         line = line.replace("'","&#39;") # single quote
         line = re.sub(r'&(?![#a-zA-Z0-9]+?;)', "&#38;", line) # ampersands
-	# double spaces to single
-       # TODO double spaces to single
-	# three dots ... to an elipsis
+	    # double spaces to single
+        # TODO double spaces to single
+	    # three dots ... to an elipsis
         line = line.replace('...',"&#8230;") 
-	# curly quotes, double and single
+	    # curly quotes, double and single
         if line[0] == '"': # a cludge, but it works
             line = " "+ line
         # for every new line create a json paragraph item and fill it with text           
         # split the paragraph into blocks by style to be applied to the text
 	
-	# drop capitals in the first character of a chapter
+	    # drop capitals in the first character of a chapter
         if auto_dropcaps and scene_count == 0 and para_count == 0 and line[0] not in ['&']: 
 	        # a drop capital
             drop_letter, line, text_class = dropCap(line)
@@ -301,9 +328,9 @@ def formatScene(in_file, scene_count, auto_dropcaps):
         para['textblock'] = textblock
         paras.append(para)
         all_paras['paras'] = paras
-  
-
-    
+ 
+        n+=1
+        
     prepared_scene = generateJson(all_paras)
 
     _scene = dict(paras = paras) 

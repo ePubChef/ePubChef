@@ -6,5 +6,9 @@ Note that the chapter name is first level header.
 ### A header 4
 #### A header 5
 
-bla
-bla
+Now lets see a simple, one level un-orderd list:
+* line item one
+* line item two
+* line item three
+ 
+bla bla
