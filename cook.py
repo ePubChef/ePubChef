@@ -39,6 +39,7 @@ import re
 import json
 import zipfile
 import subprocess
+import markdown
 
 template_dir = "templates"
 
@@ -254,7 +255,12 @@ def formatScene(in_file, scene_count, auto_dropcaps):
         textblock = []
         text_class = False # default
         
-	# determine if the line is already xhtml and so does not need <p> tags
+        # markdown headers - add an extra level as the chapter header is <h1>
+        for n in range(1,4):
+            if line[0:n] in ["####", "###", "##", "#"]:
+                line = markdown.markdown("#"+line)
+            
+	    # determine if the line is already xhtml and so does not need <p> tags
         if not line.endswith(">"):  # TODO: make this more foolproof
 	    # a text line (not XHTML)
             para['needs_para_tag'] = True
@@ -271,13 +277,13 @@ def formatScene(in_file, scene_count, auto_dropcaps):
        # TODO double spaces to single
 	# three dots ... to an elipsis
         line = line.replace('...',"&#8230;") 
-	# culy quotes, double and single
+	# curly quotes, double and single
         if line[0] == '"': # a cludge, but it works
             line = " "+ line
         # for every new line create a json paragraph item and fill it with text           
         # split the paragraph into blocks by style to be applied to the text
 	
-	# drop capitals in the first character
+	# drop capitals in the first character of a chapter
         if auto_dropcaps and scene_count == 0 and para_count == 0 and line[0] not in ['&']: 
 	        # a drop capital
             drop_letter, line, text_class = dropCap(line)
@@ -295,7 +301,9 @@ def formatScene(in_file, scene_count, auto_dropcaps):
         para['textblock'] = textblock
         paras.append(para)
         all_paras['paras'] = paras
+  
 
+    
     prepared_scene = generateJson(all_paras)
 
     _scene = dict(paras = paras) 

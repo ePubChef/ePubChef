@@ -17,20 +17,19 @@
     {{#photo}}<img class="displayed" src="../images/{{photo}}" height="100" alt="{{photo}}" /><br/>{{/photo}}
   </div>
 </header>
-
-    <p class="chapterIntro">{{{intro}}}</p>
-	  {{#scenes}}
-          {{#divider}}<p class="centered">~~~~~~~~~~~~~~</p>{{/divider}}
-	  {{#paras}}
+{{#intro}}<p class="chapterIntro">{{{intro}}}</p>{{/intro}}
+  {{#scenes}}
+    {{#divider}}<p class="centered">~~~~~~~~~~~~~~</p>{{/divider}}
+	{{#paras}}
 	  {{#needs_para_tag}}<p{{#class}} class="{{class}}"{{/class}}>{{/needs_para_tag}}
-            {{#textblock}}
-              {{#em}}<em>{{/em}}
-              {{#text_class}}<span class="{{text_class}}">{{/text_class}}
-                {{{words}}}
-              {{#text_class}}</span>{{/text_class}}
-              {{#em}}</em>{{/em}}
-            {{/textblock}}
+        {{#textblock}}
+          {{#em}}<em>{{/em}}
+          {{#text_class}}<span class="{{text_class}}">{{/text_class}}
+            {{{words}}}
+          {{#text_class}}</span>{{/text_class}}
+          {{#em}}</em>{{/em}}
+        {{/textblock}}
 	  {{#needs_para_tag}}</p>{{/needs_para_tag}}
-          {{/paras}}
-	  {{/scenes}}
+    {{/paras}}
+  {{/scenes}}
 </section></body></html>
