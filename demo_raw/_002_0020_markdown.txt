@@ -18,3 +18,7 @@ And now an ordered list:
 4. fourth item
 
 At the moment, nested lists and ordered lists of more than 9 items are not supported.
+
+The following chapter will be a block quote.
+
+> Etiam in suscipit metus. Suspendisse interdum neque in nulla viverra, sodales scelerisque elit cursus. Fusce porta nibh at risus aliquet, sit amet molestie quam consectetur. Quisque viverra ac lacus vehicula fringilla.

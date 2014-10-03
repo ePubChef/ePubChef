@@ -238,12 +238,19 @@ def removeBlankLines(input):
             non_blank_lines.append(line)
     return non_blank_lines
 
-def processMarkdown(_line):
+def processMarkdown(_line, contains_markdown):
     # markdown headers - add an extra level as the chapter header is <h1>
     for n in range(1,4):
         if _line[0:n] in ["####", "###", "##", "#"]:
             _line = markdown.markdown("#"+_line)
+  
     # lists
+    if contains_markdown:
+        _line = markdown.markdown(_line)
+
+    # block quote
+    if _line[0:2] == "> ":
+        _line = markdown.markdown(_line)
     
     return _line
     
@@ -253,6 +260,7 @@ def groupMarkdown(_n, lines):
                , "6.", "7.", "8.", "9."]
     line = lines[_n]
     if line[0:2] in list_init:  # markdown list
+        contains_markdown = True
         m = _n+1
         try:
             while lines[m][0:2] in list_init:
@@ -261,9 +269,10 @@ def groupMarkdown(_n, lines):
                 m+=1
         except:
             pass # end of list
-        line = markdown.markdown(line)
+    else:
+        contains_markdown = False
         
-    return _n, line
+    return _n, line, contains_markdown
     
 def formatScene(in_file, scene_count, auto_dropcaps):
     # replace characters we don't like
@@ -288,11 +297,10 @@ def formatScene(in_file, scene_count, auto_dropcaps):
         textblock = []
         text_class = False # default
         
-        # group together markdown which should be processed as one line, eg. one HTML entity such as a list or table.
-        n, line = groupMarkdown(n,non_blank_lines)
-        line = processMarkdown(line)
+        # group together markdown which should be processed as one line, eg. one HTML entity such as a list or table. Note that "n" will be incremented if multiple line are used.
+        n, line, contains_markdown = groupMarkdown(n, non_blank_lines)
+        line = processMarkdown(line, contains_markdown)
 
-            
 	    # determine if the line is already xhtml and so does not need <p> tags
         if not line.endswith(">"):  # TODO: make this more foolproof
 	    # a text line (not XHTML)
