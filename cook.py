@@ -248,13 +248,19 @@ def processMarkdown(_line):
     return _line
     
 def groupMarkdown(_n, lines):
+    # some markdown such as lists and tables use more than one line from the input file.
+    list_init = ["* ", "1.", "2.", "3.", "4.", "5." \
+               , "6.", "7.", "8.", "9."]
     line = lines[_n]
-    if line[0] == "*":  # markdown list
+    if line[0:2] in list_init:  # markdown list
         m = _n+1
-        while lines[m][0] == "*":
-            line = line + "\n" + lines[m]
-            _n+=1
-            m+=1
+        try:
+            while lines[m][0:2] in list_init:
+                line = line + "\n" + lines[m]
+                _n+=1
+                m+=1
+        except:
+            pass # end of list
         line = markdown.markdown(line)
         
     return _n, line

@@ -11,4 +11,10 @@ Now lets see a simple, one level un-orderd list:
 * line item two
 * line item three
  
-bla bla
+And now an ordered list:
+1. the first item
+2. second item
+3. third item
+4. fourth item
+
+At the moment, nested lists and ordered lists of more than 9 items are not supported.
