@@ -238,27 +238,28 @@ def removeBlankLines(input):
             non_blank_lines.append(line)
     return non_blank_lines
 
-def processMarkdown(_line, contains_markdown):
+def processMarkdown(_line):
     # markdown headers - add an extra level as the chapter header is <h1>
-    for n in range(1,4):
-        if _line[0:n] in ["####", "###", "##", "#"]:
-            _line = markdown.markdown("#"+_line)
-  
-    # lists
-    if contains_markdown:
-        _line = markdown.markdown(_line)
 
-    # block quote
-    if _line[0:2] == "> ":
-        _line = markdown.markdown(_line)
+    if _line[0] == "#":
+        _line = "#"+_line
+            #_line = markdown.markdown("#"+_line)
+  
+    # # lists
+    # if contains_markdown:
+        # _line = markdown.markdown(_line)
+
+    # # block quote
+    # if _line[0:2] == "> ":
+        # _line = markdown.markdown(_line)
         
-    # emphasis
-    if _line.count("_") >= 2:
-        _line = markdown.markdown(_line)
+    # # emphasis
+    # if _line.count("_") >= 2:
+        # _line = markdown.markdown(_line)
         
-    if _line.count("*") >= 2:
-        _line = markdown.markdown(_line)
-    
+    # if _line.count("*") >= 2:
+        # _line = markdown.markdown(_line)
+    _line = markdown.markdown(_line)
     return _line
     
 def groupMarkdown(_n, lines):
@@ -267,7 +268,6 @@ def groupMarkdown(_n, lines):
                , "6.", "7.", "8.", "9."]
     line = lines[_n]
     if line[0:2] in list_init:  # markdown list
-        contains_markdown = True
         m = _n+1
         try:
             while lines[m][0:2] in list_init:
@@ -276,10 +276,8 @@ def groupMarkdown(_n, lines):
                 m+=1
         except:
             pass # end of list
-    else:
-        contains_markdown = False
         
-    return _n, line, contains_markdown
+    return _n, line
     
 def formatScene(in_file, scene_count, auto_dropcaps):
     # replace characters we don't like
@@ -305,19 +303,20 @@ def formatScene(in_file, scene_count, auto_dropcaps):
         text_class = False # default
         
         # group together markdown which should be processed as one line, eg. one HTML entity such as a list or table. Note that "n" will be incremented if multiple line are used.
-        n, line, contains_markdown = groupMarkdown(n, non_blank_lines)
-        line = processMarkdown(line, contains_markdown)
+        n, line = groupMarkdown(n, non_blank_lines)
+        line = processMarkdown(line)
 
 	    # determine if the line is already xhtml and so does not need <p> tags
-        if not line.endswith(">"):  # TODO: make this more foolproof
-	    # a text line (not XHTML)
-            para['needs_para_tag'] = True
-            line = cleanText(line)
-        else:
-            # an xhtml line
-            pass
-            #print(line)
+        #if not line.endswith(">"):  # TODO: make this more foolproof
+	    ## a text line (not XHTML)
+        #    para['needs_para_tag'] = True
+        #    line = cleanText(line)
+        #else:
+        #    # an xhtml line
+        #    pass
+        #    #print(line)
         
+        line = cleanText(line)
 	    # escape odd characters
         line = line.replace("'","&#39;") # single quote
         line = re.sub(r'&(?![#a-zA-Z0-9]+?;)', "&#38;", line) # ampersands
@@ -326,8 +325,8 @@ def formatScene(in_file, scene_count, auto_dropcaps):
 	    # three dots ... to an elipsis
         line = line.replace('...',"&#8230;") 
 	    # curly quotes, double and single
-        if line[0] == '"': # a cludge, but it works
-            line = " "+ line
+        #if line[0] == '"': # a cludge, but it works
+        #    line = " "+ line
         # for every new line create a json paragraph item and fill it with text           
         # split the paragraph into blocks by style to be applied to the text
 	
@@ -337,11 +336,23 @@ def formatScene(in_file, scene_count, auto_dropcaps):
             # XXXX send all lines (paragraphs) through markdown, change 
             # the <p> and add drop cap after markdown.
             
+            if auto_dropcaps         \
+               and scene_count == 0  \
+               and para_count == 0   \
+               and line[0:3] == "<p>" \
+               and line[3] not in ['"','&']:
+                char_to_drop = line[3]
+                line = line[4:] # remove <p> and first chara
+                new = '<p class="texttop"><span class="dropcap">' \
+                       + char_to_drop + '</span>'
+                line = new + line
 	        # a drop capital
-            drop_letter, line, text_class = dropCap(line)
-            drop_text_block = block(para, para_class, text_class, drop_letter)
-            textblock.append(drop_text_block)
-            text_class = False # default
+            #drop_letter, line, text_class = dropCap(line)
+            #drop_text_block = block(para, para_class, text_class, drop_letter)
+            #textblock.append(drop_text_block)
+            #text_class = False # default
+        
+        
         #elif line[0:3] == ">>>":  # a block quote
         #    line, para_class = blockquote(line)
 
@@ -438,7 +449,7 @@ def genChapter(_chapter, scenes):
 def cleanText(line):
     # left double quotes
     line = line.replace(' "'," &#8220;") # replace straight double quote following a space with left smart quote
-    if line[0] == '"': # replace straight double quote at start of a line with a left smart quote
+    if line[0:4] == '<p>"': # replace straight double quote at start of a line with a left smart quote
         line = line.replace('"',"&#8220;", 1)
     
     line = line.replace('<a &#8220;','<a "') # undo smart quotes on xhtml links
@@ -459,7 +470,7 @@ def cleanText(line):
 
     # left single quotes
     line = line.replace(" '"," &#8216;") # replace straight single quote following a space with left smart quote
-    if line[0] == "'": # replace straight single quote at start of a line with a left smart quote
+    if line[0:4] == "<p>'": # replace straight single quote at start of a line with a left smart quote
         line = line.replace("'","&#8216;", 1)
     
     # right single quotes
