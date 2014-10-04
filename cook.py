@@ -243,13 +243,16 @@ def processMarkdown(_line):
 
     if _line[0] == "#":
         _line = "#"+_line
-
-    _line = markdown.markdown(_line, output_format='xhtml5')
     
+    if _line[0] == "|":
+        print("got a table:",_line)
+    _line = markdown.markdown(_line, output_format='xhtml5')
+    #print("marked:", _line)
     return _line
     
 def groupMarkdown(_n, lines):
-    # some markdown such as lists and tables use more than one line from the input file.
+    # some markdown such as lists and tables use more than one line from the input file. Note that the counter n will be adjusted by this function.
+    # Simple lists
     list_init = ["* ", "1.", "2.", "3.", "4.", "5." \
                , "6.", "7.", "8.", "9."]
     line = lines[_n]
@@ -262,7 +265,23 @@ def groupMarkdown(_n, lines):
                 m+=1
         except:
             pass # end of list
-        
+            
+    # # Even though this code does what I think it should, markdown is not
+    # # creating a table from the output. TODO: investigate further.
+    # table_init = ["|"]
+    # line = lines[_n]
+    # if line[0] in table_init:  # markdown table
+        # #print("got a table:", line)
+        # m = _n+1
+        # try:
+            # while lines[m][0] in table_init:
+                # #print("is it a table:", line)
+                # line = line + "\n" + lines[m]
+                # _n+=1
+                # m+=1
+        # except:
+            # pass # end of table
+        # #print("whole table:", line)    
     return _n, line
     
 def formatScene(in_file, scene_count, auto_dropcaps):
@@ -284,25 +303,14 @@ def formatScene(in_file, scene_count, auto_dropcaps):
         textblock = []
         text_class = False # default
 
-        line = cleanText(line)
+        line = preMarkdownTextClean(line)      
         
-	    # escape odd characters
-        line = line.replace("'","&#39;") # single quote
-       
-	    # double spaces to single
-        # TODO double spaces to single
-        
-	    # three dots ... to an elipsis
-        line = line.replace('...',"&#8230;") 
-	    
-        # group together markdown which should be processed as one line, eg. one HTML entity such as a list or table. Note that "n" will be incremented if multiple line are used.
+        # process any markdown in the text
         n, line = groupMarkdown(n, non_blank_lines)
         line = processMarkdown(line)
 	
-        if "&" in line:
-            print("amp:", line)
-        line = re.sub(r'&(?![#a-zA-Z0-9]+?;)', "&#38;", line) # ampersands
-        #line = re.sub(r"&(?!#\d{4};|amp;)", "&amp", line)
+        line = postMarkdownTextClean(line) 
+        
         
 	    # drop capitals in the first character of a chapter
         if auto_dropcaps and scene_count == 0 and para_count == 0 and line[0] not in ['&']: 
@@ -420,40 +428,82 @@ def genChapter(_chapter, scenes):
     
     return _chapter
 
-def cleanText(line):
-    # left double quotes
-    line = line.replace(' "'," &#8220;") # replace straight double quote following a space with left smart quote
-    if line[0:4] == '<p>"': # replace straight double quote at start of a line with a left smart quote
+def preMarkdownTextClean(line):
+
+    # escape odd characters
+    line = line.replace("'","&#39;") # single quote
+       
+    # TODO double spaces to single
+        
+	# three dots ... to an elipsis
+    line = line.replace('...',"&#8230;")
+        
+    
+    
+
+
+ 
+    
+    return line
+    
+def postMarkdownTextClean(line):
+    # left double quotes #########################
+    # replace straight double quote following a space with left smart quote
+    line = line.replace(' "'," &#8220;") 
+    
+    # replace straight double quote at start of a line with a left smart quote
+    if line[0:4] == '<p>"': 
         line = line.replace('"',"&#8220;", 1)
     
-    line = line.replace('<a &#8220;','<a "') # undo smart quotes on xhtml links
+    # undo smart quotes on xhtml links
+    line = line.replace('<a &#8220;','<a "') 
     
-    # right double quotes
-    line = line.replace('" ',"&#8221; ") # replace straight double quote preceding a space with a right smart quote
-    # end of paragraphs
-    line = line.replace('."',".&#8221;") # replace straight double quote following a period with a right smart quote
-    line = line.replace('?"',"?&#8221;") # replace straight double quote following a question mark with a right smart quote
-    line = line.replace('!"',"!&#8221;") # replace straight double quote following a exclamation with a right smart quote
+    # right double quotes #######################
+    # replace straight double quote preceding a space with a right smart quote
+    line = line.replace('" ',"&#8221; ") 
+    
+    # replace straight double quote following a period with a right smart quote at end of paragraphs
+    line = line.replace('."',".&#8221;") 
+    
+    # replace straight double quote following a question mark with a right smart quote
+    line = line.replace('?"',"?&#8221;") 
+    
+    # replace straight double quote following a exclamation with a right smart quote
+    line = line.replace('!"',"!&#8221;") 
     
     # undo smart quotes on image xhtml links - part one
     line = line.replace('.jpg&#8221;','.jpg"') 
     line = line.replace('.png&#8221;','.png"') 
     # undo smart quotes on image xhtml links - part two
     line = line.replace('&#8221;/>','"/>') 
+    line = line.replace('&#8221; />','" />') 
     # undo smart quotes on image xhtml links - part three
     line = line.replace('&#8221; alt=','" alt=') 
-
-    # left single quotes
-    line = line.replace(" '"," &#8216;") # replace straight single quote following a space with left smart quote
-    if line[0:4] == "<p>'": # replace straight single quote at start of a line with a left smart quote
+    line = line.replace('&#8221; src=','" src=') 
+    
+    # left single quotes ##########################
+    # replace straight single quote following a space with left smart quote
+    line = line.replace(" '"," &#8216;") 
+    
+    # replace straight single quote at start of a line with a left smart quote
+    if line[0:4] == "<p>'": 
         line = line.replace("'","&#8216;", 1)
     
-    # right single quotes
-    line = line.replace("' ","&#8217; ") # replace straight single quote preceding a space with a right smart quote
-    line = line.replace(".'",".&#8217;") # replace straight single quote following a period with a right smart quote
-
+    # right single quotes ########################
+    # replace straight single quote preceding a space with a right smart quote
+    line = line.replace("' ","&#8217; ") 
+    
+    # replace straight single quote following a period with a right smart quote
+    line = line.replace(".'",".&#8217;") 
+    
+    # ampersands
+    line = re.sub(r'&(?![#a-zA-Z0-9]+?;)', "&#38;", line) 
+    line = line.replace(" &amp; "," &#38; ") 
+    
+    # double spaces to single
+    line = line.replace("  "," ") 
     return line
-
+    
 def setParaClass(para_count, scene_count):
     para_class = False
     text_class = False
