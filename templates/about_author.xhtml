@@ -6,16 +6,13 @@
 <body>
 <section class="frontmatter-rw Introduction-rw" epub:type="frontmatter">
 
-  <h1>About {{author}}</h1>
-
+<h1>About {{author}}</h1>
 {{#about_author}}{{#paras}}
-  <p><br/>
+  <p><br/></p>
    {{#textblock}}
-     {{#em}}<em>{{/em}}{{{words}}}{{#em}}</em>{{/em}}
+     {{{words}}}
    {{/textblock}}
-  <br/></p>
 {{/paras}}{{/about_author}}
-
 {{#point_of_sale}}
 <hr/>
 <p class="centered"><span class="ipadcenterfix">Purchased by: {{purchaser}} on {{date}} for {{{price}}}.</span></p>

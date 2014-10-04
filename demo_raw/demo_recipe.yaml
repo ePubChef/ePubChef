@@ -24,21 +24,21 @@ front_matter: # must include "cover", "title_page", and "table_of_contents" (in 
      - name: table_of_contents
      - name: dedication
 
-parts:
-     - part_name: Part One
-     - part_name: Part Two
+#parts:
+#     - part_name: Part One
+#     - part_name: Part Two
 
 chapters:
      -  code: '001'
         name: About This Book
         intro: An introduction to the ePubChef
         photo: jazz_frog.jpg
-        starts_part: Part One
+#        starts_part: Part One
      -  code: '002'
         name: Examples
         intro: Some things you can do within the text of a chapter.
         photo: relaxed_frog.jpg
-        starts_part: Part Two
+#        starts_part: Part Two
      -  code: '003'
         name: Using the ePbubChef Recipe
         intro: Flexibility and Power

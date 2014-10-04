@@ -1,0 +1,43 @@
+This is scene two in the second chapter. Here we demonstrate the use of markdown which is a shorthand for HTML. Most of the markdown described at [Markdown cheatsheet](https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet#tables)  is supported.
+ 
+# Header 2 - Using Markdown
+Note that the chapter name is first level header.
+## A header 3
+### A header 4
+#### A header 5
+
+Now lets see a simple, one level un-orderd list:
+* line item one
+* line item two
+* line item three
+ 
+And now an ordered list:
+1. the first item
+2. second item
+3. third item
+4. fourth item
+
+At the moment, nested lists and ordered lists of more than 9 items are not supported.
+
+The following chapter will be a block quote.
+
+> Etiam in suscipit metus. Suspendisse interdum neque in nulla viverra, sodales scelerisque elit cursus. Fusce porta nibh at risus aliquet, sit amet molestie quam consectetur. Quisque viverra ac lacus vehicula fringilla.
+
+Words can be _emphasised_ or made **bold** or even _**both**_.
+
+Links are created as follows: [I'm an inline-style link](https://www.google.com)
+
+Images can be created like this: Inline-style: 
+![alt text](../images/chef-hat1.jpg "Logo Title Text 1")
+
+A horizontal rule can be created with 3 or more hyphens:
+
+---
+
+Breaks between paragraphs - The following two paragraphs will have an extra line between them.
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus commodo lacus sit amet iaculis molestie. Sed nec eros interdum, fringilla urna eu, porttitor dui. Integer vehicula vulputate leo quis condimentum. 
+<p><br/></p>
+OK, I admit that is not standard markdown, but it works. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus commodo lacus sit amet iaculis molestie. Sed nec eros interdum, fringilla urna eu, porttitor dui. Integer vehicula vulputate leo quis condimentum. 
+
+Markdown of tables is not currently supported, use HTML.

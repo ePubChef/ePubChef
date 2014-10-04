@@ -27,10 +27,6 @@ If you prefer single quotes: She said, 'this is a quote.' Then she followed with
   <tr><td>cccc</td><td>8888</td></tr>
 </table>
 
-The following chapter will be a block quote.
-
->>>Etiam in suscipit metus. Suspendisse interdum neque in nulla viverra, sodales scelerisque elit cursus. Fusce porta nibh at risus aliquet, sit amet molestie quam consectetur. Quisque viverra ac lacus vehicula fringilla. 
-
 Images can be placed in the pages: <img src="../images/chef-hat1.jpg" width="100" alt="chef hat image"/>Nice, eh? Note that if a line ends with an HTML tag the whole line is treated as HTML and so should be wrapped in paragraph tags.
 
 
