@@ -243,23 +243,9 @@ def processMarkdown(_line):
 
     if _line[0] == "#":
         _line = "#"+_line
-            #_line = markdown.markdown("#"+_line)
-  
-    # # lists
-    # if contains_markdown:
-        # _line = markdown.markdown(_line)
 
-    # # block quote
-    # if _line[0:2] == "> ":
-        # _line = markdown.markdown(_line)
-        
-    # # emphasis
-    # if _line.count("_") >= 2:
-        # _line = markdown.markdown(_line)
-        
-    # if _line.count("*") >= 2:
-        # _line = markdown.markdown(_line)
-    _line = markdown.markdown(_line)
+    _line = markdown.markdown(_line, output_format='xhtml5')
+    
     return _line
     
 def groupMarkdown(_n, lines):
@@ -290,10 +276,6 @@ def formatScene(in_file, scene_count, auto_dropcaps):
 
     need_to_clear = False    
     para_count = 0
-    #print("nonblanks:",non_blank_lines, len(non_blank_lines))
-    #lines = non_blank_lines
-    #nbr_lines = 
-    #for n in range(0,len(lines)):
     n = 0
     while n < len(non_blank_lines):
         line = non_blank_lines[n]
@@ -301,35 +283,27 @@ def formatScene(in_file, scene_count, auto_dropcaps):
         para = {}
         textblock = []
         text_class = False # default
+
+        line = cleanText(line)
         
+	    # escape odd characters
+        line = line.replace("'","&#39;") # single quote
+       
+	    # double spaces to single
+        # TODO double spaces to single
+        
+	    # three dots ... to an elipsis
+        line = line.replace('...',"&#8230;") 
+	    
         # group together markdown which should be processed as one line, eg. one HTML entity such as a list or table. Note that "n" will be incremented if multiple line are used.
         n, line = groupMarkdown(n, non_blank_lines)
         line = processMarkdown(line)
-
-	    # determine if the line is already xhtml and so does not need <p> tags
-        #if not line.endswith(">"):  # TODO: make this more foolproof
-	    ## a text line (not XHTML)
-        #    para['needs_para_tag'] = True
-        #    line = cleanText(line)
-        #else:
-        #    # an xhtml line
-        #    pass
-        #    #print(line)
-        
-        line = cleanText(line)
-	    # escape odd characters
-        line = line.replace("'","&#39;") # single quote
-        line = re.sub(r'&(?![#a-zA-Z0-9]+?;)', "&#38;", line) # ampersands
-	    # double spaces to single
-        # TODO double spaces to single
-	    # three dots ... to an elipsis
-        line = line.replace('...',"&#8230;") 
-	    # curly quotes, double and single
-        #if line[0] == '"': # a cludge, but it works
-        #    line = " "+ line
-        # for every new line create a json paragraph item and fill it with text           
-        # split the paragraph into blocks by style to be applied to the text
 	
+        if "&" in line:
+            print("amp:", line)
+        line = re.sub(r'&(?![#a-zA-Z0-9]+?;)', "&#38;", line) # ampersands
+        #line = re.sub(r"&(?!#\d{4};|amp;)", "&amp", line)
+        
 	    # drop capitals in the first character of a chapter
         if auto_dropcaps and scene_count == 0 and para_count == 0 and line[0] not in ['&']: 
             
@@ -463,6 +437,7 @@ def cleanText(line):
     
     # undo smart quotes on image xhtml links - part one
     line = line.replace('.jpg&#8221;','.jpg"') 
+    line = line.replace('.png&#8221;','.png"') 
     # undo smart quotes on image xhtml links - part two
     line = line.replace('&#8221;/>','"/>') 
     # undo smart quotes on image xhtml links - part three
