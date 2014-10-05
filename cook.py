@@ -429,24 +429,15 @@ def genChapter(_chapter, scenes):
     return _chapter
 
 def preMarkdownTextClean(line):
-
     # escape odd characters
     line = line.replace("'","&#39;") # single quote
-       
-    # TODO double spaces to single
         
-	# three dots ... to an elipsis
-    line = line.replace('...',"&#8230;")
-        
-    
-    
-
-
- 
-    
     return line
     
 def postMarkdownTextClean(line):
+	# three dots ... to an elipsis
+    line = line.replace('...',"&#8230;")
+    
     # left double quotes #########################
     # replace straight double quote following a space with left smart quote
     line = line.replace(' "'," &#8220;") 
@@ -744,6 +735,13 @@ def augmentFonts(_recipe):
         fonts.append({'font': font_name, 'id': 'fnt'+str(id)})       
     return _recipe
 
+def augmentChapterMetaData(_recipe):
+    # tidy text in chapter meta data
+    for chapter in _recipe['chapters']:
+        new_text = postMarkdownTextClean(chapter['name'])
+        chapter['name'] = new_text
+    return _recipe
+    
 def determineLinear(_item_name):
     if _item_name in ['cover', 'table_of_contents']:
         linear = 'yes'
@@ -907,6 +905,8 @@ if __name__ == "__main__": # main processing
     
     recipe = addPOSData(recipe, 'pos')
     
+    recipe = augmentChapterMetaData(recipe)
+    
     # add data to the recipe front matter
     recipe, front_matter_count = augmentFrontMatter(recipe)
 
@@ -924,7 +924,7 @@ if __name__ == "__main__": # main processing
     recipe = augmentImages(recipe)
     
     recipe = augmentFonts(recipe)
-
+    
     recipe = augmentParts(recipe)
     
     recipe = genFrontBackMatter(recipe)

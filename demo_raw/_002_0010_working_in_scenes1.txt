@@ -20,7 +20,7 @@ If you prefer single quotes: She said, 'this is a quote.' Then she followed with
   <li>There's a single quote here which was converted to a smart quote.</li>
   </ul>
 
-       This line had leading white-space removed and replaced with a normal paragraph indentation. Three dots... have been changed to an ellipses which looks nicer. This line contains utf-8 character (r squared =20), r²=20. For full control one can enter any HTML. HTML will pass through ePubChef unaltered. For example, an HTML table. Full style control is available by tailoring CSS.
+       This line had leading white-space removed and replaced with a normal paragraph indentation. Three dots have been changed to an ellipses ... which looks nicer. This line contains utf-8 character (r squared =20), r²=20. For full control one can enter any HTML. HTML will pass through ePubChef unaltered. For example, an HTML table. Full style control is available by tailoring CSS.
 <table border="1">
   <tr><td>aaaa</td><td>1111</td></tr>
   <tr><td>bbbb</td><td>222</td></tr> 

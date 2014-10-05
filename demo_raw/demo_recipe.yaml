@@ -35,7 +35,7 @@ chapters:
         photo: jazz_frog.jpg
 #        starts_part: Part One
      -  code: '002'
-        name: Examples
+        name: Examples...
         intro: Some things you can do within the text of a chapter.
         photo: relaxed_frog.jpg
 #        starts_part: Part Two
