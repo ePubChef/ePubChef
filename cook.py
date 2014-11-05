@@ -129,12 +129,16 @@ of which there can be many, or a "class" which defines the xhtml class of the pa
 renderer = pystache.Renderer()
 
 def importYaml(file_name):
-    try:
-        recipe_loc = os.path.join(file_name+'_raw', file_name+'_recipe.yaml')
+    recipe_loc = os.path.join(file_name+'_raw', file_name+'_recipe.yaml')
+    if os.path.isfile(recipe_loc):
         print('Opening recipe for:', recipe_loc)
-        with open(recipe_loc, 'r') as f:
-            _recipe = yaml.load(f)
-    except: # create a new recipe from a template
+        try: 
+            with open(recipe_loc, 'r') as f:
+                _recipe = yaml.load(f)
+        except: 
+            print('\n***Error in recipe file, please check your yaml*** :', recipe_loc)
+            raise SystemExit
+    else: # create a new recipe from a template
         print('Creating new recipe for:', file_name)
         try:
             f = open(join(dirs['raw_book'], file_name+'_recipe.yaml'), 'w')
@@ -667,10 +671,14 @@ def augmentParts(_recipe):
                     #include_chapter_in_part = True
                     pass
                 if include_chapter_in_part:
-                    print('  score:', part['part_name'], c['code'])
+                    #print('  score:', part['part_name'], c['code'])
                     chapter_metadata = getChapterMetadata(c)
                     part['chp'].append(chapter_metadata)
-            part['starting_chapter'] = starting_chapter
+            try:
+                part['starting_chapter'] = starting_chapter
+            except:
+                print('***ERROR, must define at least one valid starts_part in a recipe***')
+                raise SystemExit
             part['chap_toc_style'] = 'toc_chapter_with_parts'          
     else: # user entered no parts, so make 1 default part.
         parts_dict = {'name': 'Chapters:', 'chp': [], 
