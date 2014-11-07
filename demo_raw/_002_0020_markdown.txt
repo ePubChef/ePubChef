@@ -17,7 +17,16 @@ And now an ordered list:
 3. third item
 4. fourth item
 
-At the moment, nested lists and ordered lists of more than 9 items are not supported.
+Trial nested markdown list:
+* one
+* two
+    - two point one
+    - two point two
+* three
+* four
+
+Markdown is used for simple things. If you want nested lists or ordered lists of more than 9 items use HTML markup as shown in the previous section.
+
 
 The following chapter will be a block quote.
 

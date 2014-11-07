@@ -18,7 +18,7 @@ If you prefer single quotes: She said, 'this is a quote.' Then she followed with
   <li>There was a  double space removed before the word double.</li>
   <li>	This line began with a tab which has been removed.</li>
   <li>There's a single quote here which was converted to a smart quote.</li>
-  </ul>
+ </ul>
 
        This line had leading white-space removed and replaced with a normal paragraph indentation. Three dots have been changed to an ellipses ... which looks nicer. This line contains utf-8 character (r squared =20), r²=20. For full control one can enter any HTML. HTML will pass through ePubChef unaltered. For example, an HTML table. Full style control is available by tailoring CSS.
 <table border="1">
@@ -28,5 +28,21 @@ If you prefer single quotes: She said, 'this is a quote.' Then she followed with
 </table>
 
 Images can be placed in the pages: <img src="../images/chef-hat1.jpg" width="100" alt="chef hat image"/>Nice, eh? Note that if a line ends with an HTML tag the whole line is treated as HTML and so should be wrapped in paragraph tags.
+<br/>
+Nested list example (using HTML):
+<ol>
+  <li>one</li>
+  <li>two</li>
+  <ul>
+    <li>aaa</li>
+    <li>bbb</li>
+    <li>ccc</li>
+ </ul>
+  <li>three</li>
+ </ol>
 
-
+ Insert a blank line between two paragraphs.
+ <br/>
+ Use the HTML break &lt;br/>.
+ <br/>
+ To show HTML on the page as text, replace the leading less than with "& l t ;" (without the spaces). 
