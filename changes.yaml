@@ -1,0 +1,5 @@
+releases:
+    - version: 0.9.1
+      date: 2014-11-05
+      change: deal safely with errors in recipe.yaml
+ 
