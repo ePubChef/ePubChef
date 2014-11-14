@@ -33,11 +33,13 @@ Nested list example (using HTML):
 <ol>
   <li>one</li>
   <li>two</li>
-  <ul>
-    <li>aaa</li>
-    <li>bbb</li>
-    <li>ccc</li>
- </ul>
+  <li>
+    <ul>
+      <li>aaa</li>
+      <li>bbb</li>
+      <li>ccc</li>
+    </ul>
+   </li>
   <li>three</li>
  </ol>
 
