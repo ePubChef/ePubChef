@@ -53,22 +53,27 @@ try:
 except:
     pass
 
-gen_dir = file_name+'_generated'
+cook_dir = os.path.dirname(os.path.realpath(__file__))
+gen_dir = os.path.join(cook_dir, file_name+'_generated')
 
+
+print('cook_dir:', cook_dir, gen_dir)
 dirs = {
-    'gen_dir': gen_dir, # folder for the ePub files
-    'template_dir':'templates',         # templates for ePub files
-	'raw_book': file_name+'_raw', # words and images of the book
-	'oebps': gen_dir+'/OEBPS',
-    'raw_images': file_name+'_raw'+'/images',
-    'images': gen_dir+'/OEBPS/images',
-    'default_cover': 'demo_raw/images',
-	'content': gen_dir+'/OEBPS/content',
-	'css':'css',
-	'tmp':'debug',
-    'epub_loc': 'epubs',
-    'raw_fonts': file_name+'_raw'+'/fonts',
-    'fonts': gen_dir+'/OEBPS/fonts',
+    'gen_dir' : gen_dir, # folder for the ePub files
+    'template_dir' : os.path.join(cook_dir, 'templates'),         # templates for ePub files
+	'raw_book' : os.path.join(cook_dir, file_name+'_raw'), # words and images of the book
+	'oebps' : os.path.join(cook_dir, gen_dir+'/OEBPS'),
+    'raw_images' : os.path.join(cook_dir, file_name+'_raw'+'/images'),
+    'images' : os.path.join(cook_dir, gen_dir+'/OEBPS/images'),
+    'default_cover' : os.path.join(cook_dir, 'demo_raw/images'),
+	'content' : os.path.join(cook_dir, gen_dir+'/OEBPS/content'),
+	'css' : os.path.join(cook_dir, 'css'),
+	'tmp' : os.path.join(cook_dir, 'debug'),
+    'epub_loc' : os.path.join(cook_dir, 'epubs'),
+    'raw_fonts' : os.path.join(cook_dir, file_name+'_raw'+'/fonts'),
+    'fonts' : os.path.join(cook_dir, gen_dir+'/OEBPS/fonts'),
+    'demo_raw' : os.path.join(cook_dir, 'demo_raw'),
+    'recipe_loc' : os.path.join(cook_dir, file_name+'_raw', file_name+'_recipe.yaml'),
 	}
 
 ''' structure to be generated for "mybook" is:
@@ -129,7 +134,8 @@ of which there can be many, or a "class" which defines the xhtml class of the pa
 renderer = pystache.Renderer()
 
 def importYaml(file_name):
-    recipe_loc = os.path.join(file_name+'_raw', file_name+'_recipe.yaml')
+    #recipe_loc = os.path.join(file_name+'_raw', file_name+'_recipe.yaml')
+    recipe_loc = dirs['recipe_loc']
     if os.path.isfile(recipe_loc):
         print('Opening recipe for:', recipe_loc)
         try: 
@@ -146,6 +152,7 @@ def importYaml(file_name):
             os.makedirs(dirs['raw_book'])
             f = open(join(dirs['raw_book'], file_name+'_recipe.yaml'), 'w')
 
+        #print('template_dir:', dirs['template_dir'])
         new_recipe = renderer.render_path(os.path.join(dirs['template_dir'], 'recipe.mustache'), dict([("file_name", file_name)]))
 
         f.write(new_recipe)
@@ -197,7 +204,8 @@ def prepareDirs(dirs):
         shutil.copytree(dirs['raw_images'], dirs['images']) 
     except: # create ..._raw and ..._raw/images if they don't exist
         os.makedirs(dirs['raw_images'])
-        src = 'demo_raw/images/cover_image.jpg'
+        src = os.path.join(dirs['demo_raw'], 'images', 'cover_image.jpg')
+        #src = 'demo_raw/images/cover_image.jpg'
         shutil.copyfile(src, dirs['raw_images']+'/cover_image.jpg')
        
         # try again now that chapters and cover image has been created
@@ -213,7 +221,7 @@ def prepareDirs(dirs):
         shutil.copytree(dirs['raw_fonts'], dirs['fonts']) 
     except: # create ..._raw and ..._raw/fonts if they don't exist
         #os.makedirs(dirs['raw_fonts'])
-        src = 'demo_raw/fonts'
+        src = os.path.join(dirs['demo_raw'], 'fonts')
         shutil.copytree(src, dirs['raw_fonts'])
         # try again
         shutil.copytree(dirs['raw_fonts'], dirs['fonts']) 

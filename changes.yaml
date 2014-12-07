@@ -2,4 +2,7 @@ releases:
     - version: 0.9.1
       date: 2014-11-05
       change: deal safely with errors in recipe.yaml
+    - version: 0.9.2
+      date: 2014-12-07
+      change: allow running from directories other than that containing cook.py      
  
