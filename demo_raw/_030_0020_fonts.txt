@@ -1,0 +1,6 @@
+This will be a font demonstration.
+
+<br />
+<span xml:lang="grc">&#x03A3;&#x03AF;&#x03B2;&#x03C5;&#x03BB;&#x03BB;&#x03B1;&#x03C4;&#x03AF;&#x03F4;&#x03AD;&#x03BB;&#x03B5;&#x03B9;&#x03C2;<!--Sibylla ti theleis--></span>
+<br />
+<span xml:lang="la">respondebat illa</span>: <span xml:lang="grc">&#x03AC;&#x03C0;&#x03BF;&#x03F4;&#x03B1;&#x03B3;&#x03B5;&#x1FD6;&#x03B3;&#x03F4;&#x03AD;&#x03BB;&#x03E3;<!--apothanein thelo--></span>

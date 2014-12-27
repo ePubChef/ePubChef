@@ -1,0 +1,20 @@
+@font-face {
+    font-family: 'OldStandard';
+    font-weight: normal;
+    font-style: normal;
+    src:url(fonts/OldStandard-Regular.woff) format('woff');
+}
+
+@font-face {
+    font-family: 'OldStandard';
+    font-weight: bold;
+    font-style: normal;
+    src:url(fonts/OldStandard-Bold.woff) format('woff');
+}
+
+@font-face {
+    font-family:'OldStandard';
+    font-weight: normal;
+    font-style: italic;
+    src:url(fonts/OldStandard-Italic.woff) format('woff');
+}

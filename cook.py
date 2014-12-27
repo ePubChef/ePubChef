@@ -74,6 +74,7 @@ dirs = {
     'fonts' : os.path.join(cook_dir, gen_dir+'/OEBPS/fonts'),
     'demo_raw' : os.path.join(cook_dir, 'demo_raw'),
     'recipe_loc' : os.path.join(cook_dir, file_name+'_raw', file_name+'_recipe.yaml'),
+    'raw_css' : os.path.join(cook_dir, file_name+'_raw', 'css'), 
 	}
 
 ''' structure to be generated for "mybook" is:
@@ -109,7 +110,7 @@ dirs = {
   /mybook_raw/images
      ...jpg *
   /mybook_raw/fonts
-     ...otf
+     ...,odt, woff
   /templates
      content.mustache
      table_of_contents.mustache
@@ -226,10 +227,15 @@ def prepareDirs(dirs):
         # try again
         shutil.copytree(dirs['raw_fonts'], dirs['fonts']) 
         
-    # css
-    css_src = dirs['css']
+    # css (from both eBookChef and raw dir
     css_dst = os.path.join(dirs['oebps'],'css')
-    shutil.copytree(css_src, css_dst) 
+    shutil.copytree(dirs['css'], css_dst) 
+    
+    # TODO fix permission error here
+    #dst = os.path.join(dirs['oebps'],'css')
+    #src = dirs['raw_css']
+    #for item in os.listdir(src):
+    #    shutil.copyfile(src, dst)
     
 	# mimetype
     src = os.path.join(dirs['template_dir'], 'mimetype')
@@ -738,18 +744,18 @@ def augmentImages(_recipe):
         
     return _recipe
     
-def augmentFonts(_recipe):
+def augmentFonts():
     # create a fonts section in 'recipe'
-    _recipe['fonts'] = []
-    fonts = _recipe['fonts']    
+    #_recipe['fonts'] = []
+    fonts = []    
     id = 0
-    all_fonts = os.listdir(dirs['fonts'])
-    #print('fonts:', all_fonts)
-    for font in all_fonts:
+
+    for font in os.listdir(dirs['fonts']):
         id+=1
-        font_name = font[:-4] # trim suffix and dot
-        fonts.append({'font': font_name, 'id': 'fnt'+str(id)})       
-    return _recipe
+        font_name = font.split(".")[0] # trim suffix and dot
+        font_type = font.split(".")[1]
+        fonts.append({'name': font_name, 'type': font_type, 'id': 'font_'+str(id)})
+    return fonts
 
 def augmentChapterMetaData(_recipe):
     # tidy text in chapter meta data
@@ -881,8 +887,8 @@ def manifest_items():
     #items.append('cover_image.jpg')
     for item in recipe['images']:
         items.append("images/"+item['image']+".jpg")
-    for item in recipe['fonts']:
-        items.append("fonts/"+item['font']+".otf")
+    for font in recipe['fonts']:
+        items.append("fonts/"+font['name']+"."+font['type'])
     return items
     
 def createArchive(rootDir, outputPath):
@@ -939,7 +945,8 @@ if __name__ == "__main__": # main processing
 
     recipe = augmentImages(recipe)
     
-    recipe = augmentFonts(recipe)
+    # TODO make others follow this pattern
+    recipe['fonts'] = (augmentFonts())
     
     recipe = augmentParts(recipe)
     
