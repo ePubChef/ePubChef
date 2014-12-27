@@ -70,8 +70,8 @@ dirs = {
 	'css' : os.path.join(cook_dir, 'css'),
 	'tmp' : os.path.join(cook_dir, 'debug'),
     'epub_loc' : os.path.join(cook_dir, 'epubs'),
-    'raw_fonts' : os.path.join(cook_dir, file_name+'_raw'+'/fonts'),
-    'fonts' : os.path.join(cook_dir, gen_dir+'/OEBPS/fonts'),
+    'fonts' : os.path.join(cook_dir, 'fonts'),
+    'fonts_gen' : os.path.join(cook_dir, gen_dir+'/OEBPS/fonts'),
     'demo_raw' : os.path.join(cook_dir, 'demo_raw'),
     'recipe_loc' : os.path.join(cook_dir, file_name+'_raw', file_name+'_recipe.yaml'),
     'raw_css' : os.path.join(cook_dir, file_name+'_raw', 'css'), 
@@ -218,16 +218,17 @@ def prepareDirs(dirs):
     shutil.copyfile(src, dst) 
     
     # fonts
-    try:
-        shutil.copytree(dirs['raw_fonts'], dirs['fonts']) 
-    except: # create ..._raw and ..._raw/fonts if they don't exist
-        #os.makedirs(dirs['raw_fonts'])
-        src = os.path.join(dirs['demo_raw'], 'fonts')
-        shutil.copytree(src, dirs['raw_fonts'])
-        # try again
-        shutil.copytree(dirs['raw_fonts'], dirs['fonts']) 
+    shutil.copytree(dirs['fonts'], dirs['fonts_gen']) 
+    # try:
+        # shutil.copytree(dirs['fonts'], dirs['fonts_gen']) 
+    # except: # create ..._raw and ..._raw/fonts if they don't exist
+    #    os.makedirs(dirs['raw_fonts'])
+        # src = os.path.join(dirs['demo_raw'], 'fonts')
+        # shutil.copytree(src, dirs['raw_fonts'])
+      #  try again
+        # shutil.copytree(dirs['raw_fonts'], dirs['fonts']) 
         
-    # css (from both eBookChef and raw dir
+    # css 
     css_dst = os.path.join(dirs['oebps'],'css')
     shutil.copytree(dirs['css'], css_dst) 
     
