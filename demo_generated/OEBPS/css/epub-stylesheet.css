@@ -31,6 +31,18 @@ body
 text-align: justify;
 line-height: 120%;
 font-family: 'OldStandard', sans-serif; 
+-epub-hyphens: auto;
+-webkit-hyphens: auto;
+adobe-hyphenate: auto;
+-ms-hyphens: auto;
+-moz-hyphens: auto;
+hyphens: auto;
+}
+/* use for styling the first 3 words of each chapter, eg. <span class="small-caps">The smell of</span> dust */
+span.small-caps
+{
+  font-size: larger;
+  font-variant: small-caps;
 }
 /*===Headings===*/
 h1
@@ -114,15 +126,14 @@ padding: 0;
 font-style: italic;
 }
 /* block type paragraph for non-fiction */
-/*
-p
+p.left
 {
 text-indent: 0;
 margin: 1.0em 0 0 0;
 widows: 2;
 orphans: 2;
 }
-*/
+
 /*===Images===*/
 img
 {
@@ -349,27 +360,6 @@ text-indent: 1.25em;
 margin: 0;
 text-align: left;
 font-size: 100%
-}
-
-@font-face {
-    font-family: 'OldStandard';
-    font-weight: normal;
-    font-style: normal;
-    src:url(../fonts/OldStandard-Regular.woff) format('woff');
-}
-
-@font-face {
-    font-family: 'OldStandard';
-    font-weight: bold;
-    font-style: normal;
-    src:url(../fonts/OldStandard-Bold.woff) format('woff');
-}
-
-@font-face {
-    font-family:'OldStandard';
-    font-weight: normal;
-    font-style: italic;
-    src:url(../fonts/OldStandard-Italic.woff) format('woff');
 }
 
 @font-face {

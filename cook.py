@@ -417,9 +417,7 @@ def genChapters(_recipe, front_matter_count, scenes_dict):
 
         scene_nbr = 0
         chapter = genChapter(chapter, scenes_dict[chapter['code']])
-    #if part_nbr > 1: # don't increment if there is only the default part.
-    #    next_playorder = next_playorder +1
-    
+
     print("chapter count: ", chapter_nbr)
     return _recipe, next_playorder
 
@@ -604,7 +602,7 @@ def checkFrontBackMatter(_recipe):
             shutil.copyfile(src, dst)
     return _recipe
     
-def addPOSData(_recipe, pos_data_loc):
+def addPOSData(pos_data_loc):
     # adds last second Point Of Sale data to the recipe.
     # pos_data_loc is a file system or http location of date to add to the recipe
     # it must be YAML file similar to the book recipe file. It will be appended to the recipe
@@ -614,18 +612,20 @@ def addPOSData(_recipe, pos_data_loc):
         pos_data_loc = os.path.join(file_name+'_raw', file_name+'_pos_data.yaml')
         print('Opening Point Of Sale data for:', pos_data_loc)
         with open(pos_data_loc, 'r') as f:
-            _recipe['point_of_sale'] = yaml.load(f)
+            #_recipe['point_of_sale'] = yaml.load(f)
+            point_of_sale = yaml.load(f)
     except: # create a new recipe from a template
         print('No Point of Sale data this time.')
+        point_of_sale = None
         
-    return _recipe
+    return point_of_sale
     
-def augmentFrontMatter(_recipe):
+def augmentFrontMatter(front_matter):
     # add playorder and id values to the recipe
-    front_matter_count = len(_recipe['front_matter'])
+    front_matter_count = len(front_matter)
 
     playorder = 0
-    for item in _recipe['front_matter']:
+    for item in front_matter:
         playorder +=1
         item['playorder'] = playorder
         item['id'] = "ncx_"+item['name']
@@ -643,7 +643,7 @@ def augmentFrontMatter(_recipe):
         item['tocncx_entry'] = prettify(item['name'])
 	
     print("front_matter count:", front_matter_count)
-    return _recipe, front_matter_count
+    return front_matter, front_matter_count
 
 def prettify(messy_string):
     # split string into words (using "_") and capilatize each
@@ -758,7 +758,7 @@ def augmentFonts():
         fonts.append({'name': font_name, 'type': font_type, 'id': 'font_'+str(id)})
     return fonts
 
-def augmentChapterMetaData(_recipe):
+def cleanChapterMetaData(_recipe):
     # tidy text in chapter meta data
     for chapter in _recipe['chapters']:
         new_text = postMarkdownTextClean(chapter['name'])
@@ -775,20 +775,20 @@ def determineLinear(_item_name):
 def addContentFiles(_recipe):
     # for package.opf spine section
     # add front, back and chapter data to the _recipe
-    _recipe['content_files'] = []
+    content_files = []
     for item  in _recipe['front_matter']:
         linear = determineLinear(item['name'])
-        _recipe['content_files'].append({'file': item['name'], 'linear': linear})
+        content_files.append({'file': item['name'], 'linear': linear})
     
     for chapter in _recipe['chapters']:
         linear = determineLinear(item['name'])
-        _recipe['content_files'].append({'file': "chap"+chapter['nbr'], 'linear': linear})
+        content_files.append({'file': "chap"+chapter['nbr'], 'linear': linear})
         
     for item  in _recipe['back_matter']:
         linear = determineLinear(item['name'])
-        _recipe['content_files'].append({'file': item['name'], 'linear': linear})
+        content_files.append({'file': item['name'], 'linear': linear})
         
-    return _recipe
+    return content_files
 
 def writeAugmentedRecipe(_recipe):
     # write recipe to a file merely for humans to look at should they wish
@@ -926,20 +926,21 @@ if __name__ == "__main__": # main processing
    
     recipe = checkFrontBackMatter(recipe)
     
-    recipe = addPOSData(recipe, 'pos')
+    recipe['point_of_sale'] = addPOSData('pos')
     
-    recipe = augmentChapterMetaData(recipe)
+    recipe = cleanChapterMetaData(recipe)
     
     # add data to the recipe front matter
-    recipe, front_matter_count = augmentFrontMatter(recipe)
+    recipe['front_matter'], front_matter_count = augmentFrontMatter(recipe['front_matter'])
 
     # prepare a dictionary of scenes 
     scenes_dict = getScenesDict(dirs['raw_book'])
 
     # generate chapters 
+    # sets chapters and parts
     recipe, next_playorder = genChapters(recipe, front_matter_count, scenes_dict)
     
-    recipe = addContentFiles(recipe)
+    recipe['content_files'] = addContentFiles(recipe)
     
     # add data to the recipe back_matter
     recipe = augmentBackMatter(recipe, next_playorder)
