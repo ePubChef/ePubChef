@@ -31,6 +31,18 @@ body
 text-align: justify;
 line-height: 120%;
 font-family: 'OldStandard', sans-serif; 
+-epub-hyphens: auto;
+-webkit-hyphens: auto;
+adobe-hyphenate: auto;
+-ms-hyphens: auto;
+-moz-hyphens: auto;
+hyphens: auto;
+}
+/* use for styling the first 3 words of each chapter, eg. <span class="small-caps">The smell of</span> dust */
+span.small-caps
+{
+  font-size: larger;
+  font-variant: small-caps;
 }
 /*===Headings===*/
 h1
