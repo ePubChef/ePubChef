@@ -17,12 +17,13 @@ And now an ordered list:
 3. third item
 4. fourth item
 
+
 Markdown is used for simple things. If you want nested lists or ordered lists of more than 9 items use HTML markup as shown in the previous section.
 
-The following chapter will be a block quote.
-
+The following paragraph will be a blockquote.
+<p><br/></p>
 > Etiam in suscipit metus. Suspendisse interdum neque in nulla viverra, sodales scelerisque elit cursus. Fusce porta nibh at risus aliquet, sit amet molestie quam consectetur. Quisque viverra ac lacus vehicula fringilla.
-
+<p><br/></p>
 Words can be _emphasised_ or made **bold** or even _**both**_.
 
 Links are created as follows: [I'm an inline-style link](https://www.google.com)
@@ -34,10 +35,10 @@ A horizontal rule can be created with 3 or more hyphens:
 
 ---
 
-Breaks between paragraphs - The following two paragraphs will have an extra line between them.
+Breaks between paragraphs - The following two paragraphs will have an extra line between them. This is not standard markdown, but it works.
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus commodo lacus sit amet iaculis molestie. Sed nec eros interdum, fringilla urna eu, porttitor dui. Integer vehicula vulputate leo quis condimentum. 
 <p><br/></p>
-OK, I admit that is not standard markdown, but it works. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus commodo lacus sit amet iaculis molestie. Sed nec eros interdum, fringilla urna eu, porttitor dui. Integer vehicula vulputate leo quis condimentum. 
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus commodo lacus sit amet iaculis molestie. Sed nec eros interdum, fringilla urna eu, porttitor dui. Integer vehicula vulputate leo quis condimentum. 
 
 Markdown of tables is not currently supported, use HTML.
