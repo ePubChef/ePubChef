@@ -121,10 +121,11 @@ widows: 2;
 orphans: 2;
 }
 blockquote {
-text-indent: 0;
-margin: 0 2.5em;
-padding: 0;
-font-style: italic;
+  margin: 10px 0 10px 5px !important;
+  page-break-inside: avoid;
+  font-size: 95%;
+  font-style: italic;
+  text-indent: 0;
 }
 /* block type paragraph for non-fiction */
 p.left
