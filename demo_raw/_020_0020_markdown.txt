@@ -24,6 +24,11 @@ The following paragraph will be a blockquote.
 <p><br/></p>
 > Etiam in suscipit metus. Suspendisse interdum neque in nulla viverra, sodales scelerisque elit cursus. Fusce porta nibh at risus aliquet, sit amet molestie quam consectetur. Quisque viverra ac lacus vehicula fringilla.
 <p><br/></p>
+However, it appears that the Kindle app. when running on a Mac does not deal well with the "blockquote" tag and so this alternative using simpler (but less correct) CSS is preferred.
+
+<p class="simulate_blockquote">'During their research in DNA in the early 1950s, Watson and Crick used the Eagle as a place to relax and discuss their theories whilst refreshing themselves with ale.'</p>
+<p><br/></p>
+
 Words can be _emphasised_ or made **bold** or even _**both**_.
 
 Links are created as follows: [I'm an inline-style link](https://www.google.com)
