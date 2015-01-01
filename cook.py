@@ -347,15 +347,6 @@ def formatScene(in_file, scene_count, auto_dropcaps):
                 new = '<p class="texttop"><span class="dropcap">' \
                        + char_to_drop + '</span>'
                 line = new + line
-	        # a drop capital
-            #drop_letter, line, text_class = dropCap(line)
-            #drop_text_block = block(para, para_class, text_class, drop_letter)
-            #textblock.append(drop_text_block)
-            #text_class = False # default
-        
-        
-        #elif line[0:3] == ">>>":  # a block quote
-        #    line, para_class = blockquote(line)
 
         # text_class and words
         std_text_block = block(para, para_class, text_class, line)
@@ -530,12 +521,6 @@ def dropCap(line):
     #line = line[4:] # remove formatting and first letter
     text_class = 'dropcap'
     return drop_letter, line, text_class
-	
-def blockquote(line):
-    # deal with blockquote instructions ( >>> )
-    line = line[3:] # remove formatting 
-    para_class = 'blockquote'
-    return line, para_class
 	
 def block(para, para_class, text_class, words):
     if para_class:
