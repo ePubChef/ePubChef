@@ -54,7 +54,7 @@ except:
     pass
 
 cook_dir = os.path.dirname(os.path.realpath(__file__))
-gen_dir = os.path.join(cook_dir, file_name+'_generated')
+gen_dir = os.path.join(cook_dir, file_name+'_cooked')
 
 
 print('cook_dir:', cook_dir, gen_dir)
@@ -69,11 +69,11 @@ dirs = {
 	'content' : os.path.join(cook_dir, gen_dir+'/OEBPS/content'),
 	'css' : os.path.join(cook_dir, 'css'),
 	'tmp' : os.path.join(cook_dir, 'debug'),
-    'epub_loc' : os.path.join(cook_dir, 'epubs'),
+    'epub_loc' : os.path.join(cook_dir, file_name+'_served'),
     'fonts' : os.path.join(cook_dir, 'fonts'),
     'fonts_gen' : os.path.join(cook_dir, gen_dir+'/OEBPS/fonts'),
     'demo_raw' : os.path.join(cook_dir, 'demo_raw'),
-    'recipe_loc' : os.path.join(cook_dir, file_name+'_raw', file_name+'_recipe.yaml'),
+    'recipe_loc' : os.path.join(cook_dir, file_name+'_raw', file_name+'_recipe.txt'),
     'raw_css' : os.path.join(cook_dir, file_name+'_raw', 'css'), 
 	}
 
@@ -105,7 +105,7 @@ dirs = {
   /css
      epub-stylesheet.css
   /mybook_raw
-     mybook_recipe.yaml
+     mybook_recipe.txt
      _0010_010_scene....txt (many scene files) 
   /mybook_raw/images
      ...jpg *
@@ -135,7 +135,6 @@ of which there can be many, or a "class" which defines the xhtml class of the pa
 renderer = pystache.Renderer()
 
 def importYaml(file_name):
-    #recipe_loc = os.path.join(file_name+'_raw', file_name+'_recipe.yaml')
     recipe_loc = dirs['recipe_loc']
     if os.path.isfile(recipe_loc):
         print('Opening recipe for:', recipe_loc)
@@ -148,17 +147,16 @@ def importYaml(file_name):
     else: # create a new recipe from a template
         print('Creating new recipe for:', file_name)
         try:
-            f = open(join(dirs['raw_book'], file_name+'_recipe.yaml'), 'w')
+            f = open(join(dirs['raw_book'], file_name+'_recipe.txt'), 'w')
         except:   # create the dir if it did not exist
             os.makedirs(dirs['raw_book'])
-            f = open(join(dirs['raw_book'], file_name+'_recipe.yaml'), 'w')
+            f = open(join(dirs['raw_book'], file_name+'_recipe.txt'), 'w')
 
-        #print('template_dir:', dirs['template_dir'])
         new_recipe = renderer.render_path(os.path.join(dirs['template_dir'], 'recipe.mustache'), dict([("file_name", file_name)]))
 
         f.write(new_recipe)
         f.close()
-        with open(join(dirs['raw_book'], file_name+'_recipe.yaml'), 'r') as f:
+        with open(join(dirs['raw_book'], file_name+'_recipe.txt'), 'r') as f:
             _recipe = yaml.load(f)
             
     # augment recipe by adding the file name to it
@@ -173,7 +171,7 @@ def createEmptyDir(dir_nm, add_init):
         os.makedirs(dir_nm)
     else:
         # delete contents if it already existed
-        print('deleting previously generated directory:', dir_nm)
+        print('deleting previously generated contents of directory:', dir_nm)
         shutil.rmtree(dir_nm)
         try:
             os.makedirs(dir_nm)
@@ -594,10 +592,9 @@ def addPOSData(pos_data_loc):
     # TODO: augment to read from a URL or as input to this job
     # local file read works fine for demonstrations.
     try:
-        pos_data_loc = os.path.join(file_name+'_raw', file_name+'_pos_data.yaml')
+        pos_data_loc = os.path.join(file_name+'_raw', file_name+'_pos_data.txt')
         print('Opening Point Of Sale data for:', pos_data_loc)
         with open(pos_data_loc, 'r') as f:
-            #_recipe['point_of_sale'] = yaml.load(f)
             point_of_sale = yaml.load(f)
     except: # create a new recipe from a template
         print('No Point of Sale data this time.')
@@ -878,7 +875,9 @@ def manifest_items():
     return items
     
 def createArchive(rootDir, outputPath):
-    print("zipping up to .epub")
+    print("zipping up to .epub at:", outputPath)
+    # create served directory if it does not exist.
+    createEmptyDir(dirs['epub_loc'], False)
     fout = zipfile.ZipFile(outputPath, 'w')
     cwd = os.getcwd()
     os.chdir(rootDir)
@@ -944,12 +943,11 @@ if __name__ == "__main__": # main processing
 
     # write the augmented recipe to a file, just for humans to look at
     writeAugmentedRecipe(recipe)
-    print("ePubChef is finished, see /epubs.")
+    print("ePubChef is finished, see /",file_name,"_served.")
     
     # zip results into an epub file 
     epub_file = join(dirs['epub_loc'], file_name + '.epub')
     createArchive(dirs['gen_dir'], epub_file)
-    
     # Optionally validate the epub
     # NOTE: epubcheck is not part of ePubChef and we won't be offended if you don't run 
     # it from here. 
