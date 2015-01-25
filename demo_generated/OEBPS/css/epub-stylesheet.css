@@ -127,6 +127,7 @@ font-size: 95%;
 font-style: italic;
 text-indent: 0;
 }
+/* Kindle app on Mac. does not handle the blockquote properly so this is a workaround */
 p.simulate_blockquote
 {
 text-indent: 0;
