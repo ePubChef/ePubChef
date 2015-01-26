@@ -4,9 +4,8 @@ Create beautiful EPUB eBooks
 
 Websites
 ========
-http://ePubChef.org - the open source site
+http://cobobook.com - for ePubChef support
 https://github.com/ePubChef/ePubChef - github code hosting and wiki
-http://cobobook.com - the support site
 
 License
 =======
