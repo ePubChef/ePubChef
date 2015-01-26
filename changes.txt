@@ -1,0 +1,10 @@
+releases:
+    - version 1.0.0
+      date: 2015-01-26
+      change: Improved compatibility with editors and file sharing tools. Yaml files are now .txt, epubs directory is now ..._served, _generated is now _cooked.
+    - version: 0.9.1
+      date: 2014-11-05
+      change: deal safely with errors in recipe.yaml
+    - version: 0.9.2
+      date: 2014-12-07
+      change: allow running from directories other than that containing cook.py
