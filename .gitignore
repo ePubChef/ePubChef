@@ -53,10 +53,4 @@ coverage.xml
 docs/_build/
 
 # JC's own books
-headsandtails/
-headsandtails_raw/
 headsandtails*
-epubs/headsandtails*
-epubchef_whitepaper_generated/
-demo_generated/
-

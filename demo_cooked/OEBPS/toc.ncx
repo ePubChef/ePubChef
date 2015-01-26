@@ -44,14 +44,18 @@
          <navLabel><text>Chapter 3 - Using the ePbubChef Recipe</text></navLabel>
          <content src="content/chap3.xhtml#h2-3" />
        </navPoint>
+       <navPoint id="ncx_h2-4" playOrder="8">
+         <navLabel><text>Chapter 4 - Special Features</text></navLabel>
+         <content src="content/chap4.xhtml#h2-4" />
+       </navPoint>
      
    
    <!-- back matter -->
-   <navPoint id="ncx_description" playOrder="8">
+   <navPoint id="ncx_description" playOrder="9">
       <navLabel><text>Description</text></navLabel>
       <content src="description.xhtml" />
     </navPoint>
-   <navPoint id="ncx_about_author" playOrder="9">
+   <navPoint id="ncx_about_author" playOrder="10">
       <navLabel><text>About Author</text></navLabel>
       <content src="about_author.xhtml" />
     </navPoint>

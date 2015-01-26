@@ -34,7 +34,7 @@
             <tr><td>bbbb</td><td>222</td></tr>
             <tr><td>cccc</td><td>8888</td></tr>
             </table>
-            <p>Images can be placed in the pages: <img src="../images/chef-hat1.jpg" width="100" alt="chef hat image"/>Nice, eh? Note that if a line ends with an HTML tag the whole line is treated as HTML and so should be wrapped in paragraph tags.</p>
+            <p>Images can be placed in the pages: <img src="../images/chef-hat1.jpg" width="150" alt="chef hat image"/>. Note that if a line ends with an HTML tag the whole line is treated as HTML and so should be wrapped in paragraph tags.</p>
             <p><br/></p>
             <p>Nested list example (using HTML):</p>
             <ol>
@@ -75,20 +75,25 @@
 <li>fourth item</li>
 </ol>
             <p>Markdown is used for simple things. If you want nested lists or ordered lists of more than 9 items use HTML markup as shown in the previous section.</p>
-            <p>The following chapter will be a block quote.</p>
+            <p>The following paragraph will be a blockquote.</p>
+            <p><br/></p>
             <blockquote>
 <p>Etiam in suscipit metus. Suspendisse interdum neque in nulla viverra, sodales scelerisque elit cursus. Fusce porta nibh at risus aliquet, sit amet molestie quam consectetur. Quisque viverra ac lacus vehicula fringilla.</p>
 </blockquote>
+            <p><br/></p>
+            <p>However, it appears that the Kindle app. when running on a Mac does not deal well with the &#8220;blockquote&#8221; tag and so this alternative using simpler (but less correct) CSS is preferred.</p>
+            <p class="simulate_blockquote">'During their research in DNA in the early 1950s, Watson and Crick used the Eagle as a place to relax and discuss their theories whilst refreshing themselves with ale.&#8217;</p>
+            <p><br/></p>
             <p>Words can be <em>emphasised</em> or made <strong>bold</strong> or even <em><strong>both</strong></em>.</p>
             <p>Links are created as follows: <a href="https://www.google.com">I'm an inline-style link</a></p>
             <p>Images can be created like this: Inline-style:</p>
             <p><img alt="alt text" src="../images/chef-hat1.jpg" title="Logo Title Text 1" /></p>
             <p>A horizontal rule can be created with 3 or more hyphens:</p>
             <hr />
-            <p>Breaks between paragraphs - The following two paragraphs will have an extra line between them.</p>
+            <p>Breaks between paragraphs - The following two paragraphs will have an extra line between them. This is not standard markdown, but it works.</p>
             <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus commodo lacus sit amet iaculis molestie. Sed nec eros interdum, fringilla urna eu, porttitor dui. Integer vehicula vulputate leo quis condimentum.</p>
             <p><br/></p>
-            <p>OK, I admit that is not standard markdown, but it works. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus commodo lacus sit amet iaculis molestie. Sed nec eros interdum, fringilla urna eu, porttitor dui. Integer vehicula vulputate leo quis condimentum.</p>
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus commodo lacus sit amet iaculis molestie. Sed nec eros interdum, fringilla urna eu, porttitor dui. Integer vehicula vulputate leo quis condimentum.</p>
             <p>Markdown of tables is not currently supported, use HTML.</p>
     <p class="centered">~~~~~~~~~~~~~~</p>
             <p>This is scene three in the second chapter. Note how scenes are automatically separated by a configurable separator. In this case it is twenty tilda characters. To change the separator or replace it with a simple blank line change what you find between the &#8220;divider&#8221; entry tags.</p>

@@ -1,0 +1,5 @@
+Generally, eBook readers are most stable and predictable using their own built-in fonts. However, one can attempt to control fonts used. This is done by putting the font library in the ePubChef "/fonts" folder. For best eBook reader compatability use .ttf or .woff files. Open source fonts can be obtained from http://www.google.com/fonts (or other sources) and if necesary converted at http://everythingfonts.com/ttf-to-woff.
+
+Set the /css/epub-stylesheet.css to include the @font-face entries for your font(s). and use it in the css, such as: font-family: 'Courgette', sans-serif;
+
+The chapter headers of this documen are an example of using a non-standard font. HOWEVER, while the custom font is rendered correctly in some readers, such as Adobe Digital Editions, it is not in others (Calibre and Kindle Paperwhite). 
