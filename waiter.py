@@ -9,6 +9,7 @@
 import os
 from os.path import isfile, join
 import subprocess
+import time
 
 cook_dir = os.path.dirname(os.path.realpath(__file__))
 print("cook_dir", cook_dir)
@@ -31,7 +32,15 @@ def find_and_run(a_directory):
     if os.path.exists(join(a_directory, 'waiter.txt')):
         print("waiter.txt exists")
         args = read_args(a_directory)
-        output = subprocess.check_output(['python','cook.py',args[0], '>','cook.log'], shell=True)
+        if args[0][0] != '#':   # ignore if the line is commented out
+            try:
+                output = subprocess.check_output(['python','cook.py',args[0],args[1], '>','cook.log'], shell=True)
+            except:
+                # only one argument
+                output = subprocess.check_output(['python','cook.py',args[0], '>','cook.log'], shell=True)
+            rewrite_waiter(a_directory, args)
+        else:
+            print("commented out")
     else:
         print("waiter is ignoring you")
 
@@ -42,9 +51,22 @@ def read_args(a_directory):
     f.close()
 
     return(args)
+
+def rewrite_waiter(a_directory, args):
+    # put a comment before the first line
+    f = open(join(a_directory, 'waiter.txt'), 'w')
+    output = '#'
+    for item in args:
+        output = output + item + " "
+    f.write(output)
+    f.close()
+
 ######################################
 # main processing
-dirs = list_dirs()
-for directory in dirs:
-    find_and_run(directory)
-    print("See cook.log in: ", dirs)
+while True:
+    dirs = list_dirs()
+    for directory in dirs:
+        find_and_run(directory)
+        print("See cook.log in: ", dirs)
+    print("sleeping....")
+    time.sleep(2)
