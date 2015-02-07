@@ -1,31 +1,30 @@
-# This program will check for the existence of a file named ..._waiter.txt in the top level
-# of ePubChef (the level of cook.py). It runs from the level, but will look accross parallel
-# ePubChef folders as well.
-#
-# If ...._waiter.txt is found, it will trigger a run of cook.py in that directory, then delete
-# ..._waiter.txt.
+# This program runs in background and triggers runs of cook.py when a certain file is found.
+# This allows ePubChef users to trigger eBook generation on a remote machine on which files are
+# synced.
+# The code will check for the existence of a file named waiter.txt in the current directory and
+# all sibling directories. It then reads cook.py arguments from the first line of waiter.py, triggers
+# the job, then comments out the waiter.txt arguments so as not to repeat the run.
+# Logs are written to cook.log.
 
-# first just look in current dir
 import os
 from os.path import isfile, join
 import subprocess
 import time
 
 cook_dir = os.path.dirname(os.path.realpath(__file__))
-print("cook_dir", cook_dir)
+root_dir = os.path.abspath(os.path.join(cook_dir, os.pardir))
+print("root_dir", root_dir)
 
 def list_dirs():
-    return [cook_dir] # for now
-
-def get_waiters_attention():
-    #open and read first line arguments
-    try:
-        with open(recipe_loc, 'r') as f:
-            _recipe = yaml.load(f)
-    except:
-        print('\n***Error in waiter.txt file*** :')
-        raise SystemExit
-    f.close()
+    # return a list of the current directory (where this scirpt was started and all
+    # its sibling directories)
+    dir_names = file_list = next(os.walk('..'))[1]
+    full_dirs = []
+    for dir in dir_names:
+        full_dirs.append(join(root_dir, dir))
+    dirs = full_dirs
+    #print("dirs:", dirs)
+    return dirs # for now
 
 def find_and_run(a_directory):
     # test for presents of waiter.txt
@@ -42,14 +41,17 @@ def find_and_run(a_directory):
         else:
             print("commented out")
     else:
-        print("waiter is ignoring you")
+        print("No waiter.txt around")
 
 def read_args(a_directory):
-    f = open(join(a_directory, 'waiter.txt'), 'r')
-    args = f.readlines()[0].strip().split(" ")
-    print("args:", args)
-    f.close()
-
+    try:
+        f = open(join(a_directory, 'waiter.txt'), 'r')
+        args = f.readlines()[0].strip().split(" ")
+        print("args:", args)
+        f.close()
+    except:
+        print("failed to read args")
+        args=['#']
     return(args)
 
 def rewrite_waiter(a_directory, args):
@@ -67,6 +69,6 @@ while True:
     dirs = list_dirs()
     for directory in dirs:
         find_and_run(directory)
-        print("See cook.log in: ", dirs)
+        #print("See cook.log in: ", dirs)
     print("sleeping....")
     time.sleep(2)
