@@ -12,6 +12,7 @@ import os
 from os.path import isfile, join
 import subprocess
 import time
+import datetime
 
 cook_dir = os.path.dirname(os.path.realpath(__file__))
 root_dir = os.path.abspath(os.path.join(cook_dir, os.pardir))
@@ -66,6 +67,8 @@ def rewrite_waiter(a_directory, args):
     output = '#'
     for item in args:
         output = output + item + " "
+    f.write(output)
+    output = "\n" + str(datetime.datetime.now())
     f.write(output)
     f.close()
 
