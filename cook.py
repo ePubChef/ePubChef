@@ -143,6 +143,8 @@ def importYaml(file_name):
                 _recipe = yaml.load(f)
         except:
             print('\n***Error in recipe file, please check your yaml*** :', recipe_loc)
+            print('***Try checking it with http://yaml-online-parser.appspot.com***')
+            print('***Escape characters such as colons by adding quotes around the text.***\n')
             raise SystemExit
     else: # create a new recipe from a template
         print('NO RECIPE FOUND AT:', recipe_loc)
