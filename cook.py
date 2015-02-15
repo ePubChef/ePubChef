@@ -660,7 +660,7 @@ def augmentParts(_recipe):
     # add chapters to the parts section of the recipe, create parts if not existing.
     if 'parts' in _recipe:
         for part in _recipe['parts']:
-            msg('PART: '+ part)
+            msg('PART: '+ str(part))
             part['chp'] = []
             include_chapter_in_part = False
             for c in _recipe['chapters']:

@@ -46,14 +46,14 @@ def find_and_run(a_directory):
         args = read_args(a_directory)
         if args[0][0] != '#':   # ignore if the line is commented out
             cook_loc = join(a_directory,'cook.py')
-            log_loc = join(a_directory,'cook.log')
+            #log_loc = join(a_directory,'cook.log')
             #print("cook_loc:",cook_loc)
             #print("log_loc:",log_loc)
             try:
-                output = subprocess.check_output(['python3',cook_loc,args[0],args[1], '>',log_loc], shell=False)
+                output = subprocess.check_output(['python3',cook_loc,args[0],args[1]], shell=False)
             except:
                 # only one argument
-                output = subprocess.check_output(['python3',cook_loc,args[0], '>',log_loc], shell=False)
+                output = subprocess.check_output(['python3',cook_loc,args[0]], shell=False)
             rewrite_waiter(a_directory, args)
         else:
             print("commented out")
