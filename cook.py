@@ -40,11 +40,23 @@ import json
 import zipfile
 import subprocess
 import markdown
+import datetime
+
+cook_dir = os.path.dirname(os.path.realpath(__file__))
+
+# not using python logging module to reduce external dependencies
+log = open(join(cook_dir, "cook.log"), 'w')
+log.write("****starting to cook***** " + str(datetime.datetime.now()))
+
+def msg(msg_txt):
+    print(msg_txt)
+    log.write("\n" + msg_txt)
 
 template_dir = "templates"
 
 # get the recipe file for the book
 file_name = sys.argv[1]
+gen_dir = os.path.join(cook_dir, file_name+'_cooked')
 
 # check for a debug level and validate run
 arg2 = None
@@ -53,22 +65,19 @@ try:
 except:
     pass
 
-cook_dir = os.path.dirname(os.path.realpath(__file__))
-gen_dir = os.path.join(cook_dir, file_name+'_cooked')
+msg('cook_dir: '+ cook_dir)
 
-
-print('cook_dir:', cook_dir, gen_dir)
 dirs = {
     'gen_dir' : gen_dir, # folder for the ePub files
     'template_dir' : os.path.join(cook_dir, 'templates'),         # templates for ePub files
-	'raw_book' : os.path.join(cook_dir, file_name+'_raw'), # words and images of the book
-	'oebps' : os.path.join(cook_dir, gen_dir+'/OEBPS'),
+    'raw_book' : os.path.join(cook_dir, file_name+'_raw'), # words and images of the book
+    'oebps' : os.path.join(cook_dir, gen_dir+'/OEBPS'),
     'raw_images' : os.path.join(cook_dir, file_name+'_raw'+'/images'),
     'images' : os.path.join(cook_dir, gen_dir+'/OEBPS/images'),
     'default_cover' : os.path.join(cook_dir, 'demo_raw/images'),
-	'content' : os.path.join(cook_dir, gen_dir+'/OEBPS/content'),
-	'css' : os.path.join(cook_dir, 'css'),
-	'tmp' : os.path.join(cook_dir, 'debug'),
+    'content' : os.path.join(cook_dir, gen_dir+'/OEBPS/content'),
+    'css' : os.path.join(cook_dir, 'css'),
+    'tmp' : os.path.join(cook_dir, 'debug'),
     'epub_loc' : os.path.join(cook_dir, file_name+'_served'),
     'fonts' : os.path.join(cook_dir, 'fonts'),
     'fonts_gen' : os.path.join(cook_dir, gen_dir+'/OEBPS/fonts'),
@@ -76,6 +85,7 @@ dirs = {
     'recipe_loc' : os.path.join(cook_dir, file_name+'_raw', file_name+'_recipe.txt'),
     'raw_css' : os.path.join(cook_dir, file_name+'_raw', 'css'),
 	}
+
 
 ''' structure to be generated for "mybook" is:
   /mybook_generated (generated book root dir)
@@ -137,18 +147,18 @@ renderer = pystache.Renderer()
 def importYaml(file_name):
     recipe_loc = dirs['recipe_loc']
     if os.path.isfile(recipe_loc):
-        print('Opening recipe for:', recipe_loc)
+        msg('Opening recipe for: '+ recipe_loc)
         try:
             with open(recipe_loc, 'r') as f:
                 _recipe = yaml.load(f)
         except:
-            print('\n***Error in recipe file, please check your yaml*** :', recipe_loc)
-            print('***Try checking it with http://yaml-online-parser.appspot.com***')
-            print('***Escape characters such as colons by adding quotes around the text.***\n')
+            msg('\n***Error in recipe file, please check your yaml*** : '+ recipe_loc)
+            msg('***Try checking it with http://yaml-online-parser.appspot.com***')
+            msg('***Escape characters such as colons by adding quotes around the text.***\n')
             raise SystemExit
     else: # create a new recipe from a template
-        print('NO RECIPE FOUND AT:', recipe_loc)
-        print('Creating new recipe for:', file_name)
+        msg('NO RECIPE FOUND AT: '+ recipe_loc)
+        msg('Creating new recipe for: '+ file_name)
         try:
             f = open(join(dirs['raw_book'], file_name+'_recipe.txt'), 'w')
         except:   # create the dir if it did not exist
@@ -174,7 +184,7 @@ def createEmptyDir(dir_nm, add_init):
         os.makedirs(dir_nm)
     else:
         # delete contents if it already existed
-        print('deleting previously generated contents of directory:', dir_nm)
+        msg('deleting previously generated contents of directory: '+  dir_nm)
         shutil.rmtree(dir_nm)
         try:
             os.makedirs(dir_nm)
@@ -187,7 +197,7 @@ def createEmptyDir(dir_nm, add_init):
 def prepareDirs(dirs):
     # delete previous generated folders
     if arg2 == 'debug':
-        print('RUNNING in DEBUG mode, see folder: /', dirs['tmp'])
+        msg('RUNNING in DEBUG mode, see folder: /'+ dirs['tmp'])
         #os.makedirs(dirs['tmp'])
         f = open(os.path.join(dirs['tmp'], 'tmp_paras.json'), 'w')
         f.close()
@@ -265,9 +275,8 @@ def processMarkdown(_line):
         _line = "#"+_line
 
     if _line[0] == "|":
-        print("got a table:",_line)
+        msg("got a table: "+_line)
     _line = markdown.markdown(_line, output_format='xhtml5')
-    #print("marked:", _line)
     return _line
 
 def groupMarkdown(_n, lines):
@@ -410,7 +419,7 @@ def genChapters(_recipe, front_matter_count, scenes_dict):
         scene_nbr = 0
         chapter = genChapter(chapter, scenes_dict[chapter['code']])
 
-    print("chapter count: ", chapter_nbr)
+    msg("chapter count: "+ str(chapter_nbr))
     return _recipe, next_playorder
 
 def genChapter(_chapter, scenes):
@@ -428,7 +437,6 @@ def genChapter(_chapter, scenes):
         scene_count+=1
     # write the chapter
     f = codecs.open(os.path.join(dirs['content'], 'chap'+_chapter['nbr']+'.xhtml'), 'w', 'utf-8')
-    #print('CHAPTER:', _chapter)
     out = renderer.render_path(os.path.join(dirs['template_dir'], 'chapter.xhtml'), _chapter)
     #remove blank lines
     out =  "".join([s for s in out.strip().splitlines(True) if s.strip()])
@@ -552,7 +560,6 @@ def prepareScene(scene_name, scene_count):
     in_file = codecs.open(join(dirs['raw_book'], scene_name+'.txt'), 'r', 'utf-8')
     prepared_scene = formatScene(in_file, scene_count, recipe['auto_dropcaps'])
     in_file.close()
-    #print('\prepared_scene: ', prepared_scene)
     return prepared_scene
 
 def checkFrontBackMatter(_recipe):
@@ -569,15 +576,15 @@ def checkFrontBackMatter(_recipe):
         _recipe['back_matter'] = []
 
     if {'name':'cover'} not in _recipe['front_matter']:
-        print('front_matter:', _recipe['front_matter'])
+        msg('front_matter:'+ _recipe['front_matter'])
         raise Exception("You must have 'cover' in front_matter!")
 
     if {'name':'title_page'} not in _recipe['front_matter']:
-        print('front_matter:', _recipe['front_matter'])
+        msg('front_matter:'+ _recipe['front_matter'])
         raise Exception("You must have 'title_page' in front_matter!")
 
     if {'name':'table_of_contents'} not in _recipe['front_matter']:
-        print('front_matter:', _recipe['front_matter'])
+        msg('front_matter:'+ _recipe['front_matter'])
         raise Exception("You must have 'table_of_contents' in front_matter!")
 
     for fname in _recipe['front_matter'] + _recipe['back_matter'] :
@@ -596,11 +603,11 @@ def addPOSData(pos_data_loc):
     # local file read works fine for demonstrations.
     try:
         pos_data_loc = os.path.join(file_name+'_raw', file_name+'_pos_data.txt')
-        print('Opening Point Of Sale data for:', pos_data_loc)
+        msg('Opening Point Of Sale data for: '+ pos_data_loc)
         with open(pos_data_loc, 'r') as f:
             point_of_sale = yaml.load(f)
     except: # create a new recipe from a template
-        print('No Point of Sale data this time.')
+        msg('No Point of Sale data this time.')
         point_of_sale = None
 
     return point_of_sale
@@ -627,7 +634,7 @@ def augmentFrontMatter(front_matter):
             item['toc_entry'] = prettify(item['name'])
         item['tocncx_entry'] = prettify(item['name'])
 
-    print("front_matter count:", front_matter_count)
+    msg("front_matter count: "+ str(front_matter_count))
     return front_matter, front_matter_count
 
 def prettify(messy_string):
@@ -652,14 +659,12 @@ def getChapterMetadata(c):
 def augmentParts(_recipe):
     # add chapters to the parts section of the recipe, create parts if not existing.
     if 'parts' in _recipe:
-        #print('has parts:')
-
         for part in _recipe['parts']:
-            print('PART:', part)
+            msg('PART: '+ part)
             part['chp'] = []
             include_chapter_in_part = False
             for c in _recipe['chapters']:
-                print('  CHAPTER:', c['code'])
+                msg('  CHAPTER:'+ c['code'])
                 if 'starts_part' in c:  # first chapter in a part
                     if c['starts_part'] == part['part_name']:
                         # start of current part
@@ -671,13 +676,12 @@ def augmentParts(_recipe):
                     #include_chapter_in_part = True
                     pass
                 if include_chapter_in_part:
-                    #print('  score:', part['part_name'], c['code'])
                     chapter_metadata = getChapterMetadata(c)
                     part['chp'].append(chapter_metadata)
             try:
                 part['starting_chapter'] = starting_chapter
             except:
-                print('***ERROR, must define at least one valid starts_part in a recipe***')
+                msg('***ERROR, must define at least one valid starts_part in a recipe***')
                 raise SystemExit
             part['chap_toc_style'] = 'toc_chapter_with_parts'
     else: # user entered no parts, so make 1 default part.
@@ -689,7 +693,6 @@ def augmentParts(_recipe):
             parts_dict['chp'].append(chapter_metadata)
         _recipe['parts'] = [parts_dict]
 
-    #print ('parts:', _recipe['parts'])
     return _recipe
 
 def augmentBackMatter(_recipe, playorder):
@@ -719,7 +722,6 @@ def augmentImages(_recipe):
         all_images.remove('Thumbs.db') # not an image
     except:
         pass
-    #print('images:', all_images)
     for image in all_images:
         id+=1
         image_name = image[:-4] # trim suffix and dot
@@ -785,7 +787,6 @@ def writeAugmentedRecipe(_recipe):
         f.close()
 
 def getScenesDict(raw_scenes_dir):
-    # TODO change raw_scenes_dir to dirs['raw_book']
     checkForChapterFiles()
     # get ordered list of scenes per chapter from raw dir
     # each file must begin with a chapter id followed by an underscore
@@ -798,7 +799,6 @@ def getScenesDict(raw_scenes_dir):
     # raw book files must begin with 3 digits identifying the chapter
     os.chdir(raw_scenes_dir)
     ingredients_list = sorted(glob.glob('./_*.txt'))
-    #print(ingredients_list)
     os.chdir('..')
     # put list into a dict.
     scene_dict = {}
@@ -811,14 +811,12 @@ def getScenesDict(raw_scenes_dir):
             isScene = True
         except:
             isScene = False
-            print('Not a scene:', scene)
+            msg('Not a scene:'+ scene)
         if isScene:
-            #print ("  processing scene:",chapter_id,scene)
             if chapter_id not in scene_dict:
                 scene_dict[chapter_id] = []
 
             scene_dict[chapter_id].append(scene)
-    #print("\nscene_dict:", scene_dict)
     return scene_dict
 
 def checkForChapterFiles():
@@ -829,10 +827,9 @@ def checkForChapterFiles():
     chapter_code_ingredients = []
     for item in ingredients_list:
         chapter_code_ingredients.append(item[3:6])
-    #print('existing raw text files:', ingredients_list, chapter_code_ingredients)
     for chapter in recipe['chapters']:
         if chapter['code'] not in chapter_code_ingredients:
-            print('creating new empty chapter:', chapter['code'])
+            msg('creating new empty chapter:'+ chapter['code'])
             f = open('_'+chapter['code']+'_0010_.txt','w+')
             f.close()
     os.chdir('..')
@@ -878,7 +875,7 @@ def manifest_items():
     return items
 
 def createArchive(rootDir, outputPath):
-    print("zipping up to .epub at:", outputPath)
+    msg("zipping up to .epub at: "+ outputPath)
     # create served directory if it does not exist.
     createEmptyDir(dirs['epub_loc'], False)
     fout = zipfile.ZipFile(outputPath, 'w')
@@ -946,7 +943,7 @@ if __name__ == "__main__": # main processing
 
     # write the augmented recipe to a file, just for humans to look at
     writeAugmentedRecipe(recipe)
-    print("ePubChef is finished, see /",file_name,"_served.")
+    msg("ePubChef is finished, see /"+file_name+"_served.")
 
     # zip results into an epub file
     epub_file = join(dirs['epub_loc'], file_name + '.epub')
@@ -970,4 +967,5 @@ if __name__ == "__main__": # main processing
         # this is the windows command, adjust for other operating systems.
         kindlegen('..\kindlegen_win32_v2_9\kindlegen', epub_file )
 
-    print("All done\n")
+    msg("All done\n")
+    log.close
