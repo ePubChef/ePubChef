@@ -13,10 +13,20 @@ from os.path import isfile, join
 import subprocess
 import time
 import datetime
+# presume this file strucure
+# epubchef/waiter.py  (epubchef from github)
+# Copy/ePubChef_1
+# Copy/ePubChef_2
+# Copy/ePubChef_n
+#   where Copy folders are owned by info@epubchf.org Copy.com user
+#   dirs within that have any name, but are epubchef copies
+#   in future, copy cook.py from github master.
+
+#   waiter.py will be run from epubchef dir and look for changes in the Copy/ePubChef/... dirs
 
 cook_dir = os.path.dirname(os.path.realpath(__file__))
-root_dir = os.path.abspath(os.path.join(cook_dir, os.pardir))
-#print("root_dir", root_dir)
+root_dir = os.path.abspath(os.path.join(cook_dir, os.pardir, "Copy"))
+print("root_dir", root_dir)
 
 def list_dirs():
     # return a list of the current directory (where this scirpt was started and all
