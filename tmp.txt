@@ -1,0 +1,4 @@
+Epubcheck Version 3.0.1
+
+Validating against EPUB version 3.0
+No errors or warnings detected.

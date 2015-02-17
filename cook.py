@@ -660,7 +660,7 @@ def augmentParts(_recipe):
     # add chapters to the parts section of the recipe, create parts if not existing.
     if 'parts' in _recipe:
         for part in _recipe['parts']:
-            msg('PART: '+ str(part))
+            msg('PART: '+ part)
             part['chp'] = []
             include_chapter_in_part = False
             for c in _recipe['chapters']:
@@ -894,7 +894,16 @@ def createArchive(rootDir, outputPath):
     os.chdir(cwd)
 
 def epubcheck(checkerPath, epubPath):
-    subprocess.call(['java', '-jar', checkerPath, epubPath], shell = True)
+    if os.name == 'posix': # linux server
+        f = open('tmp.txt','w')
+        subprocess.call(['epubcheck' + ' ' + epubPath], shell = True, stdout = f) 
+        f.close()
+        f = open('tmp.txt','r')
+        output = f.read()
+        msg(output)
+        f.close()
+    else: 
+        subprocess.call(['java', '-jar', checkerPath, epubPath], shell = True)
 
 def kindlegen(checkerPath, epubPath):
     subprocess.call([checkerPath, epubPath], shell = True)
@@ -954,8 +963,8 @@ if __name__ == "__main__": # main processing
     # To validate, install the Java JDK on your machine, set your PATH to include java, and put the epubcheck jar file in the folder above this one.
     # execute cook.py with an additional argument, "python cook.py validate"
     if arg2 in ['validate','kindlegen']:
-        epub_file = join(dirs['epub_loc'], file_name + '.epub')
-        epubcheck('../epubcheck/epubcheck-3.0.1.jar', epub_file )
+        epubPath = join(dirs['epub_loc'], file_name + '.epub')
+        epubcheck('../epubcheck/epubcheck-3.0.1.jar', epubPath )
 
     # Optionally run kindlgen to create a .mobi
     # NOTE: kindlgen is not part of ePubChef and we won't be offended if you don't run
