@@ -906,7 +906,10 @@ def epubcheck(checkerPath, epubPath):
         subprocess.call(['java', '-jar', checkerPath, epubPath], shell = True)
 
 def kindlegen(checkerPath, epubPath):
-    subprocess.call([checkerPath, epubPath], shell = True)
+    if os.name == 'posix': # linux server
+        subprocess.call([checkerPath + ' ' + epubPath], shell = True)
+    else:
+        subprocess.call([checkerPath, epubPath], shell = True)
 
 #########################################################################
 if __name__ == "__main__": # main processing
@@ -973,8 +976,11 @@ if __name__ == "__main__": # main processing
     # execute cook.py with an additional argument, "python cook.py kindlegen" (validate will run too)
     if arg2 == 'kindlegen':
         epub_file = join(dirs['epub_loc'], file_name + '.epub')
-        # this is the windows command, adjust for other operating systems.
-        kindlegen('..\kindlegen_win32_v2_9\kindlegen', epub_file )
+        if os.name == 'posix': # linux server
+            kindlegen('/home/ubuntu/kindlegen/kindlegen', epub_file )
+        else:
+            # this is the windows command, adjust for other operating systems.
+            kindlegen('..\kindlegen_win32_v2_9\kindlegen', epub_file )
 
     msg("All done\n")
     log.close
