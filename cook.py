@@ -50,7 +50,7 @@ log.write("****starting to cook***** " + str(datetime.datetime.now()))
 
 def msg(msg_txt):
     print(msg_txt)
-    log.write("\n" + msg_txt)
+    log.write("\r\n" + msg_txt)
 
 template_dir = "templates"
 
@@ -660,7 +660,7 @@ def augmentParts(_recipe):
     # add chapters to the parts section of the recipe, create parts if not existing.
     if 'parts' in _recipe:
         for part in _recipe['parts']:
-            msg('PART: '+ part)
+            msg('PART: '+ str(part))
             part['chp'] = []
             include_chapter_in_part = False
             for c in _recipe['chapters']:
@@ -907,7 +907,13 @@ def epubcheck(checkerPath, epubPath):
 
 def kindlegen(checkerPath, epubPath):
     if os.name == 'posix': # linux server
-        subprocess.call([checkerPath + ' ' + epubPath], shell = True)
+        f = open('tmp.txt','w')
+        subprocess.call([checkerPath + ' ' + epubPath], shell = True, stdout = f)
+        f.close()
+        f = open('tmp.txt','r')
+        output = f.read()
+        msg(output)
+        f.close()
     else:
         subprocess.call([checkerPath, epubPath], shell = True)
 
