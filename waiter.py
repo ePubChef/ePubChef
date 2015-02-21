@@ -27,6 +27,9 @@ import datetime
 run_dir = os.path.dirname(os.path.realpath(__file__))
 root_dir = os.path.abspath(os.path.join(run_dir, os.pardir, "custs"))
 print("root_dir", root_dir)
+root_log_loc = join(root_dir,'waiter_root.log')
+root_log = open(root_log_loc, 'w')
+root_log.write("The waiter has started.")
 
 def list_dirs():
     # return a list of the current directory (where this scirpt was started and all
@@ -36,7 +39,6 @@ def list_dirs():
     for dir in dir_names:
         full_dirs.append(join(root_dir, dir))
     dirs = full_dirs
-    #print("dirs:", dirs)
     return dirs # for now
 
 def find_and_run(a_directory):
@@ -49,6 +51,7 @@ def find_and_run(a_directory):
             log_loc = join(a_directory,'waiter.log')
             log = open(log_loc, 'w')
             log.write("The waiter has spotted you.")
+            root_log.write("waiter processing: " + a_directory)
             get_fresh_cook(cook_loc)
             try:
                 output = subprocess.check_output(['python3',cook_loc,args[0],args[1]], shell=False)
@@ -97,3 +100,5 @@ while True:
         find_and_run(directory)
     print("sleeping....")
     time.sleep(2)
+
+root_log.close()
