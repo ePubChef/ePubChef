@@ -46,7 +46,7 @@ cook_dir = os.path.dirname(os.path.realpath(__file__))
 
 # not using python logging module to reduce external dependencies
 log = open(join(cook_dir, "cook.log"), 'w')
-log.write("****starting to cook***** " + str(datetime.datetime.now()))
+log.write("****starting to cook***** at " + str(datetime.datetime.now()) + " (Ireland time)\r\n")
 
 def msg(msg_txt):
     print(msg_txt)

@@ -6,10 +6,11 @@
 # The code will check for the existence of a file named waiter.txt in the current directory and
 # all sibling directories. It then reads cook.py arguments from the first line of waiter.py, triggers
 # the job, then comments out the waiter.txt arguments so as not to repeat the run.
-# Logs are written to cook.log.
+# Logs are written to waiter.log.
 
 import os
 from os.path import isfile, join
+import shutil
 import subprocess
 import time
 import datetime
@@ -20,12 +21,11 @@ import datetime
 # Copy/ePubChef_n
 #   where Copy folders are owned by info@epubchf.org Copy.com user
 #   dirs within that have any name, but are epubchef copies
-#   in future, copy cook.py from github master.
 
 #   waiter.py will be run from epubchef dir and look for changes in the Copy/ePubChef/... dirs
 
-cook_dir = os.path.dirname(os.path.realpath(__file__))
-root_dir = os.path.abspath(os.path.join(cook_dir, os.pardir, "custs"))
+run_dir = os.path.dirname(os.path.realpath(__file__))
+root_dir = os.path.abspath(os.path.join(run_dir, os.pardir, "custs"))
 print("root_dir", root_dir)
 
 def list_dirs():
@@ -46,19 +46,26 @@ def find_and_run(a_directory):
         args = read_args(a_directory)
         if args[0][0] != '#':   # ignore if the line is commented out
             cook_loc = join(a_directory,'cook.py')
-            #log_loc = join(a_directory,'cook.log')
-            #print("cook_loc:",cook_loc)
-            #print("log_loc:",log_loc)
+            log_loc = join(a_directory,'waiter.log')
+            log = open(log_loc, 'w')
+            log.write("The waiter has spotted you.")
+            get_fresh_cook(cook_loc)
             try:
                 output = subprocess.check_output(['python3',cook_loc,args[0],args[1]], shell=False)
             except:
                 # only one argument
                 output = subprocess.check_output(['python3',cook_loc,args[0]], shell=False)
             rewrite_waiter(a_directory, args)
+            log.close()
         else:
             print("commented out")
     else:
         print("No waiter.txt around")
+
+def get_fresh_cook(cook_loc):
+    # for security reasons, copy cook.py which came from github
+    # rather than run what a user might have created.
+    shutil.copy2(join(run_dir,'cook.py'), cook_loc)
 
 def read_args(a_directory):
     try:
@@ -88,6 +95,5 @@ while True:
     dirs = list_dirs()
     for directory in dirs:
         find_and_run(directory)
-        #print("See cook.log in: ", dirs)
     print("sleeping....")
     time.sleep(2)
