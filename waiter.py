@@ -25,7 +25,8 @@ import datetime
 #   waiter.py will be run from epubchef dir and look for changes in the Copy/ePubChef/... dirs
 
 run_dir = os.path.dirname(os.path.realpath(__file__))
-root_dir = os.path.abspath(os.path.join(run_dir, os.pardir, "custs"))
+root_dir = os.path.abspath(os.path.join(run_dir, os.pardir, "Copy"))
+#root_dir = os.path.abspath(os.path.join(run_dir, os.pardir, "custs"))
 #print("root_dir", root_dir)
 root_log_loc = join(root_dir,'waiter_root.log')
 
