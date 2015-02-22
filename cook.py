@@ -455,6 +455,8 @@ def postMarkdownTextClean(line):
 	# three dots ... to an elipsis
     line = line.replace('...',"&#8230;")
 
+    line = line.replace("&rsquo;","&#39;") # single quote
+
     # left double quotes #########################
     # replace straight double quote following a space with left smart quote
     line = line.replace(' "'," &#8220;")
