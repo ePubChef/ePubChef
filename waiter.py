@@ -26,10 +26,8 @@ import datetime
 
 run_dir = os.path.dirname(os.path.realpath(__file__))
 root_dir = os.path.abspath(os.path.join(run_dir, os.pardir, "custs"))
-print("root_dir", root_dir)
+#print("root_dir", root_dir)
 root_log_loc = join(root_dir,'waiter_root.log')
-root_log = open(root_log_loc, 'w')
-root_log.write("The waiter has started.")
 
 def list_dirs():
     # return a list of the current directory (where this scirpt was started and all
@@ -44,14 +42,14 @@ def list_dirs():
 def find_and_run(a_directory):
     # test for presents of waiter.txt
     if os.path.exists(join(a_directory, 'waiter.txt')):
-        print("waiter.txt exists")
+        #print("waiter.txt exists")
         args = read_args(a_directory)
         if args[0][0] != '#':   # ignore if the line is commented out
             cook_loc = join(a_directory,'cook.py')
             log_loc = join(a_directory,'waiter.log')
             log = open(log_loc, 'w')
             log.write("The waiter has spotted you.")
-            root_log.write("waiter processing: " + a_directory)
+            root_log.write("\r\nwaiter processing: " + a_directory + str(args))
             get_fresh_cook(cook_loc)
             try:
                 output = subprocess.check_output(['python3',cook_loc,args[0],args[1]], shell=False)
@@ -61,9 +59,11 @@ def find_and_run(a_directory):
             rewrite_waiter(a_directory, args)
             log.close()
         else:
-            print("commented out")
+            pass
+            #print("commented out")
     else:
-        print("No waiter.txt around")
+        pass
+        #print("No waiter.txt around")
 
 def get_fresh_cook(cook_loc):
     # for security reasons, copy cook.py which came from github
@@ -74,10 +74,10 @@ def read_args(a_directory):
     try:
         f = open(join(a_directory, 'waiter.txt'), 'r')
         args = f.readlines()[0].strip().split(" ")
-        print("args:", args)
+        #print("args:", args)
         f.close()
     except:
-        print("failed to read args")
+        #print("failed to read args")
         args=['#']
     return(args)
 
@@ -94,11 +94,22 @@ def rewrite_waiter(a_directory, args):
 
 ######################################
 # main processing
+counter = 0
+reset_value = 100
 while True:
+    # truncate the log every so often so it does not grow too big
+    if counter < reset_value:
+        root_log = open(root_log_loc, 'a')
+    else: # clear waiter_root.log
+        root_log = open(root_log_loc, 'w')
+        counter = 0
+    root_log.write("\r\nThe waiter is about at: " + str(datetime.datetime.now()))
     dirs = list_dirs()
     for directory in dirs:
         find_and_run(directory)
-    print("sleeping....")
+    #print("sleeping....")
+    #root_log.write("\r\nsleeping....")
+    root_log.close()
     time.sleep(2)
+    counter+=1
 
-root_log.close()
