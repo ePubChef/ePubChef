@@ -1,6 +1,6 @@
 '''
 ePubChef - generating EPUB files for eBooks
-    Copyright (C) 2014  John Cobo
+    Copyright (C) 2015  John Cobo
     info@epubchef.org
 
     This program is free software; you can redistribute it and/or modify
@@ -455,7 +455,8 @@ def postMarkdownTextClean(line):
 	# three dots ... to an elipsis
     line = line.replace('...',"&#8230;")
 
-    line = line.replace("&rsquo;","&#39;") # single quote
+    line = line.replace("&rsquo;","&#8217;") # right single quote
+    line = line.replace("&rsquo;","&#8216;") # left single quote
     line = line.replace("&pound;","&#163;") # pound sign
 
     # left double quotes #########################
