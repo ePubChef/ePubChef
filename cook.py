@@ -456,7 +456,7 @@ def postMarkdownTextClean(line):
     line = line.replace('...',"&#8230;")
 
     line = line.replace("&rsquo;","&#8217;") # right single quote
-    line = line.replace("&rsquo;","&#8216;") # left single quote
+    line = line.replace("&lsquo;","&#8216;") # left single quote
     line = line.replace("&pound;","&#163;") # pound sign
 
     # left double quotes #########################
