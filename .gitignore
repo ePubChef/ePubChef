@@ -57,4 +57,10 @@ headsandtails*
 mybook*
 
 # epub and mobi are not source and get eaten by github
-*_served
+*.epub
+*.mobi
+*_served/
+
+# vim temporary files
+*.swp
+*~
