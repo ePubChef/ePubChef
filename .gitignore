@@ -55,3 +55,6 @@ docs/_build/
 # JC's own books
 headsandtails*
 mybook*
+
+# epub and mobi are not source and get eaten by github
+*_served
