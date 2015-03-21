@@ -31,7 +31,7 @@
      {{#chp}}
        <navPoint id="ncx_{{id}}" playOrder="{{playorder}}">
          <navLabel><text>Chapter {{nbr}} - {{name}}</text></navLabel>
-         <content src="content/chap{{nbr}}.xhtml#{{id}}" />
+         <content src="content/chap{{nbr_fmt}}.xhtml#{{id}}" />
        </navPoint>
      {{/chp}}
      {{#playorder}}</navPoint>{{/playorder}}

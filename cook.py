@@ -45,7 +45,7 @@ import datetime
 cook_dir = os.path.dirname(os.path.realpath(__file__))
 
 # not using python logging module to reduce external dependencies
-log = open(join(cook_dir, "cook.log"), 'w')
+log = open(join(cook_dir, "cook_log.txt"), 'w')
 log.write("****starting to cook***** at " + str(datetime.datetime.now()) + " (Ireland time)\r\n")
 
 def msg(msg_txt):
@@ -406,7 +406,8 @@ def genChapters(_recipe, front_matter_count, scenes_dict):
     part_nbr = 0
     for chapter in _recipe['chapters']:
         chapter_nbr +=1
-        chapter['nbr'] = str(chapter_nbr)
+        chapter['nbr'] = str(chapter_nbr) 
+        chapter['nbr_fmt'] = str("%03d" % (chapter_nbr,))
         chapter['id'] = 'h2-'+str(chapter_nbr)
         next_playorder = front_matter_count + chapter_nbr + part_nbr
         if 'starts_part' in chapter:
@@ -436,7 +437,8 @@ def genChapter(_chapter, scenes):
         _chapter['scenes'].append(prepared_scene)
         scene_count+=1
     # write the chapter
-    f = codecs.open(os.path.join(dirs['content'], 'chap'+_chapter['nbr']+'.xhtml'), 'w', 'utf-8')
+    f = codecs.open(os.path.join(dirs['content'], 'chap'+_chapter['nbr_fmt']+'.xhtml'), 'w', 'utf-8')
+	#f = codecs.open(os.path.join(dirs['content'], 'chap'+_chapter['nbr']+'.xhtml'), 'w', 'utf-8')
     out = renderer.render_path(os.path.join(dirs['template_dir'], 'chapter.xhtml'), _chapter)
     #remove blank lines
     out =  "".join([s for s in out.strip().splitlines(True) if s.strip()])
@@ -642,7 +644,7 @@ def augmentFrontMatter(front_matter):
     return front_matter, front_matter_count
 
 def prettify(messy_string):
-    # split string into words (using "_") and capilatize each
+    # split string into words (using "_") and capitalize each
     words = messy_string.split("_")
     s=""
     for word in words:
@@ -657,7 +659,9 @@ def getChapterMetadata(c):
     chapter_metadata = {'id':c['id'],
                         'playorder': c['playorder'],
                         'name': c['name'],
-                        'nbr':c['nbr']}
+                        'nbr':c['nbr'],
+                        'nbr_fmt':c['nbr_fmt'],
+						}
     return chapter_metadata
 
 def augmentParts(_recipe):
@@ -668,11 +672,11 @@ def augmentParts(_recipe):
             part['chp'] = []
             include_chapter_in_part = False
             for c in _recipe['chapters']:
-                msg('  CHAPTER:'+ c['code'])
+                #msg('  CHAPTER:'+ c['code'])
                 if 'starts_part' in c:  # first chapter in a part
                     if c['starts_part'] == part['part_name']:
                         # start of current part
-                        starting_chapter = c['nbr']
+                        starting_chapter = c['nbr_fmt']
                         include_chapter_in_part = True
                     else: # start of next part
                         include_chapter_in_part = False
@@ -680,6 +684,7 @@ def augmentParts(_recipe):
                     #include_chapter_in_part = True
                     pass
                 if include_chapter_in_part:
+                    msg('  CHAPTER:'+ c['code'])
                     chapter_metadata = getChapterMetadata(c)
                     part['chp'].append(chapter_metadata)
             try:
@@ -773,7 +778,7 @@ def addContentFiles(_recipe):
 
     for chapter in _recipe['chapters']:
         linear = determineLinear(item['name'])
-        content_files.append({'file': "chap"+chapter['nbr'], 'linear': linear})
+        content_files.append({'file': "chap"+chapter['nbr_fmt'], 'linear': linear})
 
     for item  in _recipe['back_matter']:
         linear = determineLinear(item['name'])
@@ -866,7 +871,8 @@ def manifest_items():
     for item in recipe['front_matter']:
         items.append(item['src'])
     for item in recipe['chapters']:
-        items.append("content/chap"+item['nbr']+".xhtml")
+        chap_nbr = str("%03d" % (int(item['nbr']),))
+        items.append("content/chap"+chap_nbr+".xhtml")
     for item in recipe['back_matter']:
         items.append(item['src'])
     items.append('css/epub-stylesheet.css')
