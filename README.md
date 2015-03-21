@@ -17,4 +17,4 @@ This software free to use while still in beta. Support is available via http://c
 
 Examples and Documentation
 ===========================
-An example book is in the demo_raw directory. Instrucitons and discussion can be found in the github wiki (buton that sort of looks like a book on the right side of this page).
+An example book is in the demo_raw directory. Instructions and discussion can be found in the github wiki (button that sort of looks like a book on the right side of this page).

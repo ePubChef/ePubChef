@@ -14,7 +14,7 @@
     <dc:language>en-US</dc:language>
     <meta property="dcterms:modified">2012-01-18T12:47:00Z</meta>
     <dc:publisher>jcobobooks</dc:publisher>
-    <dc:contributor id="contrib1">John Cobo</dc:contributor>
+    <dc:contributor id="contrib1">Carl Contrib</dc:contributor>
     <meta refines="#contrib1" property="role" scheme="marc:relators">mrk</meta>
     <dc:rights>This work is shared with the public using the Attribution-ShareAlike 3.0 Unported (CC BY-SA 3.0) license.</dc:rights>        
 	<meta property="ibooks:specified-fonts">true</meta>

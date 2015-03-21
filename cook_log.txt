@@ -1,0 +1,45 @@
+****starting to cook***** at 2015-03-21 15:20:37.024456 (Ireland time)
+
+cook_dir: C:\Users\john\Documents\GitHub\epubchef
+Opening recipe for: C:\Users\john\Documents\GitHub\epubchef\headsandtails_raw\headsandtails_recipe.txt
+deleting previously generated contents of directory: C:\Users\john\Documents\GitHub\epubchef\headsandtails_cooked
+Opening Point Of Sale data for: headsandtails_raw\headsandtails_pos_data.txt
+No Point of Sale data this time.
+front_matter count: 4
+chapter count: 30
+PART: {'part_name': 'Part One', 'playorder': 5}
+  CHAPTER:010
+  CHAPTER:020
+  CHAPTER:030
+  CHAPTER:040
+  CHAPTER:050
+  CHAPTER:060
+  CHAPTER:070
+  CHAPTER:080
+  CHAPTER:090
+  CHAPTER:100
+PART: {'part_name': 'Part Two', 'playorder': 16}
+  CHAPTER:110
+PART: {'part_name': 'Part Three', 'playorder': 18}
+  CHAPTER:120
+  CHAPTER:130
+  CHAPTER:140
+  CHAPTER:150
+  CHAPTER:160
+  CHAPTER:170
+  CHAPTER:180
+  CHAPTER:190
+  CHAPTER:200
+  CHAPTER:210
+  CHAPTER:220
+  CHAPTER:230
+  CHAPTER:240
+  CHAPTER:250
+  CHAPTER:260
+  CHAPTER:270
+  CHAPTER:280
+  CHAPTER:290
+  CHAPTER:300
+ePubChef is finished, see /headsandtails_served.
+zipping up to .epub at: C:\Users\john\Documents\GitHub\epubchef\headsandtails_served\headsandtails.epub
+All done
