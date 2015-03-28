@@ -53,8 +53,7 @@ coverage.xml
 docs/_build/
 
 # JC's own books
-headsandtails*
-mybook*
+headstails*
 
 # epub and mobi are not source and get eaten by github
 *.epub
