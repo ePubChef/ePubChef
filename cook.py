@@ -763,9 +763,9 @@ def cleanChapterMetaData(_recipe):
 
 def determineLinear(_item_name):
     if _item_name in ['cover', 'table_of_contents']:
-        linear = 'yes'
-    else:
         linear = 'no'
+    else:
+        linear = 'yes'
     return linear
 
 def addContentFiles(_recipe):
