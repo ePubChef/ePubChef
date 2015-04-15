@@ -120,8 +120,17 @@ margin: 0;
 widows: 2;
 orphans: 2;
 }
+
+.innovative-turquoise blockquote {
+  border: none;
+  border-left: 4px solid #66c0c0;
+  box-shadow: none;
+}
+
 blockquote {
-margin: 10px 0 10px 5px !important;
+border-left: 4px solid #66c0c0;
+padding: 15px 20px 0;
+/*margin: 10px 0 10px 5px !important;*/
 page-break-inside: avoid;
 font-size: 95%;
 font-style: italic;

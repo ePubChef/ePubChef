@@ -33,10 +33,10 @@
     
     <item id="style" href="css/epub-stylesheet.css" media-type="text/css"/>
       
-    <item id="chap1" href="content/chap1.xhtml"  media-type="application/xhtml+xml" />
-    <item id="chap2" href="content/chap2.xhtml"  media-type="application/xhtml+xml" />
-    <item id="chap3" href="content/chap3.xhtml"  media-type="application/xhtml+xml" />
-    <item id="chap4" href="content/chap4.xhtml"  media-type="application/xhtml+xml" />
+    <item id="chap001" href="content/chap001.xhtml"  media-type="application/xhtml+xml" />
+    <item id="chap002" href="content/chap002.xhtml"  media-type="application/xhtml+xml" />
+    <item id="chap003" href="content/chap003.xhtml"  media-type="application/xhtml+xml" />
+    <item id="chap004" href="content/chap004.xhtml"  media-type="application/xhtml+xml" />
 
     <item id="description"  href="description.xhtml" media-type="application/xhtml+xml" />
     <item id="about_author"  href="about_author.xhtml" media-type="application/xhtml+xml" />
@@ -54,10 +54,10 @@
     <itemref idref="title_page" linear="no"/>
     <itemref idref="table_of_contents" linear="yes"/>
     <itemref idref="dedication" linear="no"/>
-    <itemref idref="chap1" linear="no"/>
-    <itemref idref="chap2" linear="no"/>
-    <itemref idref="chap3" linear="no"/>
-    <itemref idref="chap4" linear="no"/>
+    <itemref idref="chap001" linear="no"/>
+    <itemref idref="chap002" linear="no"/>
+    <itemref idref="chap003" linear="no"/>
+    <itemref idref="chap004" linear="no"/>
     <itemref idref="description" linear="no"/>
     <itemref idref="about_author" linear="no"/>
   </spine>
