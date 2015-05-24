@@ -1,4 +1,4 @@
-****starting to cook***** at 2015-03-25 17:01:06.970320 (Ireland time)
+****starting to cook***** at 2015-05-24 18:49:11.903361 (Ireland time)
 
 cook_dir: C:\Users\john\Documents\GitHub\epubchef
 deleting previously generated contents of directory: C:\Users\john\Documents\GitHub\epubchef\debug
@@ -7,12 +7,13 @@ deleting previously generated contents of directory: C:\Users\john\Documents\Git
 Opening Point Of Sale data for: demo_raw\demo_pos_data.txt
 front_matter count: 4
 chapter count: 4
-PART: {'part_name': 'Part One', 'playorder': 5}
+PART: {'playorder': 5, 'part_name': 'Part One'}
   CHAPTER:010
-PART: {'part_name': 'Part Two', 'playorder': 7}
+PART: {'playorder': 7, 'part_name': 'Part Two'}
   CHAPTER:020
   CHAPTER:030
   CHAPTER:040
 ePubChef is finished, see /demo_served.
 zipping up to .epub at: C:\Users\john\Documents\GitHub\epubchef\demo_served\demo.epub
+deleting previously generated contents of directory: C:\Users\john\Documents\GitHub\epubchef\demo_served
 All done

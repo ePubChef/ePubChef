@@ -120,21 +120,21 @@ margin: 0;
 widows: 2;
 orphans: 2;
 }
-
-.innovative-turquoise blockquote {
-  border: none;
-  border-left: 4px solid #66c0c0;
-  box-shadow: none;
+/* block type paragraph for non-fiction - no indent */
+p.left
+{
+text-indent: 0;
+margin: 1.0em 0 0 0;
+widows: 2;
+orphans: 2;
 }
-
 blockquote {
-border-left: 4px solid #66c0c0;
-padding: 15px 20px 0;
-/*margin: 10px 0 10px 5px !important;*/
+margin: 10px 0 10px 5px !important;
 page-break-inside: avoid;
 font-size: 95%;
 font-style: italic;
 text-indent: 0;
+/*border-left: 4px solid #66c0c0; */
 }
 /* Kindle app on Mac. does not handle the blockquote properly so this is a workaround */
 p.simulate_blockquote
@@ -146,14 +146,6 @@ orphans: 2;
 page-break-inside: avoid;
 font-size: 95%;
 font-style: italic;
-}
-/* block type paragraph for non-fiction */
-p.left
-{
-text-indent: 0;
-margin: 1.0em 0 0 0;
-widows: 2;
-orphans: 2;
 }
 
 /*===Images===*/
