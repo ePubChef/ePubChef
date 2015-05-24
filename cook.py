@@ -757,6 +757,9 @@ def augmentFonts():
 def cleanChapterMetaData(_recipe):
     # tidy text in chapter meta data
     for chapter in _recipe['chapters']:
+        if chapter['name'] is None:
+            chapter['name'] = "chapter name missing from recipe"
+            msg("WARNING: chapter name missing from recipe - " + chapter['code'])
         new_text = postMarkdownTextClean(chapter['name'])
         chapter['name'] = new_text
     return _recipe

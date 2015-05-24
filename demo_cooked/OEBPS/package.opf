@@ -50,15 +50,15 @@
   </manifest>
  
   <spine toc="ncx">
-    <itemref idref="cover" linear="yes"/>
-    <itemref idref="title_page" linear="no"/>
-    <itemref idref="table_of_contents" linear="yes"/>
-    <itemref idref="dedication" linear="no"/>
-    <itemref idref="chap001" linear="no"/>
-    <itemref idref="chap002" linear="no"/>
-    <itemref idref="chap003" linear="no"/>
-    <itemref idref="chap004" linear="no"/>
-    <itemref idref="description" linear="no"/>
-    <itemref idref="about_author" linear="no"/>
+    <itemref idref="cover" linear="no"/>
+    <itemref idref="title_page" linear="yes"/>
+    <itemref idref="table_of_contents" linear="no"/>
+    <itemref idref="dedication" linear="yes"/>
+    <itemref idref="chap001" linear="yes"/>
+    <itemref idref="chap002" linear="yes"/>
+    <itemref idref="chap003" linear="yes"/>
+    <itemref idref="chap004" linear="yes"/>
+    <itemref idref="description" linear="yes"/>
+    <itemref idref="about_author" linear="yes"/>
   </spine>
 </package>
