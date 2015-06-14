@@ -1,19 +1,16 @@
-****starting to cook***** at 2015-05-24 18:49:11.903361 (Ireland time)
+****starting to cook***** at 2015-06-14 12:12:34.951320 (Ireland time)
 
-cook_dir: C:\Users\john\Documents\GitHub\epubchef
-deleting previously generated contents of directory: C:\Users\john\Documents\GitHub\epubchef\debug
-Opening recipe for: C:\Users\john\Documents\GitHub\epubchef\demo_raw\demo_recipe.txt
-deleting previously generated contents of directory: C:\Users\john\Documents\GitHub\epubchef\demo_cooked
-Opening Point Of Sale data for: demo_raw\demo_pos_data.txt
+cook_dir: C:\Users\john\Documents\github\epubchef
+deleting previously generated contents of directory: C:\Users\john\Documents\github\epubchef\debug
+NO RECIPE FOUND AT: C:\Users\john\Documents\github\epubchef\demo2_raw\demo2_recipe.txt
+Creating new recipe for: demo2
+Opening Point Of Sale data for: demo2_raw\demo2_pos_data.txt
+No Point of Sale data this time.
 front_matter count: 4
-chapter count: 4
-PART: {'playorder': 5, 'part_name': 'Part One'}
-  CHAPTER:010
-PART: {'playorder': 7, 'part_name': 'Part Two'}
-  CHAPTER:020
-  CHAPTER:030
-  CHAPTER:040
-ePubChef is finished, see /demo_served.
-zipping up to .epub at: C:\Users\john\Documents\GitHub\epubchef\demo_served\demo.epub
-deleting previously generated contents of directory: C:\Users\john\Documents\GitHub\epubchef\demo_served
+creating new empty chapter:010
+creating new empty chapter:020
+creating new empty chapter:030
+chapter count: 3
+ePubChef is finished, see /demo2_served.
+zipping up to .epub at: C:\Users\john\Documents\github\epubchef\demo2_served\demo2.epub
 All done
