@@ -18,9 +18,9 @@ ePubChef - generating EPUB files for eBooks
     51 Franklin Street, Fifth Floor, Boston, MA 02110-1301 USA.
 '''
 # generate (or "cook") an eBook from text files.
-# If the book is to be called "demo", the text files should be in folder "demo_raw"
-# and include "demo_recipe.txt" which contains necessary meta-data.
-# Run with: python cook.py demo  # if your book is called 'demo'.
+# If the book is to be called "mybook", the text files should be in folder "mybook_raw"
+# and include "mybook_recipe.txt" which contains necessary meta-data.
+# Run with: python cook.py mybook  # if your book is called 'mybook'.
 # Optional second arguments are "debug", or "validate", or "kindlegen" eg. python cook.py demo validate
 
 # debug populates a /debug directory, validate runs EPUB check if it has been set up (Java, etc.)
