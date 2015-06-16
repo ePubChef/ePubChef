@@ -13,7 +13,15 @@
 
     {{#point_of_sale}}
     <hr/>
-    <p class="centered"><span class="ipadcenterfix">Purchased by: {{purchaser}} on {{date}} for {{{price}}}.</span></p>
+	{{#epub_email}}
+	  <p class="centered"><span class="ipadcenterfix">Delivered to: {{epub_email}} on {{date}}.</span></p>
+	{{/epub_email}}
+	{{#kindle_email}}
+	  <p class="centered"><span class="ipadcenterfix">Delivered to: {{epub_email}} on {{date}}.</span></p>
+	{{/kindle_email}}
+	{{#purchaser}}}}
+    <p class="centered"><span class="ipadcenterfix">Purchased by: {{purchaser}} for {{{price}}}.</span></p>
+	{{/purchaser}}}}
     <p class="centered"><span class="ipadcenterfix">Thank you.</span></p>
     <hr/>
     {{/point_of_sale}}
