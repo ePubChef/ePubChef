@@ -986,7 +986,7 @@ if __name__ == "__main__": # main processing
     # execute cook.py with an additional argument, "python cook.py validate"
     if arg2 in ['validate','kindlegen']:
         epubPath = join(dirs['epub_loc'], file_name + '.epub')
-        epubcheck('../epubcheck/epubcheck-3.0.1.jar', epubPath )
+        epubcheck('../epubcheck/epubcheck.jar', epubPath )
 
     # Optionally run kindlgen to create a .mobi
     # NOTE: kindlgen is not part of ePubChef and we won't be offended if you don't run
